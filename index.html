@@ -362,7 +362,7 @@
               Verified garment production tracking, SHA-256 photo hash verification, Sunday advance ledger, and automated Telegram proof streaming.
             </p>
 
-            <!-- Secure Google Sign-In Button (Forces real Google OAuth consent popup) -->
+            <!-- Secure Google Sign-In Button -->
             <button id="btn-google-oauth" onclick="window.appPortal.triggerGoogleSignInPopup()" class="btn-shimmer w-full mt-6 py-3.5 px-5 rounded-2xl bg-white text-slate-900 hover:bg-slate-100 font-display font-bold text-sm shadow-xl flex items-center justify-center gap-3 border border-slate-200 transition active:scale-[0.98]">
               <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
                 <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
@@ -376,7 +376,7 @@
 
             <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2.5 flex items-center gap-1.5">
               <i class="fa-solid fa-circle-check text-emerald-400"></i>
-              <span>Strict Google OAuth 2.0 Security & Local Session Key Persistence</span>
+              <span>Secure Google OAuth 2.0 Authentication & Session Key Persistence</span>
             </p>
           </div>
         </div>
@@ -780,7 +780,7 @@
             <div class="p-3 rounded-2xl bg-slate-950/80 border border-emerald-500/25">
               <div class="text-[10px] font-mono uppercase text-emerald-400 font-semibold">Gross Earnings</div>
               <div id="admin-kpi-gross-total" class="font-mono font-bold text-lg text-emerald-400 mt-0.5">₹0</div>
-              <div id="admin-kpi-records-count" class="text-[10px] text-slate-400 mt-0.5">0 Work Slips</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">0 Work Slips</div>
             </div>
 
             <div class="p-3 rounded-2xl bg-slate-950/80 border border-amber-500/25">
@@ -966,9 +966,7 @@
 
   </div>
 
-  <!-- ==========================================================================
-       MODAL 1: INTERACTIVE WORKER INSPECTION MODAL
-       ========================================================================== -->
+  <!-- MODAL 1: WORKER INSPECTION -->
   <div id="modal-worker-inspector" class="modal-backdrop fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="modal-sheet w-full max-w-[520px] max-h-[92vh] bg-slate-900 border border-slate-700/80 rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden">
       <div class="px-5 py-4 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between gap-3">
@@ -1036,11 +1034,8 @@
             <div>
               <h4 class="font-display font-bold text-xs uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
                 <i class="fa-solid fa-coins"></i>
-                <span>Accumulating Sunday Advance Manager</span>
+                <span>Sunday Advance Manager</span>
               </h4>
-              <p class="text-[11px] text-slate-400 mt-0.5">
-                Entering any custom amount accumulates advance & deducts from salary
-              </p>
             </div>
             <button onclick="window.appPortal.resetWorkerAdvanceBalance()" class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 border border-slate-700 text-[10px] font-semibold transition">
               Reset to ₹0
@@ -1049,8 +1044,8 @@
 
           <form onsubmit="window.appPortal.handleInspectorAdvanceAdd(event)" class="space-y-2.5">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <input type="number" id="inspector-advance-input" required min="1" placeholder="Enter Sunday Advance ₹ (e.g. 1000)" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-amber-500/40 text-xs font-mono font-bold text-amber-300 outline-none" />
-              <input type="text" id="inspector-advance-note" placeholder="Note (e.g. Sunday Cash)" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-slate-200 outline-none" />
+              <input type="number" id="inspector-advance-input" required min="1" placeholder="Enter Amount ₹" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-amber-500/40 text-xs font-mono font-bold text-amber-300 outline-none" />
+              <input type="text" id="inspector-advance-note" placeholder="Note (e.g. Cash)" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-slate-200 outline-none" />
             </div>
             <button type="submit" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-display font-extrabold text-xs transition flex items-center justify-center gap-1.5 shadow-glow-amber">
               <i class="fa-solid fa-plus-circle"></i>
@@ -1059,9 +1054,9 @@
           </form>
 
           <div class="space-y-1.5 pt-2 border-t border-amber-500/20">
-            <div class="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-bold">Sunday Advance History Log (Edit / Delete)</div>
+            <div class="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-bold">Sunday Advance History Log</div>
             <div id="inspector-advance-history-list" class="space-y-1.5 max-h-36 overflow-y-auto text-xs">
-              <!-- Populated dynamically -->
+              <!-- Populated -->
             </div>
           </div>
         </div>
@@ -1076,7 +1071,7 @@
           </div>
 
           <div id="inspect-worker-records-list" class="space-y-2.5">
-            <!-- Dynamically populated -->
+            <!-- Populated -->
           </div>
         </div>
       </div>
@@ -1090,7 +1085,7 @@
         <div class="flex items-center gap-2">
           <button onclick="window.appPortal.exportInspectedWorkerPDF()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 transition">
             <i class="fa-solid fa-file-pdf"></i>
-            <span>Worker PDF Slip</span>
+            <span>PDF Slip</span>
           </button>
           <button onclick="window.appPortal.closeWorkerInspectorModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs transition">
             Done
@@ -1100,87 +1095,30 @@
     </div>
   </div>
 
-  <!-- ==========================================================================
-       MODAL 2: ADMIN MANUAL WORKER REGISTRATION MODAL
-       ========================================================================== -->
+  <!-- MODAL 2: KYC -->
   <div id="modal-kyc-onboarding" class="modal-backdrop fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
     <div class="modal-sheet w-full max-w-[420px] bg-slate-900 border border-brand-500/40 rounded-3xl p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <div class="w-10 h-10 rounded-2xl bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-400">
-            <i class="fa-solid fa-user-shield"></i>
-          </div>
-          <div>
-            <h3 class="font-display font-extrabold text-base text-white">Register Worker Profile</h3>
-            <p class="text-[11px] text-slate-400">Only Worker Name & Google Email are required</p>
-          </div>
-        </div>
+        <h3 class="font-display font-extrabold text-base text-white">Register Worker Profile</h3>
         <button onclick="window.appPortal.closeKycModal()" class="w-8 h-8 rounded-xl bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
-
       <form onsubmit="window.appPortal.completeNewWorkerKyc(event)" class="space-y-3.5">
         <div>
-          <label class="block text-[11px] font-bold uppercase tracking-wider text-brand-300 mb-1">
-            Worker Full Name (Mandatory) *
-          </label>
-          <input type="text" id="kyc-modal-name" required placeholder="e.g. Maheshbhai Parmar" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-brand-500/50 text-white text-xs font-semibold outline-none" />
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-brand-300 mb-1">Worker Full Name *</label>
+          <input type="text" id="kyc-modal-name" required placeholder="e.g. Maheshbhai Parmar" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-brand-500/50 text-white text-xs outline-none" />
         </div>
-
         <div>
-          <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
-            Google Email Account
-          </label>
-          <input type="email" id="kyc-modal-email" required placeholder="mahesh.tailor@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 font-mono text-xs outline-none" />
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Google Email Account</label>
+          <input type="email" id="kyc-modal-email" required placeholder="email@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 font-mono text-xs outline-none" />
         </div>
-
-        <div class="grid grid-cols-2 gap-2.5">
-          <div>
-            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
-              Mobile (Optional)
-            </label>
-            <input type="tel" id="kyc-modal-mobile" placeholder="+91 Optional" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 font-mono text-xs outline-none" />
-          </div>
-          <div>
-            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
-              Worker ID (Optional)
-            </label>
-            <input type="text" id="kyc-modal-govid" placeholder="Optional ID" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 font-mono text-xs outline-none" />
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-2.5">
-          <div>
-            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
-              Skill Role
-            </label>
-            <select id="kyc-modal-dept" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 text-xs outline-none">
-              <option value="Senior Tailor (Singer/Juki)">Senior Tailor</option>
-              <option value="Overlock & Flatlock Operator">Overlock Operator</option>
-              <option value="Kaj-Button & Finishing">Kaj-Button</option>
-              <option value="Cutting Master">Cutting Master</option>
-              <option value="Embroidery Operator">Embroidery</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
-              State (Optional)
-            </label>
-            <input type="text" id="kyc-modal-state" placeholder="Gujarat" value="Gujarat" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 text-xs outline-none" />
-          </div>
-        </div>
-
-        <button type="submit" class="btn-shimmer w-full py-3 rounded-2xl bg-gradient-to-r from-brand-600 to-indigo-600 text-white font-display font-bold text-xs shadow-glow-indigo transition">
-          Save Worker Profile
-        </button>
+        <button type="submit" class="w-full py-3 rounded-2xl bg-brand-600 text-white font-bold text-xs">Save Worker Profile</button>
       </form>
     </div>
   </div>
 
-  <!-- ==========================================================================
-       MODAL 4: CUSTOM CONFIRMATION & PIECE/RATE EDIT REQUEST DIALOG
-       ========================================================================== -->
+  <!-- MODAL 4: CONFIRMATION / EDIT -->
   <div id="modal-confirm-dialog" class="modal-backdrop fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
     <div class="modal-sheet w-full max-w-[410px] bg-slate-900 border border-slate-700 rounded-3xl p-5 shadow-2xl space-y-4">
       <div class="flex items-center gap-3">
@@ -1189,7 +1127,32 @@
         </div>
         <div>
           <h3 id="confirm-modal-title" class="font-display font-bold text-base text-white">Confirm Action</h3>
-          <p id="confirm-modal-message" class="text-xs text-slate-400 mt-0.5">Are you sure you want to proceed?</p>
+          <p id="confirm-modal-message" class="text-xs text-slate-400 mt-0.5">Are you sure?</p>
+        </div>
+      </div>
+
+      <div id="confirm-modal-edit-fields-wrap" class="hidden space-y-3 pt-1">
+        <div class="grid grid-cols-2 gap-3">
+          <div class="p-3 rounded-2xl bg-slate-950/90 border border-brand-500/40">
+            <label class="block text-[10px] font-mono uppercase tracking-wider text-brand-300 font-bold mb-1.5">Update Pieces *</label>
+            <div class="flex items-center gap-1.5">
+              <button type="button" onclick="window.appPortal.stepEditModalValue('confirm-edit-pieces', -1)" class="w-8 h-8 rounded-xl bg-slate-800 text-white font-bold text-sm flex items-center justify-center">-</button>
+              <input type="number" id="confirm-edit-pieces" min="1" max="10000" oninput="window.appPortal.recalcModalEditPreview()" class="w-full px-2 py-1.5 rounded-xl bg-slate-900 border border-slate-700 font-mono font-bold text-sm text-center text-white outline-none" />
+              <button type="button" onclick="window.appPortal.stepEditModalValue('confirm-edit-pieces', 1)" class="w-8 h-8 rounded-xl bg-brand-600/30 text-brand-300 font-bold text-sm flex items-center justify-center">+</button>
+            </div>
+          </div>
+          <div class="p-3 rounded-2xl bg-slate-950/90 border border-emerald-500/40">
+            <label class="block text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold mb-1.5">Update Rate (₹) *</label>
+            <div class="flex items-center gap-1.5">
+              <button type="button" onclick="window.appPortal.stepEditModalValue('confirm-edit-rate', -1)" class="w-8 h-8 rounded-xl bg-slate-800 text-white font-bold text-sm flex items-center justify-center">-</button>
+              <input type="number" id="confirm-edit-rate" min="1" step="0.5" oninput="window.appPortal.recalcModalEditPreview()" class="w-full px-2 py-1.5 rounded-xl bg-slate-900 border border-slate-700 font-mono font-bold text-sm text-center text-emerald-400 outline-none" />
+              <button type="button" onclick="window.appPortal.stepEditModalValue('confirm-edit-rate', 1)" class="w-8 h-8 rounded-xl bg-emerald-600/30 text-emerald-300 font-bold text-sm flex items-center justify-center">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="p-3 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex justify-between items-center text-xs">
+          <span class="text-slate-300 font-semibold">Updated Total Payout:</span>
+          <span id="confirm-edit-computed-total" class="font-mono font-extrabold text-base text-emerald-400">₹0</span>
         </div>
       </div>
 
@@ -1197,26 +1160,17 @@
         <input type="text" id="confirm-modal-input" placeholder="Enter details..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white outline-none" />
       </div>
 
-      <div class="flex items-center justify-end gap-2 pt-2">
-        <button onclick="window.appPortal.closeConfirmModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">
-          Cancel
-        </button>
-        <button id="confirm-modal-action-btn" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold">
-          Confirm
-        </button>
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="window.appPortal.closeConfirmModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold">Cancel</button>
+        <button id="confirm-modal-action-btn" class="px-4 py-2 rounded-xl bg-rose-600 text-white text-xs font-bold">Confirm</button>
       </div>
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION STACK -->
   <div id="toast-container" class="fixed top-16 right-4 z-50 flex flex-col gap-2 max-w-xs w-full pointer-events-none"></div>
-
-  <!-- OFF-SCREEN PRINTABLE A4 PDF STAGE -->
   <div id="pdf-render-stage"></div>
 
-  <!-- ==========================================================================
-       FIREBASE v11 MODULE + COMPLETE APPLICATION LOGIC
-       ========================================================================== -->
+  <!-- APPLICATION SCRIPT MODULE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import {
@@ -1255,7 +1209,7 @@
       "admin.avinash@gmail.com"
     ];
 
-    const SESSION_STORAGE_KEY = "avinash_creation_secure_session_v2";
+    const SESSION_STORAGE_KEY = "avinash_creation_secure_session_v3";
 
     function saveSessionToStorage(userObj, activeView) {
       if (!userObj || !userObj.email) return;
@@ -1302,10 +1256,7 @@
       db = getFirestore(app);
       auth = getAuth(app);
       googleProvider = new GoogleAuthProvider();
-      googleProvider.setCustomParameters({ prompt: "select_account" });
-    } catch (initErr) {
-      console.warn("Firebase init fallback:", initErr);
-    }
+    } catch (initErr) {}
 
     const state = {
       currentUser: null,
@@ -1324,7 +1275,7 @@
           id: "log_init",
           type: "SYSTEM_INIT",
           actor: "System",
-          message: "Avinash Creation portal initialized securely.",
+          message: "Portal initialized securely.",
           timestamp: new Date().toISOString()
         }
       ]
@@ -1392,9 +1343,7 @@
 
     async function persistUserToFirestore(userObj) {
       if (!db || !userObj?.uid) return;
-      try {
-        await setDoc(doc(db, "users", userObj.uid), userObj, { merge: true });
-      } catch (e) {}
+      try { await setDoc(doc(db, "users", userObj.uid), userObj, { merge: true }); } catch (e) {}
     }
 
     async function persistWorkRecordToFirestore(userId, recordObj) {
@@ -1409,18 +1358,20 @@
           totalEarnings: Number(recordObj.totalEarnings),
           photoHash: recordObj.photoHash,
           status: recordObj.status,
+          requestedPieces: recordObj.requestedPieces ? Number(recordObj.requestedPieces) : null,
+          requestedRate: recordObj.requestedRate ? Number(recordObj.requestedRate) : null,
+          requestedEarnings: recordObj.requestedEarnings ? Number(recordObj.requestedEarnings) : null,
+          editRequestNote: recordObj.editRequestNote || "",
           telegramSynced: Boolean(recordObj.telegramSynced),
           timestamp: recordObj.timestamp
         };
-        await setDoc(doc(db, "users", userId, "records", recordObj.id), firestorePayload);
+        await setDoc(doc(db, "users", userId, "records", recordObj.id), firestorePayload, { merge: true });
       } catch (e) {}
     }
 
     async function persistAdvanceToFirestore(userId, advanceObj) {
       if (!db || !userId) return;
-      try {
-        await setDoc(doc(db, "advances", userId), advanceObj, { merge: true });
-      } catch (e) {}
+      try { await setDoc(doc(db, "advances", userId), advanceObj, { merge: true }); } catch (e) {}
     }
 
     async function appendAuditLog(type, actor, message) {
@@ -1433,9 +1384,7 @@
       };
       state.logs.unshift(logEntry);
       if (db) {
-        try {
-          await setDoc(doc(db, "logs", logEntry.id), logEntry);
-        } catch (e) {}
+        try { await setDoc(doc(db, "logs", logEntry.id), logEntry); } catch (e) {}
       }
       renderLogsView();
     }
@@ -1454,19 +1403,20 @@
       return ADMIN_WHITELIST_EMAILS.includes(email.trim().toLowerCase());
     }
 
+    // STRICT GOOGLE OAUTH POPUP LOGIN (COMPLETELY REMOVED THE VULNERABLE ADMIN ACCOUNT CHOOSER LIST)
     async function triggerGoogleSignInPopup() {
-      if (auth && googleProvider) {
-        try {
-          // Force real Google account selection consent popup every single time
-          googleProvider.setCustomParameters({ prompt: "select_account" });
-          const result = await signInWithPopup(auth, googleProvider);
-          if (result?.user?.email) {
-            await loginWithSelectedEmail(result.user.email, result.user.displayName || "Portal User", result.user.uid);
-            return;
-          }
-        } catch (popupErr) {
-          showToast("Authentication Failed", "Please sign in with your authorized Google account.", "rose");
+      if (!auth || !googleProvider) {
+        showToast("Authentication Error", "Firebase Auth not ready.", "rose");
+        return;
+      }
+      try {
+        googleProvider.setCustomParameters({ prompt: "select_account" });
+        const result = await signInWithPopup(auth, googleProvider);
+        if (result?.user?.email) {
+          await loginWithSelectedEmail(result.user.email, result.user.displayName || "Portal User", result.user.uid, false);
         }
+      } catch (popupErr) {
+        showToast("Google Sign-In Required", "Please authenticate with your Google account.", "rose");
       }
     }
 
@@ -1508,11 +1458,10 @@
           showToast("Jai Shree Krishna, " + existingWorker.name, "Logged in to Worker Portal.", "emerald");
         }
       } else {
-        // Automatic 1-time KYC for new workers signing in with Google
-        const newUid = explicitUid || ("worker_" + Date.now());
+        const autoUid = explicitUid || ("worker_" + Date.now());
         const autoName = (displayName && displayName.trim()) ? displayName.trim() : normalizedEmail.split("@")[0];
         const newWorkerObj = {
-          uid: newUid,
+          uid: autoUid,
           name: autoName,
           email: normalizedEmail,
           mobile: "Not Provided",
@@ -1523,19 +1472,19 @@
           createdAt: new Date().toISOString()
         };
 
-        state.users[newUid] = newWorkerObj;
-        state.recordsByUser[newUid] = [];
-        state.advances[newUid] = { userId: newUid, totalAdvance: 0, history: [] };
+        state.users[autoUid] = newWorkerObj;
+        state.recordsByUser[autoUid] = [];
+        state.advances[autoUid] = { userId: autoUid, totalAdvance: 0, history: [] };
 
         await persistUserToFirestore(newWorkerObj);
-        await persistAdvanceToFirestore(newUid, state.advances[newUid]);
+        await persistAdvanceToFirestore(autoUid, state.advances[autoUid]);
         await appendAuditLog("KYC_AUTO_REGISTER", normalizedEmail, `Auto-registered worker: ${autoName}`);
 
         state.currentUser = newWorkerObj;
         saveSessionToStorage(state.currentUser, "worker-dashboard");
         updateNavigationChrome();
         navigateTo("worker-dashboard");
-        showToast("Welcome, " + autoName + "!", "Your account is registered.", "emerald");
+        showToast("Welcome, " + autoName + "!", "Account linked & registered.", "emerald");
       }
     }
 
@@ -1547,7 +1496,7 @@
       state.currentUser = null;
       updateNavigationChrome();
       navigateTo("login");
-      showToast("Signed Out", "Disconnected session.", "indigo");
+      showToast("Signed Out", "Session disconnected.", "indigo");
     }
 
     function recalcWorkEntryTotal() {
@@ -1711,27 +1660,86 @@
       showToast("Work Entry Saved & Sent", `Added ${pieces} pcs (₹${totalEarnings.toLocaleString("en-IN")}).`, "emerald");
     }
 
+    function recalcModalEditPreview() {
+      const pcs = Math.max(0, Number(document.getElementById("confirm-edit-pieces")?.value || 0));
+      const rate = Math.max(0, Number(document.getElementById("confirm-edit-rate")?.value || 0));
+      const total = Math.round(pcs * rate);
+      const totalEl = document.getElementById("confirm-edit-computed-total");
+      if (totalEl) totalEl.textContent = "₹" + total.toLocaleString("en-IN");
+    }
+
+    function stepEditModalValue(inputId, delta) {
+      const el = document.getElementById(inputId);
+      if (!el) return;
+      const current = Number(el.value || 0);
+      el.value = Math.max(1, current + delta);
+      recalcModalEditPreview();
+    }
+
     function requestRecordEdit(userId, recordId) {
       const list = state.recordsByUser[userId] || [];
       const rec = list.find(r => r.id === recordId);
       if (!rec) return;
 
       openConfirmModal({
-        title: "Request Record Edit",
-        message: `Enter correction note for entry (${rec.pieces} pcs × ₹${rec.rate} = ₹${rec.totalEarnings}):`,
-        confirmText: "Submit Request",
+        title: "Update Pieces & Rate (Request Edit)",
+        message: `Current Entry: ${rec.pieces} pcs × ₹${rec.rate} = ₹${rec.totalEarnings.toLocaleString("en-IN")}. Enter new requested values:`,
+        confirmText: "Send for Admin Approval",
         variant: "brand",
         showInput: true,
-        inputPlaceholder: `e.g. Please update piece count to 48`,
-        onConfirm: async note => {
+        inputPlaceholder: "Optional note for admin...",
+        showEditFields: true,
+        initialPieces: rec.pieces,
+        initialRate: rec.rate,
+        onConfirm: async editData => {
+          const newPieces = editData.pieces;
+          const newRate = editData.rate;
+          const newTotal = Math.round(newPieces * newRate);
+          const note = editData.note || "";
+
           rec.status = "EDIT_REQUESTED";
-          rec.editRequestNote = note || "Worker requested verification";
+          rec.requestedPieces = newPieces;
+          rec.requestedRate = newRate;
+          rec.requestedEarnings = newTotal;
+          rec.editRequestNote = note
+            ? `${note} (Requested: ${newPieces} pcs × ₹${newRate} = ₹${newTotal.toLocaleString("en-IN")})`
+            : `Requested update: ${rec.pieces} pcs × ₹${rec.rate} ➔ ${newPieces} pcs × ₹${newRate} (₹${newTotal.toLocaleString("en-IN")})`;
+
           await persistWorkRecordToFirestore(userId, rec);
-          await appendAuditLog("EDIT_REQUEST", state.currentUser?.name || userId, `Requested edit: "${rec.editRequestNote}"`);
+          await appendAuditLog("EDIT_REQUEST", state.currentUser?.name || userId, `Requested edit: ${newPieces} pcs @ ₹${newRate} (₹${newTotal})`);
           refreshCurrentActiveViews();
-          showToast("Edit Request Sent", "Admin notified.", "amber");
+          showToast("Edit Request Sent", `Requested ${newPieces} pcs × ₹${newRate}. Waiting for Admin approval.`, "amber");
         }
       });
+    }
+
+    async function approveWorkerEditRequest(userId, recordId) {
+      const list = state.recordsByUser[userId] || [];
+      const rec = list.find(r => r.id === recordId);
+      if (!rec) return;
+
+      const oldPieces = rec.pieces;
+      const oldRate = rec.rate;
+
+      if (rec.requestedPieces && rec.requestedRate) {
+        rec.pieces = Number(rec.requestedPieces);
+        rec.rate = Number(rec.requestedRate);
+        rec.totalEarnings = Number(rec.requestedEarnings || Math.round(rec.pieces * rec.rate));
+      }
+
+      rec.status = "APPROVED";
+      rec.isNewForAdmin = false;
+      delete rec.requestedPieces;
+      delete rec.requestedRate;
+      delete rec.requestedEarnings;
+      rec.editRequestNote = "";
+
+      await persistWorkRecordToFirestore(userId, rec);
+      await appendAuditLog("EDIT_APPROVED", state.currentUser?.email || "Master Admin", `Approved edit for ${rec.workerName}: now ${rec.pieces} pcs × ₹${rec.rate} (₹${rec.totalEarnings})`);
+
+      refreshCurrentActiveViews();
+      if (state.inspectedWorkerId === userId) renderWorkerInspectorModal(userId);
+      showToast("Edit Approved!", `${rec.workerName}'s record updated to ${rec.pieces} pcs × ₹${rec.rate}.`, "emerald");
     }
 
     function deleteWorkRecord(userId, recordId) {
@@ -1975,11 +1983,15 @@
               <div class="min-w-0">
                 <div class="font-display font-bold text-xs text-white">${rec.pieces} Pieces × ₹${rec.rate}/pc</div>
                 <div class="text-[10px] font-mono text-slate-400 mt-0.5">${new Date(rec.timestamp).toLocaleDateString("en-IN")}</div>
+                ${rec.requestedPieces && rec.requestedRate ? `<div class="text-[10px] font-mono text-amber-400 mt-1">Requested Edit: ${rec.requestedPieces} Pcs × ₹${rec.requestedRate}</div>` : ""}
               </div>
             </div>
             <div class="text-right shrink-0">
               <div class="font-mono font-bold text-sm text-emerald-400">₹${Number(rec.totalEarnings).toLocaleString("en-IN")}</div>
-              <button onclick="window.appPortal.deleteWorkRecord('${userId}', '${rec.id}')" class="mt-1 px-2 py-0.5 rounded bg-rose-500/15 text-rose-400 text-[10px]">Delete</button>
+              <div class="flex items-center gap-1 mt-1">
+                ${rec.status === "EDIT_REQUESTED" ? `<button onclick="window.appPortal.approveWorkerEditRequest('${userId}', '${rec.id}')" class="px-2 py-0.5 bg-emerald-600 text-white text-[10px] rounded font-bold">Approve</button>` : ""}
+                <button onclick="window.appPortal.deleteWorkRecord('${userId}', '${rec.id}')" class="px-2 py-0.5 bg-rose-500/15 text-rose-400 text-[10px] rounded">Delete</button>
+              </div>
             </div>
           </div>
         `).join("");
@@ -2266,7 +2278,7 @@
         advHistEl.innerHTML = `<div class="text-slate-500 text-xs italic">No Sunday advances recorded.</div>`;
       } else {
         advHistEl.innerHTML = fin.advanceHistory.map(a => `
-          <div class="flex items-center justify-between p-2 rounded-xl bg-slate-900/75 border border-amber-500/20 text-xs">
+          <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/75 border border-amber-500/20 text-xs">
             <span>${a.note} (${new Date(a.date).toLocaleDateString("en-IN")})</span>
             <span class="font-mono font-bold text-amber-400">-₹${Number(a.amount).toLocaleString("en-IN")}</span>
           </div>
@@ -2285,7 +2297,7 @@
                 <img src="${rec.photoUrl}" alt="Proof" class="w-14 h-14 rounded-xl object-cover border border-slate-700 shrink-0" />
                 <div class="min-w-0">
                   <div class="font-display font-bold text-xs text-white">${rec.pieces} Pieces × ₹${rec.rate}/pc</div>
-                  <div class="text-[11px] font-mono text-slate-400">${new Date(rec.timestamp).toLocaleString("en-IN")}</div>
+                  <div class="text-[11px] font-mono text-slate-400">${new Date(rec.timestamp).toLocaleDateString("en-IN")}</div>
                 </div>
               </div>
               <div class="text-right shrink-0">
@@ -2441,7 +2453,7 @@
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <div class="font-mono font-bold text-emerald-400">₹${rec.totalEarnings}</div>
+            <div class="font-mono font-bold text-sm text-emerald-400">₹${rec.totalEarnings}</div>
             <button onclick="window.appPortal.deleteWorkRecord('${rec.userId}', '${rec.id}')" class="px-2 py-1 bg-rose-500/15 text-rose-400 text-xs rounded">Delete</button>
           </div>
         </div>
@@ -2475,7 +2487,6 @@
     }
 
     function openAccountSwitcherModal() {
-      // Disabled for strict security: forces real Google OAuth popup
       triggerGoogleSignInPopup();
     }
 
@@ -2505,9 +2516,12 @@
       signOutUser,
       navigateTo,
       recalcWorkEntryTotal,
+      recalcModalEditPreview,
+      stepEditModalValue,
       handleImageFileSelection,
       handleWorkEntrySubmit,
       requestRecordEdit,
+      approveWorkerEditRequest,
       deleteWorkRecord,
       saveWorkerProfileUpdate,
       handleQuickSundayAdvance,
@@ -2536,7 +2550,8 @@
     window.addEventListener("DOMContentLoaded", async () => {
       recalcWorkEntryTotal();
 
-      // Check stored session key to persist login state across browser refreshes
+      // Root cause fix for local storage session restoration:
+      // Immediately restore currentUser and view from browser session key so refresh never logs out
       const savedSession = loadSessionFromStorage();
       if (savedSession && savedSession.email && savedSession.token) {
         state.currentUser = {
@@ -2555,7 +2570,7 @@
 
       await syncFromFirestore();
 
-      // Re-validate session after Firestore data loads
+      // Re-verify session against Firestore after cloud data finishes loading
       if (savedSession && savedSession.email) {
         await loginWithSelectedEmail(savedSession.email, savedSession.name, savedSession.uid, true);
       }
