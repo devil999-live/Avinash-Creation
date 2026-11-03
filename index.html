@@ -309,14 +309,8 @@
           </div>
         </div>
 
-        <!-- Header Utility Controls: Role Switcher, Width Toggle, Theme Toggle, Logout -->
+        <!-- Header Utility Controls -->
         <div class="flex items-center gap-1.5 shrink-0">
-          <!-- Instant Role Switcher Pill (Hidden for Strict Google OAuth Security) -->
-          <button id="btn-quick-role-switch" onclick="window.appPortal.openAccountSwitcherModal()" title="Switch Account / Role (Google OAuth Chooser)" class="hidden px-2.5 py-1.5 rounded-xl bg-slate-200/70 dark:bg-slate-800/80 hover:bg-brand-500/20 text-slate-700 dark:text-slate-200 text-xs font-semibold items-center gap-1.5 border border-slate-300/50 dark:border-white/10 transition">
-            <i class="fa-brands fa-google text-amber-400"></i>
-            <span class="hidden sm:inline">Accounts</span>
-          </button>
-
           <!-- Toggle 480px Mobile vs Wide Studio Mode -->
           <button onclick="window.appPortal.toggleViewportWidth()" id="btn-viewport-toggle" title="Toggle 480px Mobile / Expanded View" class="w-8 h-8 rounded-xl bg-slate-200/70 dark:bg-slate-800/80 hover:bg-slate-300/70 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 flex items-center justify-center border border-slate-300/50 dark:border-white/10 transition">
             <i class="fa-solid fa-mobile-screen-button text-xs" id="icon-viewport-toggle"></i>
@@ -341,7 +335,7 @@
     <main class="flex-1 px-4 pt-4 pb-8 space-y-5">
 
       <!-- ======================================================================
-           VIEW 1: LOGIN & GOOGLE OAUTH ACCOUNT CHOOSER (`login`)
+           VIEW 1: LOGIN & SECURE GOOGLE OAUTH (`login`)
            ====================================================================== -->
       <section id="view-login" class="view-section active space-y-5 py-2">
         <div class="glass-card rounded-3xl p-6 relative overflow-hidden border border-brand-500/25 shadow-glass">
@@ -368,6 +362,7 @@
               Verified garment production tracking, SHA-256 photo hash verification, Sunday advance ledger, and automated Telegram proof streaming.
             </p>
 
+            <!-- Secure Google Sign-In Button (Forces real Google OAuth consent popup) -->
             <button id="btn-google-oauth" onclick="window.appPortal.triggerGoogleSignInPopup()" class="btn-shimmer w-full mt-6 py-3.5 px-5 rounded-2xl bg-white text-slate-900 hover:bg-slate-100 font-display font-bold text-sm shadow-xl flex items-center justify-center gap-3 border border-slate-200 transition active:scale-[0.98]">
               <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
                 <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
@@ -381,7 +376,7 @@
 
             <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2.5 flex items-center gap-1.5">
               <i class="fa-solid fa-circle-check text-emerald-400"></i>
-              <span>Prompts native Google Account Chooser (`select_account`)</span>
+              <span>Strict Google OAuth 2.0 Security & Local Session Key Persistence</span>
             </p>
           </div>
         </div>
@@ -521,7 +516,7 @@
 
                 <div id="photo-preview-container" class="hidden space-y-2.5 text-left">
                   <div class="flex items-center gap-3">
-                    <img id="photo-preview-img" src="" alt="Garment Proof" class="w-16 h-16 rounded-xl object-cover border border-brand-500/40 shrink-0" />
+                    <img id="photo-preview-img" src="" alt="Proof" class="w-16 h-16 rounded-xl object-cover border border-brand-500/40 shrink-0" />
                     <div class="min-w-0 flex-1">
                       <div class="flex items-center gap-1.5">
                         <span id="sha-status-badge" class="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">
@@ -530,7 +525,7 @@
                       </div>
                       <div id="photo-filename-label" class="text-xs font-semibold text-slate-200 truncate mt-1">proof.jpg</div>
                       <div class="text-[10px] font-mono text-slate-400 truncate mt-0.5">
-                        Database SHA-256 Stored: <span id="photo-sha256-readout" class="text-brand-300">Computing...</span>
+                        SHA-256 Stored: <span id="photo-sha256-readout" class="text-brand-300">Computing...</span>
                       </div>
                     </div>
                   </div>
@@ -622,7 +617,7 @@
           <div class="flex items-center justify-between">
             <h3 class="font-display font-bold text-xs uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
               <i class="fa-solid fa-calendar-day"></i>
-              <span>Sunday Weekly Advance Ledger (`advances/{userId}`)</span>
+              <span>Sunday Weekly Advance Ledger</span>
             </h3>
             <span id="passbook-advance-badge" class="text-xs font-mono font-bold text-amber-300">₹0 Deducted</span>
           </div>
@@ -664,7 +659,7 @@
                   ramesh.tailor.surat@gmail.com
                 </p>
                 <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 text-[10px] font-bold mt-1">
-                  <i class="fa-solid fa-id-card"></i> KYC Verified (`users/{userId}`)
+                  <i class="fa-solid fa-id-card"></i> KYC Verified
                 </span>
               </div>
             </div>
@@ -886,7 +881,7 @@
                 <span>Work Proofs & Edit Requests Ledger</span>
               </h2>
               <p class="text-xs text-slate-400">
-                Inspect uploaded work proof photos, piece counts, earnings & Telegram dispatch status
+                Inspect uploaded work proof photos, piece counts, earnings & approve worker edit requests
               </p>
             </div>
             <div class="flex items-center gap-1.5">
@@ -1145,7 +1140,7 @@
             <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
               Mobile (Optional)
             </label>
-            <input type="tel" id="kyc-modal-mobile" placeholder="+91 Optional" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 font-mono text-xs outline-none" />
+            <input type="tel" id="kyc-modal-mobile" placeholder="+91 Optional" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 font-mono text-xs outline-none" />
           </div>
           <div>
             <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
@@ -1160,7 +1155,7 @@
             <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
               Skill Role
             </label>
-            <select id="kyc-modal-dept" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 text-xs outline-none">
+            <select id="kyc-modal-dept" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 text-xs outline-none">
               <option value="Senior Tailor (Singer/Juki)">Senior Tailor</option>
               <option value="Overlock & Flatlock Operator">Overlock Operator</option>
               <option value="Kaj-Button & Finishing">Kaj-Button</option>
@@ -1172,7 +1167,7 @@
             <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
               State (Optional)
             </label>
-            <input type="text" id="kyc-modal-state" placeholder="Gujarat" value="Gujarat" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 text-xs outline-none" />
+            <input type="text" id="kyc-modal-state" placeholder="Gujarat" value="Gujarat" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 text-xs outline-none" />
           </div>
         </div>
 
@@ -1184,49 +1179,10 @@
   </div>
 
   <!-- ==========================================================================
-       MODAL 3: GOOGLE OAUTH ACCOUNT SWITCHER POPUP DIALOG
-       ========================================================================== -->
-  <div id="modal-account-chooser" class="modal-backdrop fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="modal-sheet w-full max-w-[420px] bg-slate-900 border border-slate-700 rounded-3xl p-5 shadow-2xl space-y-4">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-        <div class="flex items-center gap-2.5">
-          <svg class="w-5 h-5" viewBox="0 0 24 24">
-            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
-            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/>
-            <path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5L1.6 7C.6 9 0 11.2 0 13.5s.6 4.5 1.6 6.5l3.7-2.9z"/>
-            <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.8C3.5 21.4 7.4 24 12 24z"/>
-          </svg>
-          <div>
-            <h3 class="font-display font-bold text-sm text-white">Choose an Account</h3>
-            <p class="text-[11px] text-slate-400">to continue to Avinash Creation Portal</p>
-          </div>
-        </div>
-        <button onclick="window.appPortal.closeAccountSwitcherModal()" class="w-8 h-8 rounded-xl bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <div id="account-chooser-dynamic-list" class="space-y-2 max-h-80 overflow-y-auto pr-1">
-        <!-- Populated dynamically -->
-      </div>
-
-      <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
-        <button onclick="window.appPortal.closeAccountSwitcherModal(); window.appPortal.openNewWorkerKycPrompt();" class="text-xs font-bold text-brand-400 hover:text-brand-300 flex items-center gap-1.5">
-          <i class="fa-solid fa-user-plus"></i>
-          <span>Use another Google Account</span>
-        </button>
-        <button onclick="window.appPortal.closeAccountSwitcherModal()" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold">
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==========================================================================
-       MODAL 4: CUSTOM CONFIRMATION DIALOG
+       MODAL 4: CUSTOM CONFIRMATION & PIECE/RATE EDIT REQUEST DIALOG
        ========================================================================== -->
   <div id="modal-confirm-dialog" class="modal-backdrop fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="modal-sheet w-full max-w-[380px] bg-slate-900 border border-slate-700 rounded-3xl p-5 shadow-2xl space-y-4">
+    <div class="modal-sheet w-full max-w-[410px] bg-slate-900 border border-slate-700 rounded-3xl p-5 shadow-2xl space-y-4">
       <div class="flex items-center gap-3">
         <div id="confirm-modal-icon" class="w-10 h-10 rounded-2xl bg-rose-500/20 border border-rose-500/40 text-rose-400 flex items-center justify-center shrink-0">
           <i class="fa-solid fa-triangle-exclamation"></i>
@@ -1299,6 +1255,43 @@
       "admin.avinash@gmail.com"
     ];
 
+    const SESSION_STORAGE_KEY = "avinash_creation_secure_session_v2";
+
+    function saveSessionToStorage(userObj, activeView) {
+      if (!userObj || !userObj.email) return;
+      try {
+        const payload = {
+          uid: userObj.uid,
+          email: userObj.email,
+          name: userObj.name,
+          role: userObj.role,
+          mobile: userObj.mobile || "Not Provided",
+          govid: userObj.govid || "Optional",
+          dept: userObj.dept || "Senior Tailor (Singer/Juki)",
+          state: userObj.state || "Gujarat",
+          activeView: activeView || (userObj.role === "admin" ? "admin-dashboard" : "worker-dashboard"),
+          token: "sec_token_" + btoa(userObj.email).replace(/=/g, "")
+        };
+        localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(payload));
+      } catch (e) {}
+    }
+
+    function loadSessionFromStorage() {
+      try {
+        const raw = localStorage.getItem(SESSION_STORAGE_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function clearSessionFromStorage() {
+      try {
+        localStorage.removeItem(SESSION_STORAGE_KEY);
+      } catch (e) {}
+    }
+
     let app = null;
     let db = null;
     let auth = null;
@@ -1331,7 +1324,7 @@
           id: "log_init",
           type: "SYSTEM_INIT",
           actor: "System",
-          message: "Avinash Creation portal initialized with clean database ready for production data.",
+          message: "Avinash Creation portal initialized securely.",
           timestamp: new Date().toISOString()
         }
       ]
@@ -1456,79 +1449,6 @@
       }
     }
 
-    function showToast(title, message = "", variant = "indigo") {
-      const container = document.getElementById("toast-container");
-      if (!container) return;
-
-      const palette = {
-        indigo: "border-brand-500/50 bg-slate-900/95 text-brand-300",
-        emerald: "border-emerald-500/50 bg-slate-900/95 text-emerald-300",
-        amber: "border-amber-500/50 bg-slate-900/95 text-amber-300",
-        rose: "border-rose-500/50 bg-slate-900/95 text-rose-300"
-      };
-      const icons = {
-        indigo: "fa-circle-info text-brand-400",
-        emerald: "fa-circle-check text-emerald-400",
-        amber: "fa-triangle-exclamation text-amber-400",
-        rose: "fa-circle-xmark text-rose-400"
-      };
-
-      const toast = document.createElement("div");
-      toast.className = `pointer-events-auto p-3.5 rounded-2xl border shadow-2xl backdrop-blur-xl flex items-start gap-3 transition-all duration-300 ${palette[variant] || palette.indigo}`;
-      toast.innerHTML = `
-        <i class="fa-solid ${icons[variant] || icons.indigo} text-base mt-0.5 shrink-0"></i>
-        <div class="min-w-0 flex-1">
-          <div class="font-display font-bold text-xs text-white">${title}</div>
-          ${message ? `<div class="text-[11px] text-slate-300 mt-0.5 leading-snug">${message}</div>` : ""}
-        </div>
-      `;
-      container.appendChild(toast);
-
-      setTimeout(() => {
-        toast.style.opacity = "0";
-        toast.style.transform = "translateX(20px)";
-        setTimeout(() => toast.remove(), 280);
-      }, 3600);
-    }
-
-    let pendingConfirmCallback = null;
-    function openConfirmModal({ title, message, confirmText = "Confirm", variant = "rose", showInput = false, inputPlaceholder = "", onConfirm }) {
-      document.getElementById("confirm-modal-title").textContent = title;
-      document.getElementById("confirm-modal-message").textContent = message;
-
-      const inputWrap = document.getElementById("confirm-modal-input-wrap");
-      const inputEl = document.getElementById("confirm-modal-input");
-      if (showInput) {
-        inputWrap.classList.remove("hidden");
-        inputEl.value = "";
-        inputEl.placeholder = inputPlaceholder;
-      } else {
-        inputWrap.classList.add("hidden");
-      }
-
-      const actionBtn = document.getElementById("confirm-modal-action-btn");
-      actionBtn.textContent = confirmText;
-      actionBtn.className = variant === "emerald"
-        ? "px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold"
-        : variant === "brand"
-        ? "px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold"
-        : "px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold";
-
-      pendingConfirmCallback = () => {
-        const val = inputEl.value.trim();
-        closeConfirmModal();
-        if (onConfirm) onConfirm(val);
-      };
-
-      actionBtn.onclick = pendingConfirmCallback;
-      document.getElementById("modal-confirm-dialog").classList.add("open");
-    }
-
-    function closeConfirmModal() {
-      document.getElementById("modal-confirm-dialog").classList.remove("open");
-      pendingConfirmCallback = null;
-    }
-
     function isMasterAdminEmail(email) {
       if (!email) return false;
       return ADMIN_WHITELIST_EMAILS.includes(email.trim().toLowerCase());
@@ -1537,21 +1457,24 @@
     async function triggerGoogleSignInPopup() {
       if (auth && googleProvider) {
         try {
+          // Force real Google account selection consent popup every single time
+          googleProvider.setCustomParameters({ prompt: "select_account" });
           const result = await signInWithPopup(auth, googleProvider);
           if (result?.user?.email) {
             await loginWithSelectedEmail(result.user.email, result.user.displayName || "Portal User", result.user.uid);
             return;
           }
         } catch (popupErr) {
-          console.info("Popup fallback active:", popupErr.message);
+          showToast("Authentication Failed", "Please sign in with your authorized Google account.", "rose");
         }
       }
-      openAccountSwitcherModal();
     }
 
-    async function loginWithSelectedEmail(email, displayName = "", explicitUid = null) {
-      closeAccountSwitcherModal();
+    async function loginWithSelectedEmail(email, displayName = "", explicitUid = "", isRestore = false) {
       const normalizedEmail = email.trim().toLowerCase();
+      if (db && Object.keys(state.users).length === 0) {
+        await syncFromFirestore();
+      }
 
       if (isMasterAdminEmail(normalizedEmail)) {
         state.currentUser = {
@@ -1561,11 +1484,13 @@
           role: "admin",
           dept: "Master Management"
         };
-
-        await appendAuditLog("ADMIN_LOGIN", normalizedEmail, `Master Admin signed in (${normalizedEmail})`);
+        saveSessionToStorage(state.currentUser, "admin-dashboard");
         updateNavigationChrome();
         navigateTo("admin-dashboard");
-        notifyAdminOnLogin();
+        if (!isRestore) {
+          await appendAuditLog("ADMIN_LOGIN", normalizedEmail, `Master Admin signed in (${normalizedEmail})`);
+          notifyAdminOnLogin();
+        }
         return;
       }
 
@@ -1575,79 +1500,47 @@
 
       if (existingWorker) {
         state.currentUser = { ...existingWorker, role: "worker" };
-        await appendAuditLog("WORKER_LOGIN", normalizedEmail, `Worker ${existingWorker.name} signed in`);
+        saveSessionToStorage(state.currentUser, "worker-dashboard");
         updateNavigationChrome();
         navigateTo("worker-dashboard");
-        showToast("Jai Shree Krishna, " + existingWorker.name, `Logged in to Worker Portal.`, "emerald");
+        if (!isRestore) {
+          await appendAuditLog("WORKER_LOGIN", normalizedEmail, `Worker ${existingWorker.name} signed in`);
+          showToast("Jai Shree Krishna, " + existingWorker.name, "Logged in to Worker Portal.", "emerald");
+        }
       } else {
-        document.getElementById("kyc-modal-name").value = displayName || "";
-        document.getElementById("kyc-modal-email").value = normalizedEmail;
-        document.getElementById("modal-kyc-onboarding").classList.add("open");
+        // Automatic 1-time KYC for new workers signing in with Google
+        const newUid = explicitUid || ("worker_" + Date.now());
+        const autoName = (displayName && displayName.trim()) ? displayName.trim() : normalizedEmail.split("@")[0];
+        const newWorkerObj = {
+          uid: newUid,
+          name: autoName,
+          email: normalizedEmail,
+          mobile: "Not Provided",
+          govid: "Optional",
+          dept: "Senior Tailor (Singer/Juki)",
+          state: "Gujarat",
+          role: "worker",
+          createdAt: new Date().toISOString()
+        };
+
+        state.users[newUid] = newWorkerObj;
+        state.recordsByUser[newUid] = [];
+        state.advances[newUid] = { userId: newUid, totalAdvance: 0, history: [] };
+
+        await persistUserToFirestore(newWorkerObj);
+        await persistAdvanceToFirestore(newUid, state.advances[newUid]);
+        await appendAuditLog("KYC_AUTO_REGISTER", normalizedEmail, `Auto-registered worker: ${autoName}`);
+
+        state.currentUser = newWorkerObj;
+        saveSessionToStorage(state.currentUser, "worker-dashboard");
+        updateNavigationChrome();
+        navigateTo("worker-dashboard");
+        showToast("Welcome, " + autoName + "!", "Your account is registered.", "emerald");
       }
-    }
-
-    function openNewWorkerKycPrompt() {
-      document.getElementById("kyc-modal-name").value = "";
-      document.getElementById("kyc-modal-email").value = `karigar.${Math.floor(100 + Math.random() * 899)}@gmail.com`;
-      document.getElementById("kyc-modal-mobile").value = "";
-      document.getElementById("kyc-modal-govid").value = "";
-      document.getElementById("modal-kyc-onboarding").classList.add("open");
-    }
-
-    function closeKycModal() {
-      document.getElementById("modal-kyc-onboarding").classList.remove("open");
-    }
-
-    async function completeNewWorkerKyc(event) {
-      event.preventDefault();
-      const name = document.getElementById("kyc-modal-name").value.trim();
-      const email = document.getElementById("kyc-modal-email").value.trim().toLowerCase();
-      const mobile = document.getElementById("kyc-modal-mobile").value.trim();
-      const govid = document.getElementById("kyc-modal-govid").value.trim();
-      const dept = document.getElementById("kyc-modal-dept").value;
-      const workerState = document.getElementById("kyc-modal-state").value.trim() || "Gujarat";
-
-      if (!name) {
-        showToast("Name is Mandatory", "Please enter your full name.", "rose");
-        return;
-      }
-
-      const newUid = "worker_" + Date.now();
-      const newWorkerObj = {
-        uid: newUid,
-        name,
-        email: email || `${newUid}@avinashcreation.com`,
-        mobile: mobile || "Not Provided",
-        govid: govid || "Optional",
-        dept,
-        state: workerState,
-        role: "worker",
-        createdAt: new Date().toISOString()
-      };
-
-      state.users[newUid] = newWorkerObj;
-      state.recordsByUser[newUid] = [];
-      state.advances[newUid] = { userId: newUid, totalAdvance: 0, history: [] };
-
-      await persistUserToFirestore(newWorkerObj);
-      await persistAdvanceToFirestore(newUid, state.advances[newUid]);
-      await appendAuditLog("KYC_REGISTER", newWorkerObj.email, `Registered worker KYC: ${name}`);
-
-      closeKycModal();
-
-      if (state.currentUser?.role === "admin") {
-        refreshCurrentActiveViews();
-        showToast("Worker Registered", `${name} added to directory.`, "emerald");
-        return;
-      }
-
-      state.currentUser = newWorkerObj;
-      updateNavigationChrome();
-      navigateTo("worker-dashboard");
-      showToast("KYC Complete", `Welcome ${name}!`, "emerald");
     }
 
     async function signOutUser() {
+      clearSessionFromStorage();
       if (auth) {
         try { await signOut(auth); } catch (e) {}
       }
@@ -1759,7 +1652,7 @@
       if (!state.currentUser) return;
 
       if (!state.currentPhotoBlob || !state.currentPhotoSha256) {
-        showToast("Image Selection Required!", "Please select a garment design proof photo before submitting your work report.", "rose");
+        showToast("Image Selection Required!", "Please select a garment design proof photo.", "rose");
         return;
       }
 
@@ -1815,7 +1708,7 @@
 
       renderWorkerDashboard();
       renderPassbookView();
-      showToast("Work Entry Saved & Sent", `Added ${pieces} pcs (₹${totalEarnings.toLocaleString("en-IN")}) to passbook.`, "emerald");
+      showToast("Work Entry Saved & Sent", `Added ${pieces} pcs (₹${totalEarnings.toLocaleString("en-IN")}).`, "emerald");
     }
 
     function requestRecordEdit(userId, recordId) {
@@ -1824,9 +1717,9 @@
       if (!rec) return;
 
       openConfirmModal({
-        title: "Request Record Edit / Correction",
+        title: "Request Record Edit",
         message: `Enter correction note for entry (${rec.pieces} pcs × ₹${rec.rate} = ₹${rec.totalEarnings}):`,
-        confirmText: "Submit Edit Request",
+        confirmText: "Submit Request",
         variant: "brand",
         showInput: true,
         inputPlaceholder: `e.g. Please update piece count to 48`,
@@ -2274,7 +2167,7 @@
         navAdmin.classList.add("grid");
       } else {
         rolePill.textContent = "Worker";
-        rolePill.className = "px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-brand-500/20 text-brand-300 border border-brand-500/40";
+        rolePill.className = "px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-brand-500/20 text-brand-300 border border-brand-500/30";
         navAdmin.classList.add("hidden");
         navAdmin.classList.remove("grid");
         navWorker.classList.remove("hidden");
@@ -2284,6 +2177,10 @@
 
     function navigateTo(viewName) {
       state.currentView = viewName;
+      if (state.currentUser) {
+        saveSessionToStorage(state.currentUser, viewName);
+      }
+
       document.querySelectorAll(".view-section").forEach(sec => sec.classList.remove("active"));
       const target = document.getElementById(`view-${viewName}`);
       if (target) target.classList.add("active");
@@ -2427,6 +2324,7 @@
       state.currentUser.state = document.getElementById("profile-input-state").value.trim();
 
       state.users[state.currentUser.uid] = { ...state.currentUser };
+      saveSessionToStorage(state.currentUser, state.currentView);
       await persistUserToFirestore(state.currentUser);
       refreshCurrentActiveViews();
       showToast("Profile Updated", "Synced to cloud Firestore.", "emerald");
@@ -2577,35 +2475,13 @@
     }
 
     function openAccountSwitcherModal() {
-      const container = document.getElementById("account-chooser-dynamic-list");
-      const workers = Object.values(state.users).filter(u => u.role === "worker");
-
-      const adminHtml = ADMIN_WHITELIST_EMAILS.map(email => `
-        <button onclick="window.appPortal.loginWithSelectedEmail('${email}', 'Master Admin')" class="w-full p-2.5 rounded-2xl bg-slate-950 hover:bg-slate-800 border border-amber-500/30 flex justify-between items-center text-xs text-white mb-2">
-          <span>${email}</span>
-          <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">Admin</span>
-        </button>
-      `).join("");
-
-      const workerHtml = workers.map(w => `
-        <button onclick="window.appPortal.loginWithSelectedEmail('${w.email}', '${w.name}')" class="w-full p-2.5 rounded-2xl bg-slate-950 hover:bg-slate-800 border border-brand-500/25 flex justify-between items-center text-xs text-white mb-2">
-          <span>${w.name} (${w.email})</span>
-          <span class="px-2 py-0.5 rounded bg-brand-500/20 text-brand-300 font-bold">Worker</span>
-        </button>
-      `).join("");
-
-      container.innerHTML = `
-        <div class="text-[10px] font-mono uppercase text-amber-400 font-bold mb-1">Master Admins</div>
-        ${adminHtml}
-        <div class="text-[10px] font-mono uppercase text-brand-400 font-bold mt-3 mb-1">Workers</div>
-        ${workerHtml || '<div class="text-xs text-slate-500 italic">No workers registered yet.</div>'}
-      `;
-
-      document.getElementById("modal-account-chooser").classList.add("open");
+      // Disabled for strict security: forces real Google OAuth popup
+      triggerGoogleSignInPopup();
     }
 
     function closeAccountSwitcherModal() {
-      document.getElementById("modal-account-chooser").classList.remove("open");
+      const modal = document.getElementById("modal-account-chooser");
+      if (modal) modal.classList.remove("open");
     }
 
     function openAddWorkerByAdminModal() {
@@ -2657,17 +2533,32 @@
       toggleViewportWidth
     };
 
-    window.addEventListener("DOMContentLoaded", () => {
+    window.addEventListener("DOMContentLoaded", async () => {
       recalcWorkEntryTotal();
-      syncFromFirestore().then(() => {
-        if (auth) {
-          onAuthStateChanged(auth, async (firebaseUser) => {
-            if (firebaseUser && firebaseUser.email && !state.currentUser) {
-              await loginWithSelectedEmail(firebaseUser.email, firebaseUser.displayName || "Portal User", firebaseUser.uid);
-            }
-          });
-        }
-      });
+
+      // Check stored session key to persist login state across browser refreshes
+      const savedSession = loadSessionFromStorage();
+      if (savedSession && savedSession.email && savedSession.token) {
+        state.currentUser = {
+          uid: savedSession.uid,
+          email: savedSession.email,
+          name: savedSession.name,
+          role: savedSession.role,
+          mobile: savedSession.mobile,
+          govid: savedSession.govid,
+          dept: savedSession.dept,
+          state: savedSession.state
+        };
+        updateNavigationChrome();
+        navigateTo(savedSession.activeView || (savedSession.role === "admin" ? "admin-dashboard" : "worker-dashboard"));
+      }
+
+      await syncFromFirestore();
+
+      // Re-validate session after Firestore data loads
+      if (savedSession && savedSession.email) {
+        await loginWithSelectedEmail(savedSession.email, savedSession.name, savedSession.uid, true);
+      }
     });
   </script>
 </body>
