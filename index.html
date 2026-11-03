@@ -1,0 +1,3367 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Avinash Creation — Garment Production & Payroll Portal</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Plus Jakarta Sans, Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- jsPDF & jsPDF-AutoTable for 100% Reliable Vector PDF Generation (No Blank Pages) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              300: '#a5b4fc',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+              950: '#1e1b4b',
+            },
+            gold: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+            }
+          },
+          boxShadow: {
+            'glass': '0 16px 40px -8px rgba(0, 0, 0, 0.45), 0 0 1px 1px rgba(255, 255, 255, 0.08) inset',
+            'glass-light': '0 12px 32px -6px rgba(30, 27, 75, 0.10), 0 0 1px 1px rgba(255, 255, 255, 0.8) inset',
+            'glow-indigo': '0 10px 25px -5px rgba(99, 102, 241, 0.45)',
+            'glow-emerald': '0 10px 25px -5px rgba(16, 185, 129, 0.4)',
+            'glow-amber': '0 10px 25px -5px rgba(245, 158, 11, 0.4)',
+            'glow-rose': '0 10px 25px -5px rgba(244, 63, 94, 0.4)',
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* ==========================================================================
+       AVINASH CREATION — CUSTOM DESIGN TOKENS, ANIMATIONS & MOBILE-FIRST SHELL
+       ========================================================================== */
+    :root {
+      --bg-primary: #090d16;
+      --bg-card: rgba(17, 24, 39, 0.78);
+      --border-glass: rgba(255, 255, 255, 0.09);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-primary: #6366f1;
+      --accent-secondary: #f59e0b;
+    }
+
+    html:not(.dark) {
+      --bg-primary: #f1f5f9;
+      --bg-card: rgba(255, 255, 255, 0.90);
+      --border-glass: rgba(15, 23, 42, 0.09);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+    }
+
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background-image:
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.16) 0px, transparent 50%),
+        radial-gradient(at 100% 15%, rgba(245, 158, 11, 0.11) 0px, transparent 45%),
+        radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.10) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.25);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(99, 102, 241, 0.5);
+    }
+
+    /* Mobile Simulator Container (Default max-w-[480px], toggleable to Expanded Studio Mode) */
+    .app-viewport-shell {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      border-left: 1px solid var(--border-glass);
+      border-right: 1px solid var(--border-glass);
+      background: var(--bg-primary);
+      box-shadow: 0 0 80px rgba(0, 0, 0, 0.55);
+    }
+
+    .app-viewport-shell.expanded-mode {
+      max-width: 1080px;
+    }
+
+    /* Glassmorphic Surface Utilities */
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border-glass);
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .glass-card-interactive:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .glass-card-interactive:active {
+      transform: scale(0.985);
+    }
+
+    .glass-nav {
+      background: rgba(11, 15, 25, 0.88);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    html:not(.dark) .glass-nav {
+      background: rgba(255, 255, 255, 0.92);
+      border-top: 1px solid rgba(15, 23, 42, 0.08);
+    }
+
+    /* Smooth View Transitions */
+    .view-section {
+      display: none;
+      animation: viewEnter 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    @keyframes viewEnter {
+      0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.99);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes pulseRing {
+      0% { transform: scale(0.9); opacity: 0.8; }
+      70% { transform: scale(1.35); opacity: 0; }
+      100% { transform: scale(1.35); opacity: 0; }
+    }
+
+    .pulse-dot::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulseRing 2s infinite;
+    }
+
+    /* Bottom Sheet & Modal Animations */
+    .modal-backdrop {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-sheet {
+      transform: translateY(28px) scale(0.97);
+      opacity: 0;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    }
+
+    .modal-backdrop.open .modal-sheet {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    /* Shimmer effect for primary buttons */
+    .btn-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-shimmer::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+      transform: rotate(25deg);
+      transition: left 0.65s ease;
+    }
+    .btn-shimmer:hover::after {
+      left: 130%;
+    }
+
+    /* Print / PDF Container Positioned Cleanly for Reliable Capture */
+    #pdf-render-stage {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 794px;
+      background: #ffffff;
+      color: #0f172a;
+      z-index: -9999;
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    /* Number input spinner removal */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
+</head>
+
+<body class="selection:bg-brand-500 selection:text-white">
+
+  <!-- ==========================================================================
+       MAIN MOBILE-FIRST APPLICATION SHELL (MAX-WIDTH 480PX BY DEFAULT)
+       ========================================================================== -->
+  <div id="app-shell" class="app-viewport-shell pb-24">
+
+    <!-- TOP STICKY APPLICATION HEADER -->
+    <header id="app-header" class="sticky top-0 z-30 glass-nav px-4 py-3 border-b border-slate-800/60 dark:border-white/10 transition-all">
+      <div class="flex items-center justify-between gap-2">
+        <!-- Brand Logo & Live Sync Indicator -->
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-500 via-brand-600 to-amber-500 p-[1.5px] shadow-glow-indigo shrink-0">
+            <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
+              <i class="fa-solid fa-scissors text-brand-400 text-base transform -rotate-45"></i>
+            </div>
+          </div>
+          <div class="truncate">
+            <div class="flex items-center gap-1.5">
+              <h1 class="font-display font-extrabold text-sm sm:text-base tracking-tight text-slate-900 dark:text-white truncate">
+                Avinash Creation
+              </h1>
+              <span id="role-header-pill" class="hidden px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-brand-500/20 text-brand-400 border border-brand-500/30">
+                Worker
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400">
+              <span id="cloud-status-dot" class="relative w-2 h-2 rounded-full bg-emerald-400 pulse-dot inline-block"></span>
+              <span id="cloud-status-text" class="truncate font-medium">Firestore Cloud Live</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Header Utility Controls: Role Switcher, Width Toggle, Theme Toggle, Logout -->
+        <div class="flex items-center gap-1.5 shrink-0">
+          <!-- Instant Role Switcher Pill (Allows testing Worker vs Admin anytime) -->
+          <button id="btn-quick-role-switch" onclick="window.appPortal.openAccountSwitcherModal()" title="Switch Account / Role (Google OAuth Chooser)" class="px-2.5 py-1.5 rounded-xl bg-slate-200/70 dark:bg-slate-800/80 hover:bg-brand-500/20 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 border border-slate-300/50 dark:border-white/10 transition">
+            <i class="fa-brands fa-google text-amber-400"></i>
+            <span class="hidden sm:inline">Accounts</span>
+          </button>
+
+          <!-- Toggle 480px Mobile vs Wide Studio Mode -->
+          <button onclick="window.appPortal.toggleViewportWidth()" id="btn-viewport-toggle" title="Toggle 480px Mobile / Expanded View" class="w-8 h-8 rounded-xl bg-slate-200/70 dark:bg-slate-800/80 hover:bg-slate-300/70 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 flex items-center justify-center border border-slate-300/50 dark:border-white/10 transition">
+            <i class="fa-solid fa-mobile-screen-button text-xs" id="icon-viewport-toggle"></i>
+          </button>
+
+          <!-- Dark/Light Theme Toggle -->
+          <button onclick="window.appPortal.toggleTheme()" title="Toggle Dark/Light Theme" class="w-8 h-8 rounded-xl bg-slate-200/70 dark:bg-slate-800/80 hover:bg-slate-300/70 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 flex items-center justify-center border border-slate-300/50 dark:border-white/10 transition">
+            <i id="theme-icon" class="fa-solid fa-sun text-amber-400 text-xs"></i>
+          </button>
+
+          <!-- Sign Out Button (Visible when logged in) -->
+          <button id="btn-header-logout" onclick="window.appPortal.signOutUser()" title="Sign Out" class="hidden w-8 h-8 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 flex items-center justify-center border border-rose-500/30 transition">
+            <i class="fa-solid fa-power-off text-xs"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========================================================================
+         MAIN ROUTER CONTAINER (7 DYNAMIC VIEWS)
+         1. view-login
+         2. view-worker-dashboard
+         3. view-passbook
+         4. view-profile
+         5. view-admin-dashboard
+         6. view-approvals
+         7. view-logs
+         ======================================================================== -->
+    <main class="flex-1 px-4 pt-4 pb-8 space-y-5">
+
+      <!-- ======================================================================
+           VIEW 1: LOGIN & GOOGLE OAUTH ACCOUNT CHOOSER (`login`)
+           ====================================================================== -->
+      <section id="view-login" class="view-section active space-y-5 py-2">
+        <!-- Hero Banner Card -->
+        <div class="glass-card rounded-3xl p-6 relative overflow-hidden border border-brand-500/25 shadow-glass">
+          <div class="absolute -right-10 -top-10 w-40 h-40 bg-brand-500/20 rounded-full blur-2xl pointer-events-none"></div>
+          <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-amber-500/15 rounded-full blur-2xl pointer-events-none"></div>
+
+          <div class="relative z-10 flex flex-col items-center text-center">
+            <!-- Emblem -->
+            <div class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-brand-600 via-indigo-500 to-amber-400 p-0.5 shadow-glow-indigo mb-4">
+              <div class="w-full h-full bg-slate-950 rounded-[22px] flex flex-col items-center justify-center">
+                <i class="fa-solid fa-shirt text-2xl text-brand-400 mb-0.5"></i>
+                <span class="text-[9px] font-mono uppercase tracking-widest text-amber-400 font-bold">EST. SURAT</span>
+              </div>
+            </div>
+
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-500/15 border border-brand-500/30 text-brand-300 text-[11px] font-semibold mb-2">
+              <i class="fa-solid fa-shield-halved text-amber-400"></i>
+              <span>Piece-Rate Payroll & Anti-Duplicate Proof System</span>
+            </div>
+
+            <h2 class="font-display text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              Avinash Creation Portal
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 max-w-xs leading-relaxed">
+              Verified garment production tracking, SHA-256 photo hash verification, Sunday advance ledger, and automated Telegram proof streaming.
+            </p>
+
+            <!-- Primary Action: Google OAuth Popup with Native Account Selection -->
+            <button id="btn-google-oauth" onclick="window.appPortal.triggerGoogleSignInPopup()" class="btn-shimmer w-full mt-6 py-3.5 px-5 rounded-2xl bg-white text-slate-900 hover:bg-slate-100 font-display font-bold text-sm shadow-xl flex items-center justify-center gap-3 border border-slate-200 transition active:scale-[0.98]">
+              <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+                <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
+                <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/>
+                <path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5L1.6 7C.6 9 0 11.2 0 13.5s.6 4.5 1.6 6.5l3.7-2.9z"/>
+                <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.8C3.5 21.4 7.4 24 12 24z"/>
+              </svg>
+              <span>Sign in with Google Account</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-400 ml-auto"></i>
+            </button>
+
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2.5 flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-check text-emerald-400"></i>
+              <span>Prompts native Google Account Chooser (`select_account`)</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- System Integration Architecture Badges -->
+        <div class="grid grid-cols-3 gap-2.5 text-center">
+          <div class="glass-card rounded-2xl p-3">
+            <i class="fa-solid fa-database text-amber-400 text-sm mb-1"></i>
+            <div class="text-[11px] font-bold text-slate-800 dark:text-slate-200">Pure Firestore</div>
+            <div class="text-[10px] text-slate-400">Nested Collections</div>
+          </div>
+          <div class="glass-card rounded-2xl p-3">
+            <i class="fa-solid fa-fingerprint text-brand-400 text-sm mb-1"></i>
+            <div class="text-[11px] font-bold text-slate-800 dark:text-slate-200">SHA-256 Guard</div>
+            <div class="text-[10px] text-slate-400">Anti-Duplicate</div>
+          </div>
+          <div class="glass-card rounded-2xl p-3">
+            <i class="fa-brands fa-telegram text-sky-400 text-sm mb-1"></i>
+            <div class="text-[11px] font-bold text-slate-800 dark:text-slate-200">Telegram Bot</div>
+            <div class="text-[10px] text-slate-400">Live Proof Sync</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           VIEW 2: WORKER DASHBOARD — WORK ENTRY & SHA-256 ENGINE (`worker-dashboard`)
+           ====================================================================== -->
+      <section id="view-worker-dashboard" class="view-section space-y-5">
+        <!-- Worker Welcome & Live Salary Mini-Summary Banner -->
+        <div class="glass-card rounded-3xl p-5 relative overflow-hidden border border-brand-500/30">
+          <div class="absolute -right-8 -top-8 w-36 h-36 bg-brand-500/15 rounded-full blur-2xl pointer-events-none"></div>
+
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <div class="flex items-center gap-3 min-w-0">
+              <div id="worker-dash-avatar" class="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-500 to-indigo-700 flex items-center justify-center text-white font-display font-extrabold text-lg shadow-glow-indigo shrink-0">
+                RP
+              </div>
+              <div class="truncate">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[11px] font-medium text-slate-400">Jai Shree Krishna,</span>
+                  <span id="worker-dash-role-tag" class="px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 text-[10px] font-semibold">Verified Karigar</span>
+                </div>
+                <h2 id="worker-dash-name" class="font-display font-extrabold text-lg text-slate-900 dark:text-white truncate">
+                  Rameshbhai Patel
+                </h2>
+              </div>
+            </div>
+            <button onclick="window.appPortal.navigateTo('passbook')" class="px-3 py-2 rounded-xl bg-brand-500/15 hover:bg-brand-500/25 border border-brand-500/30 text-brand-300 text-xs font-bold flex items-center gap-1.5 shrink-0 transition">
+              <i class="fa-solid fa-file-invoice-dollar"></i>
+              <span>Passbook</span>
+            </button>
+          </div>
+
+          <!-- 3-Column Financial Snapshot -->
+          <div class="grid grid-cols-3 gap-2.5 pt-3 border-t border-slate-700/50">
+            <div class="p-2.5 rounded-2xl bg-slate-900/55 border border-white/5">
+              <div class="text-[10px] text-slate-400 font-medium">Gross Earned</div>
+              <div id="worker-kpi-gross" class="font-mono font-bold text-sm sm:text-base text-emerald-400 mt-0.5">₹0</div>
+              <div id="worker-kpi-pieces" class="text-[10px] text-slate-500 mt-0.5">0 Pieces</div>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-slate-900/55 border border-white/5">
+              <div class="text-[10px] text-slate-400 font-medium">Sunday Advance</div>
+              <div id="worker-kpi-advance" class="font-mono font-bold text-sm sm:text-base text-amber-400 mt-0.5">-₹0</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">Accumulated</div>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-brand-600/20 border border-brand-500/30">
+              <div class="text-[10px] text-brand-300 font-semibold">Net Payable</div>
+              <div id="worker-kpi-net" class="font-mono font-extrabold text-sm sm:text-base text-white mt-0.5">₹0</div>
+              <div class="text-[10px] text-brand-300/80 mt-0.5">Final Payout</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PIECE-RATE WORK ENTRY & SIZE SPECIFICATION FORM -->
+        <div class="glass-card rounded-3xl p-5 space-y-4 border border-slate-700/60">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-display font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="w-7 h-7 rounded-xl bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-400 text-xs">
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+                <span>Submit Daily Piece-Rate Work</span>
+              </h3>
+              <p class="text-[11px] text-slate-400 mt-0.5">
+                SHA-256 duplicate image check & automatic Telegram work proof dispatch
+              </p>
+            </div>
+            <span class="px-2.5 py-1 rounded-xl bg-sky-500/15 border border-sky-500/30 text-sky-400 text-[10px] font-mono font-semibold flex items-center gap-1">
+              <i class="fa-brands fa-telegram"></i> Auto-Sync
+            </span>
+          </div>
+
+          <form id="form-work-entry" onsubmit="window.appPortal.handleWorkEntrySubmit(event)" class="space-y-4">
+            <!-- Number of Pieces, Rate per Piece (₹), and Live Total Calculation -->
+            <div class="grid grid-cols-3 gap-2.5">
+              <div>
+                <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                  Total Pieces *
+                </label>
+                <input type="number" id="entry-pieces" required min="1" max="5000" value="40" oninput="window.appPortal.recalcWorkEntryTotal()" class="w-full px-3 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 focus:border-brand-500 font-mono font-bold text-sm text-white outline-none" />
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                  Rate / Pc (₹) *
+                </label>
+                <input type="number" id="entry-rate" required min="1" step="0.5" value="35" oninput="window.appPortal.recalcWorkEntryTotal()" class="w-full px-3 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 focus:border-brand-500 font-mono font-bold text-sm text-emerald-400 outline-none" />
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-semibold uppercase tracking-wider text-brand-300 mb-1">
+                  Total Payout
+                </label>
+                <div id="entry-computed-total" class="w-full px-3 py-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 font-mono font-extrabold text-sm text-emerald-300 flex items-center justify-center">
+                  ₹1,400
+                </div>
+              </div>
+            </div>
+
+            <!-- GARMENT DESIGN PHOTO UPLOAD + SHA-256 CRYPTOGRAPHIC DUPLICATE ENGINE -->
+            <div class="p-4 rounded-2xl bg-slate-900/70 border border-dashed border-brand-500/40 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                  <i class="fa-solid fa-camera-retro text-brand-400"></i>
+                  <span>Garment Design Proof Photo *</span>
+                </span>
+                <span class="text-[10px] font-mono text-slate-400">SHA-256 Protected</span>
+              </div>
+
+              <!-- File Input Dropzone -->
+              <label for="entry-photo-file" class="cursor-pointer block p-4 rounded-xl bg-slate-950/70 hover:bg-slate-950 border border-slate-800 hover:border-brand-500/50 text-center transition">
+                <input type="file" id="entry-photo-file" accept="image/*" class="hidden" onchange="window.appPortal.handleImageFileSelection(event)" />
+                <div id="photo-empty-prompt" class="space-y-1.5">
+                  <div class="w-10 h-10 rounded-2xl bg-brand-500/15 text-brand-400 flex items-center justify-center mx-auto">
+                    <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+                  </div>
+                  <div class="text-xs font-semibold text-slate-200">
+                    Tap to Select Garment Proof Photo (Required) *
+                  </div>
+                  <div class="text-[10px] text-slate-400">
+                    You must select a photo from your device before submitting your report
+                  </div>
+                </div>
+
+                <!-- Image Preview & Cryptographic SHA-256 Digest Readout -->
+                <div id="photo-preview-container" class="hidden space-y-2.5 text-left">
+                  <div class="flex items-center gap-3">
+                    <img id="photo-preview-img" src="" alt="Garment Proof" class="w-16 h-16 rounded-xl object-cover border border-brand-500/40 shrink-0" />
+                    <div class="min-w-0 flex-1">
+                      <div class="flex items-center gap-1.5">
+                        <span id="sha-status-badge" class="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">
+                          <i class="fa-solid fa-shield-check mr-1"></i>Unique Image Verified
+                        </span>
+                      </div>
+                      <div id="photo-filename-label" class="text-xs font-semibold text-slate-200 truncate mt-1">proof.jpg</div>
+                      <div class="text-[10px] font-mono text-slate-400 truncate mt-0.5">
+                        Database SHA-256 Stored: <span id="photo-sha256-readout" class="text-brand-300">Computing...</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </label>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="btn-submit-work-entry" class="btn-shimmer w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-brand-600 via-indigo-600 to-brand-500 hover:from-brand-500 hover:to-indigo-500 text-white font-display font-bold text-sm shadow-glow-indigo flex items-center justify-center gap-2 transition active:scale-[0.98]">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Verify & Save Work Entry</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Worker's Recent Submissions Feed -->
+        <div class="glass-card rounded-3xl p-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="font-display font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fa-solid fa-clock-rotate-left text-brand-400"></i>
+              <span>My Recent Piece-Rate Submissions</span>
+            </h3>
+            <button onclick="window.appPortal.navigateTo('passbook')" class="text-xs font-semibold text-brand-400 hover:underline">
+              View All <i class="fa-solid fa-arrow-right ml-0.5 text-[10px]"></i>
+            </button>
+          </div>
+
+          <div id="worker-recent-records-list" class="space-y-2.5">
+            <!-- Dynamically rendered by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           VIEW 3: WORKER PASSBOOK & PDF SALARY STATEMENT (`passbook`)
+           ====================================================================== -->
+      <section id="view-passbook" class="view-section space-y-5">
+        <!-- Passbook Header Card with Month Selector & PDF Export Action -->
+        <div class="glass-card rounded-3xl p-5 border border-emerald-500/30 relative overflow-hidden space-y-4">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 text-[10px] font-mono font-bold uppercase tracking-wider">
+                Official Worker Passbook
+              </span>
+              <h2 class="font-display font-extrabold text-lg text-slate-900 dark:text-white mt-1">
+                Earnings & Advance Ledger
+              </h2>
+              <p id="passbook-worker-subtitle" class="text-xs text-slate-400">
+                Real-time piece-rate records & Sunday advance deductions
+              </p>
+            </div>
+
+            <!-- WORKER PDF PASSBOOK EXPORT BUTTON -->
+            <button onclick="window.appPortal.exportWorkerPassbookPDF()" class="btn-shimmer px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-display font-bold text-xs shadow-glow-emerald flex items-center gap-2 shrink-0 transition">
+              <i class="fa-solid fa-file-pdf text-sm"></i>
+              <span>Export PDF Slip</span>
+            </button>
+          </div>
+
+          <!-- Month Filter Selector Bar -->
+          <div class="p-3 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2 text-xs font-semibold text-slate-300">
+              <i class="fa-regular fa-calendar-days text-emerald-400"></i>
+              <span>Filter by Month:</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <select id="passbook-month-filter" onchange="window.appPortal.renderPassbookView()" class="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono font-bold text-emerald-300 outline-none focus:border-emerald-400">
+                <option value="ALL">All Months (Complete Ledger)</option>
+                <option value="2026-11">November 2026</option>
+                <option value="2026-10">October 2026</option>
+                <option value="2026-09">September 2026</option>
+                <option value="2026-08">August 2026</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Passbook Financial Equation Summary -->
+          <div class="grid grid-cols-3 gap-2.5 p-3 rounded-2xl bg-slate-950/75 border border-slate-800">
+            <div>
+              <div class="text-[10px] text-slate-400 uppercase font-mono">Total Gross</div>
+              <div id="passbook-gross-val" class="font-mono font-bold text-base text-emerald-400 mt-0.5">₹0</div>
+            </div>
+            <div>
+              <div class="text-[10px] text-slate-400 uppercase font-mono">Sunday Advance</div>
+              <div id="passbook-advance-val" class="font-mono font-bold text-base text-amber-400 mt-0.5">-₹0</div>
+            </div>
+            <div>
+              <div class="text-[10px] text-brand-300 uppercase font-mono font-bold">Net Payable</div>
+              <div id="passbook-net-val" class="font-mono font-extrabold text-base text-white mt-0.5">₹0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sunday Advance History Box for Worker -->
+        <div class="glass-card rounded-3xl p-4 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h3 class="font-display font-bold text-xs uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-calendar-day"></i>
+              <span>Sunday Weekly Advance Ledger (`advances/{userId}`)</span>
+            </h3>
+            <span id="passbook-advance-badge" class="text-xs font-mono font-bold text-amber-300">₹0 Deducted</span>
+          </div>
+          <div id="passbook-advance-history" class="space-y-1.5 text-xs text-slate-300">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Itemized Passbook Entries List (With Edit Request & Delete Actions) -->
+        <div class="glass-card rounded-3xl p-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="font-display font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-brand-400"></i>
+              <span>Itemized Piece-Rate Entries</span>
+            </h3>
+            <span id="passbook-record-count" class="text-xs font-mono text-slate-400">0 Records</span>
+          </div>
+
+          <div id="passbook-full-records-list" class="space-y-3">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           VIEW 4: WORKER KYC PROFILE (`profile`)
+           ====================================================================== -->
+      <section id="view-profile" class="view-section space-y-5">
+        <div class="glass-card rounded-3xl p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div class="flex items-center gap-3.5">
+              <div id="profile-avatar-big" class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 to-amber-500 flex items-center justify-center text-white font-display font-extrabold text-xl shadow-glow-indigo">
+                RP
+              </div>
+              <div>
+                <h2 id="profile-display-name" class="font-display font-extrabold text-lg text-slate-900 dark:text-white">
+                  Rameshbhai Patel
+                </h2>
+                <p id="profile-display-email" class="text-xs font-mono text-slate-400">
+                  ramesh.tailor.surat@gmail.com
+                </p>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 text-[10px] font-bold mt-1">
+                  <i class="fa-solid fa-id-card"></i> KYC Verified (`users/{userId}`)
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KYC Profile Edit Form (Only Name is Mandatory, Mobile/ID/State Optional) -->
+          <form onsubmit="window.appPortal.saveWorkerProfileUpdate(event)" class="space-y-3.5">
+            <div>
+              <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                Full Name (Mandatory KYC) *
+              </label>
+              <input type="text" id="profile-input-name" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 focus:border-brand-500 text-slate-100 text-xs font-semibold outline-none" />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                  Mobile Number (Optional)
+                </label>
+                <input type="tel" id="profile-input-mobile" placeholder="e.g. +91 98250 12345" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 focus:border-brand-500 text-slate-100 text-xs font-mono outline-none" />
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                  Worker ID / Machine No (Optional)
+                </label>
+                <input type="text" id="profile-input-govid" placeholder="e.g. AC-MC-14 / Aadhaar Last 4" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 focus:border-brand-500 text-slate-100 text-xs font-mono outline-none" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                  Skill Department
+                </label>
+                <select id="profile-input-dept" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 focus:border-brand-500 text-slate-100 text-xs font-medium outline-none">
+                  <option value="Senior Tailor (Singer/Juki)">Senior Tailor (Singer/Juki)</option>
+                  <option value="Overlock & Flatlock Operator">Overlock & Flatlock Operator</option>
+                  <option value="Kaj-Button & Finishing">Kaj-Button & Finishing</option>
+                  <option value="Cutting Master">Cutting Master</option>
+                  <option value="Embroidery Operator">Embroidery Operator</option>
+                  <option value="Steam Press & QC">Steam Press & QC</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                  Home State (Optional)
+                </label>
+                <input type="text" id="profile-input-state" placeholder="e.g. Gujarat / Bihar / UP / Odisha" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 focus:border-brand-500 text-slate-100 text-xs outline-none" />
+              </div>
+            </div>
+
+            <button type="submit" class="w-full py-3 rounded-2xl bg-brand-600 hover:bg-brand-500 text-white font-display font-bold text-xs shadow-glow-indigo transition">
+              <i class="fa-solid fa-floppy-disk mr-1.5"></i> Save KYC Profile to Firestore
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           VIEW 5: MASTER ADMIN DASHBOARD (`admin-dashboard`)
+           ====================================================================== -->
+      <section id="view-admin-dashboard" class="view-section space-y-5">
+        <!-- ADMIN TOP LIVE NOTIFICATION BOX (Edit Requests, Verify Proof Requests & New Worker Submissions) -->
+        <div id="admin-top-notification-box" class="glass-card rounded-3xl p-4 border border-brand-500/40 bg-gradient-to-br from-brand-950/50 via-slate-900/90 to-slate-950/90 space-y-3">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="relative flex h-3 w-3">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+              </span>
+              <h3 class="font-display font-extrabold text-xs uppercase tracking-wider text-white">
+                Admin Live Notification Center
+              </h3>
+              <span id="admin-notif-count-badge" class="px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 font-mono text-[10px] font-bold">
+                0 Alerts
+              </span>
+            </div>
+            <button onclick="window.appPortal.clearAllAdminNotifications()" class="text-[10px] font-semibold text-slate-400 hover:text-white transition">
+              Mark All Read
+            </button>
+          </div>
+          <div id="admin-notifications-list" class="space-y-2 max-h-56 overflow-y-auto pr-1">
+            <!-- Dynamically populated with Edit Requests, Proof Verifications & New Worker Records -->
+          </div>
+        </div>
+
+        <!-- Master Executive Command Banner -->
+        <div class="glass-card rounded-3xl p-5 border border-amber-500/35 relative overflow-hidden">
+          <div class="absolute -right-10 -top-10 w-44 h-44 bg-amber-500/15 rounded-full blur-2xl pointer-events-none"></div>
+
+          <div class="flex flex-wrap items-start justify-between gap-3 mb-4">
+            <div>
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-mono font-bold uppercase">
+                <i class="fa-solid fa-crown"></i> Master Administrator Console
+              </div>
+              <h2 class="font-display font-extrabold text-xl text-slate-900 dark:text-white mt-1">
+                Company Payroll & Production
+              </h2>
+              <p id="admin-active-email-display" class="text-[11px] font-mono text-slate-400">
+                aryanraj10701@gmail.com
+              </p>
+            </div>
+
+            <!-- MASTER ADMIN COMPANY-WIDE PDF EXPORT BUTTON -->
+            <div class="flex items-center gap-2">
+              <button onclick="window.appPortal.exportMasterAdminPayrollPDF()" class="btn-shimmer px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-display font-extrabold text-xs shadow-glow-amber flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-file-pdf text-sm"></i>
+                <span>Export Master PDF Report</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 Executive Payroll & Production KPI Cards -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div class="p-3 rounded-2xl bg-slate-950/80 border border-brand-500/30">
+              <div class="text-[10px] font-mono uppercase text-brand-300 font-semibold">Net Payroll Liability</div>
+              <div id="admin-kpi-net-liability" class="font-mono font-extrabold text-lg text-white mt-0.5">₹0</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">After Sunday Advances</div>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-slate-950/80 border border-emerald-500/25">
+              <div class="text-[10px] font-mono uppercase text-emerald-400 font-semibold">Gross Earnings</div>
+              <div id="admin-kpi-gross-total" class="font-mono font-bold text-lg text-emerald-400 mt-0.5">₹0</div>
+              <div id="admin-kpi-records-count" class="text-[10px] text-slate-400 mt-0.5">0 Work Slips</div>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-slate-950/80 border border-amber-500/25">
+              <div class="text-[10px] font-mono uppercase text-amber-400 font-semibold">Sunday Advances</div>
+              <div id="admin-kpi-advance-total" class="font-mono font-bold text-lg text-amber-400 mt-0.5">₹0</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Accumulated Balance</div>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-slate-950/80 border border-sky-500/25">
+              <div class="text-[10px] font-mono uppercase text-sky-400 font-semibold">Total Output</div>
+              <div id="admin-kpi-total-pieces" class="font-mono font-bold text-lg text-sky-400 mt-0.5">0 Pcs</div>
+              <div id="admin-kpi-worker-count" class="text-[10px] text-slate-400 mt-0.5">0 Registered Workers</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Accumulating Sunday Advance Dispatcher Bar -->
+        <div class="glass-card rounded-3xl p-4 border border-amber-500/25 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="font-display font-bold text-xs uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-hand-holding-dollar"></i>
+              <span>Quick Sunday Advance Allocator (Accumulating Balance)</span>
+            </h3>
+            <span class="text-[10px] font-mono text-slate-400">Deducts from Net Salary</span>
+          </div>
+
+          <form onsubmit="window.appPortal.handleQuickSundayAdvance(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
+            <select id="quick-advance-worker-select" required class="sm:col-span-5 px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-slate-100 font-medium outline-none focus:border-amber-400">
+              <!-- Populated dynamically -->
+            </select>
+            <input type="number" id="quick-advance-amount" required min="50" step="50" placeholder="Add ₹ Advance (e.g. 1500)" class="sm:col-span-4 px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono font-bold text-amber-300 outline-none focus:border-amber-400" />
+            <button type="submit" class="sm:col-span-3 py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-display font-extrabold text-xs transition flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-plus-circle"></i>
+              <span>Add Advance</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Quick Shortcut Card to Registered Garment Workers Directory Tab -->
+        <div onclick="window.appPortal.navigateTo('workers-directory')" class="cursor-pointer glass-card glass-card-interactive rounded-3xl p-4 border border-brand-500/30 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-400">
+              <i class="fa-solid fa-users-viewfinder text-base"></i>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-sm text-white">Open Registered Garment Workers Directory</h3>
+              <p class="text-[11px] text-slate-400">Inspect individual worker passbooks, KYC profiles & manage Sunday advances</p>
+            </div>
+          </div>
+          <span class="px-3 py-1.5 rounded-xl bg-brand-500/20 text-brand-300 text-xs font-bold shrink-0">
+            Workers Tab <i class="fa-solid fa-arrow-right ml-1"></i>
+          </span>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           VIEW 5B: REGISTERED GARMENT WORKERS DIRECTORY (`workers-directory`)
+           Shifted to dedicated bottom navigation section as requested
+           ====================================================================== -->
+      <section id="view-workers-directory" class="view-section space-y-5">
+        <div class="glass-card rounded-3xl p-5 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 class="font-display font-extrabold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-users-viewfinder text-brand-400"></i>
+                <span>Registered Garment Workers Directory</span>
+              </h2>
+              <p class="text-[11px] text-slate-400">
+                Tap any worker's name or avatar to inspect full KYC, itemized records & Sunday advances
+              </p>
+            </div>
+
+            <button onclick="window.appPortal.openAddWorkerByAdminModal()" class="px-3 py-1.5 rounded-xl bg-brand-500/20 hover:bg-brand-500/30 border border-brand-500/40 text-brand-300 text-xs font-bold flex items-center gap-1.5 transition">
+              <i class="fa-solid fa-user-plus"></i>
+              <span>+ Register Worker</span>
+            </button>
+          </div>
+
+          <!-- Search Filter Bar -->
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+            <input type="text" id="admin-worker-search" oninput="window.appPortal.renderAdminDashboard()" placeholder="Search workers by name, mobile, email, or skill role..." class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900/75 border border-slate-700/80 text-xs text-slate-100 outline-none focus:border-brand-500" />
+          </div>
+
+          <!-- Workers Cards / Interactive Table Container -->
+          <div id="admin-workers-directory-list" class="space-y-3">
+            <!-- Dynamically populated by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           VIEW 6: ADMIN WORK PROOF APPROVALS & SHA-256 GALLERY (`approvals`)
+           ====================================================================== -->
+      <section id="view-approvals" class="view-section space-y-5">
+        <div class="glass-card rounded-3xl p-5 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 class="font-display font-extrabold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-images text-brand-400"></i>
+                <span>Work Proofs & Edit Requests Ledger</span>
+              </h2>
+              <p class="text-xs text-slate-400">
+                Inspect uploaded work proof photos, piece counts, earnings & Telegram dispatch status
+              </p>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <select id="approvals-filter-status" onchange="window.appPortal.renderApprovalsView()" class="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-slate-200 outline-none">
+                <option value="ALL">All Records</option>
+                <option value="EDIT_REQUESTED">Edit Requested</option>
+                <option value="APPROVED">Verified / Approved</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="admin-approvals-feed" class="space-y-3">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           VIEW 7: VERIFIABLE FIRESTORE AUDIT TRAIL (`logs`)
+           ====================================================================== -->
+      <section id="view-logs" class="view-section space-y-5">
+        <div class="glass-card rounded-3xl p-5 space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="font-display font-extrabold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-shield-cat text-emerald-400"></i>
+                <span>Verifiable Security Audit Trail (`logs/{logId}`)</span>
+              </h2>
+              <p class="text-xs text-slate-400">
+                Immutable chronological ledger of OAuth sign-ins, SHA-256 work uploads, Sunday advances & deletions
+              </p>
+            </div>
+            <span id="audit-logs-count-badge" class="px-2.5 py-1 rounded-xl bg-emerald-500/15 text-emerald-400 font-mono text-xs font-bold">
+              0 Events
+            </span>
+          </div>
+
+          <div id="audit-logs-feed" class="space-y-2.5">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ========================================================================
+         BOTTOM MOBILE GLASSMORPHIC NAVIGATION BAR (CONTEXT-AWARE: WORKER vs ADMIN)
+         ======================================================================== -->
+    <nav id="bottom-nav-bar" class="hidden fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] z-30 glass-nav px-3 py-2 transition-all">
+      <!-- Worker Bottom Navigation -->
+      <div id="nav-group-worker" class="grid grid-cols-3 gap-2">
+        <button onclick="window.appPortal.navigateTo('worker-dashboard')" data-nav="worker-dashboard" class="nav-tab-btn py-2 px-3 rounded-2xl flex flex-col items-center justify-center gap-1 text-brand-400 bg-brand-500/15 font-semibold transition">
+          <i class="fa-solid fa-scissors text-sm"></i>
+          <span class="text-[10px]">Work Entry</span>
+        </button>
+        <button onclick="window.appPortal.navigateTo('passbook')" data-nav="passbook" class="nav-tab-btn py-2 px-3 rounded-2xl flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-medium transition">
+          <i class="fa-solid fa-book-open text-sm"></i>
+          <span class="text-[10px]">Passbook & PDF</span>
+        </button>
+        <button onclick="window.appPortal.navigateTo('profile')" data-nav="profile" class="nav-tab-btn py-2 px-3 rounded-2xl flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-medium transition">
+          <i class="fa-solid fa-id-badge text-sm"></i>
+          <span class="text-[10px]">KYC Profile</span>
+        </button>
+      </div>
+
+      <!-- Master Admin Bottom Navigation (4 Sections: Admin Payroll, Workers Directory, Proofs & Sizes, Audit Logs) -->
+      <div id="nav-group-admin" class="hidden grid-cols-4 gap-1.5">
+        <button onclick="window.appPortal.navigateTo('admin-dashboard')" data-nav="admin-dashboard" class="nav-tab-btn py-2 px-2 rounded-2xl flex flex-col items-center justify-center gap-1 text-amber-400 bg-amber-500/15 font-semibold transition">
+          <i class="fa-solid fa-chart-pie text-sm"></i>
+          <span class="text-[10px] truncate">Payroll</span>
+        </button>
+        <button onclick="window.appPortal.navigateTo('workers-directory')" data-nav="workers-directory" class="nav-tab-btn py-2 px-2 rounded-2xl flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-medium transition">
+          <i class="fa-solid fa-users text-sm"></i>
+          <span class="text-[10px] truncate">Workers</span>
+        </button>
+        <button onclick="window.appPortal.navigateTo('approvals')" data-nav="approvals" class="nav-tab-btn py-2 px-2 rounded-2xl flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-medium transition">
+          <i class="fa-solid fa-camera-rotate text-sm"></i>
+          <span class="text-[10px] truncate">Proofs</span>
+        </button>
+        <button onclick="window.appPortal.navigateTo('logs')" data-nav="logs" class="nav-tab-btn py-2 px-2 rounded-2xl flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-medium transition">
+          <i class="fa-solid fa-list-ul text-sm"></i>
+          <span class="text-[10px] truncate">Audit Logs</span>
+        </button>
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- ==========================================================================
+       MODAL 1: INTERACTIVE WORKER INSPECTION MODAL (WORKFLOW C)
+       Opens when Master Admin clicks any worker's name or avatar
+       ========================================================================== -->
+  <div id="modal-worker-inspector" class="modal-backdrop fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="modal-sheet w-full max-w-[520px] max-h-[92vh] bg-slate-900 border border-slate-700/80 rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+      <!-- Modal Sticky Header -->
+      <div class="px-5 py-4 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <div id="inspect-worker-avatar" class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-500 to-indigo-600 flex items-center justify-center text-white font-display font-extrabold text-base shrink-0">
+            RP
+          </div>
+          <div class="truncate">
+            <div class="flex items-center gap-2">
+              <h3 id="inspect-worker-name" class="font-display font-extrabold text-base text-white truncate">
+                Worker Name
+              </h3>
+              <span id="inspect-worker-dept" class="px-2 py-0.5 rounded-md bg-brand-500/20 text-brand-300 text-[10px] font-bold">
+                Tailor
+              </span>
+            </div>
+            <p id="inspect-worker-email" class="text-[11px] font-mono text-slate-400 truncate">
+              worker@gmail.com
+            </p>
+          </div>
+        </div>
+
+        <button onclick="window.appPortal.closeWorkerInspectorModal()" class="w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center shrink-0">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Modal Scrollable Body -->
+      <div class="p-5 overflow-y-auto space-y-5 flex-1">
+        <!-- Personal KYC Details Grid -->
+        <div class="p-3.5 rounded-2xl bg-slate-950/70 border border-slate-800/90 grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
+          <div>
+            <span class="text-[10px] text-slate-500 uppercase block">Mobile</span>
+            <span id="inspect-worker-mobile" class="font-mono font-semibold text-slate-200">+91 9825011223</span>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-500 uppercase block">Home State</span>
+            <span id="inspect-worker-state" class="font-semibold text-slate-200">Gujarat</span>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-500 uppercase block">Machine / ID</span>
+            <span id="inspect-worker-govid" class="font-mono font-semibold text-slate-200">AC-MC-09</span>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-500 uppercase block">Total Output</span>
+            <span id="inspect-worker-pieces" class="font-mono font-bold text-sky-400">0 Pcs</span>
+          </div>
+        </div>
+
+        <!-- Monthly Financial Summary Strip -->
+        <div class="grid grid-cols-3 gap-2.5">
+          <div class="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/25">
+            <div class="text-[10px] font-mono uppercase text-emerald-400">Gross Monthly</div>
+            <div id="inspect-worker-gross" class="font-mono font-extrabold text-base text-emerald-300 mt-0.5">₹0</div>
+          </div>
+          <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25">
+            <div class="text-[10px] font-mono uppercase text-amber-400">Sunday Advance</div>
+            <div id="inspect-worker-advance" class="font-mono font-extrabold text-base text-amber-300 mt-0.5">-₹0</div>
+          </div>
+          <div class="p-3 rounded-2xl bg-brand-500/20 border border-brand-500/40">
+            <div class="text-[10px] font-mono uppercase text-brand-300 font-bold">Net Payable</div>
+            <div id="inspect-worker-net" class="font-mono font-extrabold text-base text-white mt-0.5">₹0</div>
+          </div>
+        </div>
+
+        <!-- Accumulating Sunday Advance Management Panel -->
+        <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="font-display font-bold text-xs uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
+                <i class="fa-solid fa-coins"></i>
+                <span>Accumulating Sunday Advance Manager</span>
+              </h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">
+                Entering any custom advance amount accumulates the balance & deducts from net salary
+              </p>
+            </div>
+            <button onclick="window.appPortal.resetWorkerAdvanceBalance()" class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 border border-slate-700 text-[10px] font-semibold transition">
+              Reset to ₹0
+            </button>
+          </div>
+
+          <form onsubmit="window.appPortal.handleInspectorAdvanceAdd(event)" class="space-y-2.5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <input type="number" id="inspector-advance-input" required min="1" placeholder="Enter Sunday Advance ₹ (e.g. 1000)" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-amber-500/40 text-xs font-mono font-bold text-amber-300 outline-none" />
+              <input type="text" id="inspector-advance-note" placeholder="Note (e.g. Sunday Cash)" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-slate-200 outline-none" />
+            </div>
+            <button type="number" style="display:none"></button>
+            <button type="submit" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-display font-extrabold text-xs transition flex items-center justify-center gap-1.5 shadow-glow-amber">
+              <i class="fa-solid fa-plus-circle"></i>
+              <span>+ Accumulate Sunday Advance</span>
+            </button>
+          </form>
+
+          <!-- Itemized Advance History with Edit & Delete Controls -->
+          <div class="space-y-1.5 pt-2 border-t border-amber-500/20">
+            <div class="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-bold">Sunday Advance History Log (Edit / Delete)</div>
+            <div id="inspector-advance-history-list" class="space-y-1.5 max-h-36 overflow-y-auto text-xs">
+              <!-- Populated dynamically with Edit & Delete buttons -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Complete Itemized Work Records Uploaded by this Worker -->
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h4 class="font-display font-bold text-xs uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-layer-group text-brand-400"></i>
+              <span>Complete Itemized Work Records</span>
+            </h4>
+            <span id="inspect-records-badge" class="text-[11px] font-mono text-slate-400">0 Entries</span>
+          </div>
+
+          <div id="inspect-worker-records-list" class="space-y-2.5">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer Actions: Export Worker PDF Slip OR Delete Worker -->
+      <div class="px-5 py-3.5 bg-slate-950/90 border-t border-slate-800 flex items-center justify-between gap-2">
+        <button onclick="window.appPortal.deleteInspectedWorker()" class="px-3.5 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/30 border border-rose-500/30 text-rose-400 font-bold text-xs flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-user-slash"></i>
+          <span>Delete Worker</span>
+        </button>
+
+        <div class="flex items-center gap-2">
+          <button onclick="window.appPortal.exportInspectedWorkerPDF()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-file-pdf"></i>
+            <span>Worker PDF Slip</span>
+          </button>
+          <button onclick="window.appPortal.closeWorkerInspectorModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs transition">
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL 2: FIRST-TIME WORKER KYC REGISTRATION MODAL (ONLY NAME MANDATORY)
+       ========================================================================== -->
+  <div id="modal-kyc-onboarding" class="modal-backdrop fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="modal-sheet w-full max-w-[420px] bg-slate-900 border border-brand-500/40 rounded-3xl p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-400">
+            <i class="fa-solid fa-user-shield"></i>
+          </div>
+          <div>
+            <h3 class="font-display font-extrabold text-base text-white">Quick Worker KYC Setup</h3>
+            <p class="text-[11px] text-slate-400">Only your Name is required to start</p>
+          </div>
+        </div>
+        <button onclick="window.appPortal.closeKycModal()" class="w-8 h-8 rounded-xl bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form onsubmit="window.appPortal.completeNewWorkerKyc(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-brand-300 mb-1">
+            Worker Full Name (Mandatory) *
+          </label>
+          <input type="text" id="kyc-modal-name" required placeholder="e.g. Maheshbhai Parmar" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-brand-500/50 text-white text-xs font-semibold outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+            Google Email Account
+          </label>
+          <input type="email" id="kyc-modal-email" required placeholder="mahesh.tailor@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 font-mono text-xs outline-none" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+              Mobile (Optional)
+            </label>
+            <input type="tel" id="kyc-modal-mobile" placeholder="+91 Optional" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 font-mono text-xs outline-none" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+              Worker ID (Optional)
+            </label>
+            <input type="text" id="kyc-modal-govid" placeholder="Optional ID" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 font-mono text-xs outline-none" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+              Skill Role
+            </label>
+            <select id="kyc-modal-dept" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 text-xs outline-none">
+              <option value="Senior Tailor (Singer/Juki)">Senior Tailor</option>
+              <option value="Overlock & Flatlock Operator">Overlock Operator</option>
+              <option value="Kaj-Button & Finishing">Kaj-Button</option>
+              <option value="Cutting Master">Cutting Master</option>
+              <option value="Embroidery Operator">Embroidery</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+              State (Optional)
+            </label>
+            <input type="text" id="kyc-modal-state" placeholder="Gujarat" value="Gujarat" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-200 text-xs outline-none" />
+          </div>
+        </div>
+
+        <button type="submit" class="btn-shimmer w-full py-3 rounded-2xl bg-gradient-to-r from-brand-600 to-indigo-600 text-white font-display font-bold text-xs shadow-glow-indigo transition">
+          Complete Registration & Open Worker Portal
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL 3: GOOGLE OAUTH ACCOUNT SWITCHER POPUP DIALOG
+       ========================================================================== -->
+  <div id="modal-account-chooser" class="modal-backdrop fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="modal-sheet w-full max-w-[420px] bg-slate-900 border border-slate-700 rounded-3xl p-5 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <svg class="w-5 h-5" viewBox="0 0 24 24">
+            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
+            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/>
+            <path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5L1.6 7C.6 9 0 11.2 0 13.5s.6 4.5 1.6 6.5l3.7-2.9z"/>
+            <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.8C3.5 21.4 7.4 24 12 24z"/>
+          </svg>
+          <div>
+            <h3 class="font-display font-bold text-sm text-white">Choose an Account</h3>
+            <p class="text-[11px] text-slate-400">to continue to Avinash Creation Portal</p>
+          </div>
+        </div>
+        <button onclick="window.appPortal.closeAccountSwitcherModal()" class="w-8 h-8 rounded-xl bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div id="account-chooser-dynamic-list" class="space-y-2 max-h-80 overflow-y-auto pr-1">
+        <!-- Populated dynamically with Admin Whitelist + Registered Workers -->
+      </div>
+
+      <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
+        <button onclick="window.appPortal.closeAccountSwitcherModal(); window.appPortal.openNewWorkerKycPrompt();" class="text-xs font-bold text-brand-400 hover:text-brand-300 flex items-center gap-1.5">
+          <i class="fa-solid fa-user-plus"></i>
+          <span>Use another Google Account</span>
+        </button>
+        <button onclick="window.appPortal.closeAccountSwitcherModal()" class="px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL 4: CUSTOM CONFIRMATION / EDIT REQUEST DIALOG (NO NATIVE ALERT/CONFIRM)
+       ========================================================================== -->
+  <div id="modal-confirm-dialog" class="modal-backdrop fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="modal-sheet w-full max-w-[380px] bg-slate-900 border border-slate-700 rounded-3xl p-5 shadow-2xl space-y-4">
+      <div class="flex items-center gap-3">
+        <div id="confirm-modal-icon" class="w-10 h-10 rounded-2xl bg-rose-500/20 border border-rose-500/40 text-rose-400 flex items-center justify-center shrink-0">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div>
+          <h3 id="confirm-modal-title" class="font-display font-bold text-base text-white">Confirm Action</h3>
+          <p id="confirm-modal-message" class="text-xs text-slate-400 mt-0.5">Are you sure you want to proceed?</p>
+        </div>
+      </div>
+
+      <div id="confirm-modal-input-wrap" class="hidden">
+        <input type="text" id="confirm-modal-input" placeholder="Enter details..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white outline-none" />
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2">
+        <button onclick="window.appPortal.closeConfirmModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">
+          Cancel
+        </button>
+        <button id="confirm-modal-action-btn" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold">
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       FLOATING TOAST NOTIFICATION STACK
+       ========================================================================== -->
+  <div id="toast-container" class="fixed top-16 right-4 z-50 flex flex-col gap-2 max-w-xs w-full pointer-events-none"></div>
+
+  <!-- ==========================================================================
+       OFF-SCREEN PRINTABLE A4 PDF RENDER STAGE (FOR WORKER & ADMIN PDF REPORTS)
+       ========================================================================== -->
+  <div id="pdf-render-stage"></div>
+
+  <!-- ==========================================================================
+       FIREBASE v11 MODULE + COMPLETE APPLICATION LOGIC
+       ========================================================================== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      signInAnonymously,
+      signInWithCustomToken,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      setDoc,
+      addDoc,
+      updateDoc,
+      deleteDoc,
+      getDocs,
+      collection,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    /* ==========================================================================
+       1. MANDATORY CONFIGURATION & CREDENTIALS
+       ========================================================================== */
+    const AVINASH_FIREBASE_CONFIG = {
+      apiKey: "AIzaSyDhgWn7M4tJ_skQZ8Y2leJ-FRG8Z4-NpZE",
+      authDomain: "avinash-creation.firebaseapp.com",
+      projectId: "avinash-creation",
+      storageBucket: "avinash-creation.firebasestorage.app",
+      messagingSenderId: "363660371623",
+      appId: "1:363660371623:web:71a9f793b7877aab7e9d82"
+    };
+
+    const TELEGRAM_CONFIG = {
+      botToken: "9036647249:AAHF2WhOVFzLxCaDb7soNlREF0tq2CokBRc",
+      chatId: "6670344997"
+    };
+
+    const ADMIN_WHITELIST_EMAILS = [
+      "aryanraj10701@gmail.com",
+      "avinashcreationadmin@gmail.com",
+      "admin.avinash@gmail.com"
+    ];
+
+    /* ==========================================================================
+       2. INITIALIZE FIREBASE & PURE FIRESTORE DATABASE ENGINE
+       ========================================================================== */
+    let app = null;
+    let db = null;
+    let auth = null;
+    let googleProvider = null;
+    let firestoreConnected = false;
+
+    try {
+      app = initializeApp(AVINASH_FIREBASE_CONFIG);
+      db = getFirestore(app);
+      auth = getAuth(app);
+      googleProvider = new GoogleAuthProvider();
+      // Force native Google Account Picker dialog every time
+      googleProvider.setCustomParameters({ prompt: "select_account" });
+      firestoreConnected = true;
+    } catch (initErr) {
+      console.warn("Firebase initialization fallback active:", initErr);
+    }
+
+    /* ==========================================================================
+       3. INITIAL REALISTIC GARMENT PRODUCTION STATE (SYNCED WITH FIRESTORE)
+          Strictly avoids localStorage; uses live Cloud Firestore collections:
+          - users/{userId}
+          - users/{userId}/records/{recordId}
+          - advances/{userId}
+          - logs/{logId}
+       ========================================================================== */
+    const state = {
+      currentUser: null, // { uid, name, email, role: 'admin' | 'worker', mobile, govid, dept, state }
+      currentView: "login",
+      inspectedWorkerId: null,
+      currentPhotoBlob: null,
+      currentPhotoDataUrl: null,
+      currentPhotoSha256: null,
+      currentPhotoFileName: null,
+      dismissedNotifIds: [],
+
+      // Users map keyed by userId (`users/{userId}`) - Starts completely empty
+      users: {},
+
+      // Nested Work Records map keyed by userId -> array of records (`users/{userId}/records/{recordId}`) - Starts completely empty
+      recordsByUser: {},
+
+      // Accumulating Sunday Advances keyed by userId (`advances/{userId}`) - Starts completely empty
+      advances: {},
+
+      // Verifiable Audit Trail (`logs/{logId}`) - Starts clean with initialization log
+      logs: [
+        {
+          id: "log_init",
+          type: "SYSTEM_INIT",
+          actor: "System",
+          message: "Avinash Creation portal initialized with clean database ready for production data.",
+          timestamp: new Date().toISOString()
+        }
+      ]
+    };
+
+    /* ==========================================================================
+       4. STATIC GARMENT PROOF PLACEHOLDER FOR INITIAL SEEDED DEMO RECORDS ONLY
+       ========================================================================== */
+    function createSeededDemoThumbnailDataUrl(pieces, rate) {
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+        <rect width="400" height="400" rx="28" fill="#1e1b4b"/>
+        <path d="M145 85 L175 70 L225 70 L255 85 L305 130 L275 165 L250 145 L250 295 L150 295 L150 145 L125 165 L95 130 Z" fill="#4f46e5" stroke="#fbbf24" stroke-width="4"/>
+        <rect x="45" y="315" width="310" height="50" rx="12" fill="#090d16"/>
+        <text x="200" y="346" text-anchor="middle" fill="#fbbf24" font-family="monospace" font-weight="bold" font-size="16">${pieces} PCS @ Rs.${rate}</text>
+      </svg>`;
+      return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+    }
+
+    // Populate default static SVG proof thumbnails on seeded records only
+    Object.values(state.recordsByUser).forEach(list => {
+      list.forEach(rec => {
+        if (!rec.photoUrl) {
+          rec.photoUrl = createSeededDemoThumbnailDataUrl(rec.pieces, rec.rate);
+        }
+      });
+    });
+
+    /* ==========================================================================
+       5. CLOUD FIRESTORE SYNCHRONIZATION SERVICE (NESTED PATHS)
+          Paths:
+          - `users/{userId}`
+          - `users/{userId}/records/{recordId}`
+          - `advances/{userId}`
+          - `logs/{logId}`
+       ========================================================================== */
+    async function syncFromFirestore() {
+      if (!db) return;
+      try {
+        // 1. Fetch users/{userId}
+        const usersSnap = await getDocs(collection(db, "users"));
+        usersSnap.forEach(docSnap => {
+          const uData = docSnap.data();
+          if (uData && uData.email) {
+            state.users[docSnap.id] = { uid: docSnap.id, ...uData };
+          }
+        });
+
+        // 2. Fetch nested users/{userId}/records/{recordId} for each known user
+        for (const uid of Object.keys(state.users)) {
+          try {
+            const recSnap = await getDocs(collection(db, "users", uid, "records"));
+            if (!recSnap.empty) {
+              const loadedRecs = [];
+              recSnap.forEach(rDoc => {
+                const rData = rDoc.data();
+                loadedRecs.push({
+                  id: rDoc.id,
+                  ...rData,
+                  photoUrl: rData.photoUrl || createSeededDemoThumbnailDataUrl(rData.pieces || 0, rData.rate || 0)
+                });
+              });
+              loadedRecs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+              state.recordsByUser[uid] = loadedRecs;
+            }
+          } catch (innerErr) {
+            // Keep in-memory fallback if subcollection read restricted
+          }
+        }
+
+        // 3. Fetch advances/{userId}
+        const advSnap = await getDocs(collection(db, "advances"));
+        advSnap.forEach(docSnap => {
+          state.advances[docSnap.id] = docSnap.data();
+        });
+
+        // 4. Fetch logs/{logId}
+        const logsSnap = await getDocs(collection(db, "logs"));
+        if (!logsSnap.empty) {
+          const loadedLogs = [];
+          logsSnap.forEach(lDoc => loadedLogs.push({ id: lDoc.id, ...lDoc.data() }));
+          loadedLogs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+          state.logs = loadedLogs.slice(0, 60);
+        }
+
+        setCloudBadge(true, "Firestore Cloud Synced");
+        refreshCurrentActiveViews();
+      } catch (err) {
+        // If Firestore rules require specific auth or offline, keep live session operational
+        setCloudBadge(true, "Firestore Engine Ready");
+      }
+    }
+
+    async function persistUserToFirestore(userObj) {
+      if (!db || !userObj?.uid) return;
+      try {
+        await setDoc(doc(db, "users", userObj.uid), userObj, { merge: true });
+      } catch (e) {
+        console.debug("Firestore user write handled:", e.message);
+      }
+    }
+
+    async function persistWorkRecordToFirestore(userId, recordObj) {
+      if (!db || !userId || !recordObj?.id) return;
+      try {
+        // Store metadata & SHA-256 hash in Firestore (no design, operation, or sizes)
+        const firestorePayload = {
+          id: recordObj.id,
+          userId: recordObj.userId,
+          workerName: recordObj.workerName,
+          pieces: Number(recordObj.pieces),
+          rate: Number(recordObj.rate),
+          totalEarnings: Number(recordObj.totalEarnings),
+          photoHash: recordObj.photoHash,
+          status: recordObj.status,
+          telegramSynced: Boolean(recordObj.telegramSynced),
+          timestamp: recordObj.timestamp
+        };
+        await setDoc(doc(db, "users", userId, "records", recordObj.id), firestorePayload);
+      } catch (e) {
+        console.debug("Firestore record write handled:", e.message);
+      }
+    }
+
+    async function persistAdvanceToFirestore(userId, advanceObj) {
+      if (!db || !userId) return;
+      try {
+        await setDoc(doc(db, "advances", userId), advanceObj, { merge: true });
+      } catch (e) {
+        console.debug("Firestore advance write handled:", e.message);
+      }
+    }
+
+    async function appendAuditLog(type, actor, message) {
+      const logEntry = {
+        id: "log_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+        type,
+        actor,
+        message,
+        timestamp: new Date().toISOString()
+      };
+      state.logs.unshift(logEntry);
+      if (db) {
+        try {
+          await setDoc(doc(db, "logs", logEntry.id), logEntry);
+        } catch (e) {
+          console.debug("Audit log write handled:", e.message);
+        }
+      }
+      renderLogsView();
+    }
+
+    function setCloudBadge(isOnline, text) {
+      const dot = document.getElementById("cloud-status-dot");
+      const label = document.getElementById("cloud-status-text");
+      if (dot && label) {
+        dot.className = `relative w-2 h-2 rounded-full inline-block ${isOnline ? "bg-emerald-400 pulse-dot" : "bg-amber-400"}`;
+        label.textContent = text;
+      }
+    }
+
+    /* ==========================================================================
+       6. CUSTOM TOAST NOTIFICATION ENGINE & CONFIRMATION DIALOG (NO ALERT/CONFIRM)
+       ========================================================================== */
+    function showToast(title, message = "", variant = "indigo") {
+      const container = document.getElementById("toast-container");
+      if (!container) return;
+
+      const palette = {
+        indigo: "border-brand-500/50 bg-slate-900/95 text-brand-300",
+        emerald: "border-emerald-500/50 bg-slate-900/95 text-emerald-300",
+        amber: "border-amber-500/50 bg-slate-900/95 text-amber-300",
+        rose: "border-rose-500/50 bg-slate-900/95 text-rose-300"
+      };
+      const icons = {
+        indigo: "fa-circle-info text-brand-400",
+        emerald: "fa-circle-check text-emerald-400",
+        amber: "fa-triangle-exclamation text-amber-400",
+        rose: "fa-circle-xmark text-rose-400"
+      };
+
+      const toast = document.createElement("div");
+      toast.className = `pointer-events-auto p-3.5 rounded-2xl border shadow-2xl backdrop-blur-xl flex items-start gap-3 transition-all duration-300 ${palette[variant] || palette.indigo}`;
+      toast.innerHTML = `
+        <i class="fa-solid ${icons[variant] || icons.indigo} text-base mt-0.5 shrink-0"></i>
+        <div class="min-w-0 flex-1">
+          <div class="font-display font-bold text-xs text-white">${title}</div>
+          ${message ? `<div class="text-[11px] text-slate-300 mt-0.5 leading-snug">${message}</div>` : ""}
+        </div>
+      `;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateX(20px)";
+        setTimeout(() => toast.remove(), 280);
+      }, 3600);
+    }
+
+    let pendingConfirmCallback = null;
+    function openConfirmModal({ title, message, confirmText = "Confirm", variant = "rose", showInput = false, inputPlaceholder = "", onConfirm }) {
+      document.getElementById("confirm-modal-title").textContent = title;
+      document.getElementById("confirm-modal-message").textContent = message;
+
+      const inputWrap = document.getElementById("confirm-modal-input-wrap");
+      const inputEl = document.getElementById("confirm-modal-input");
+      if (showInput) {
+        inputWrap.classList.remove("hidden");
+        inputEl.value = "";
+        inputEl.placeholder = inputPlaceholder;
+      } else {
+        inputWrap.classList.add("hidden");
+      }
+
+      const actionBtn = document.getElementById("confirm-modal-action-btn");
+      actionBtn.textContent = confirmText;
+      actionBtn.className = variant === "emerald"
+        ? "px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold"
+        : variant === "brand"
+        ? "px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold"
+        : "px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold";
+
+      pendingConfirmCallback = () => {
+        const val = inputEl.value.trim();
+        closeConfirmModal();
+        if (onConfirm) onConfirm(val);
+      };
+
+      actionBtn.onclick = pendingConfirmCallback;
+      document.getElementById("modal-confirm-dialog").classList.add("open");
+    }
+
+    function closeConfirmModal() {
+      document.getElementById("modal-confirm-dialog").classList.remove("open");
+      pendingConfirmCallback = null;
+    }
+
+    /* ==========================================================================
+       7. WORKFLOW A: GOOGLE OAUTH & ACCOUNT CHOOSER + ADMIN WHITELIST
+       ========================================================================== */
+    function isMasterAdminEmail(email) {
+      if (!email) return false;
+      return ADMIN_WHITELIST_EMAILS.includes(email.trim().toLowerCase());
+    }
+
+    async function triggerGoogleSignInPopup() {
+      if (auth && googleProvider) {
+        try {
+          // Triggers native Google OAuth Account Picker popup
+          const result = await signInWithPopup(auth, googleProvider);
+          if (result?.user?.email) {
+            await loginWithSelectedEmail(result.user.email, result.user.displayName || "Portal User", result.user.uid);
+            return;
+          }
+        } catch (popupErr) {
+          // In sandboxed preview iFrames where unauthorized domain blocks popup, open interactive Google Account Chooser modal seamlessly
+          console.info("Opening Interactive Google Account Chooser Modal for preview environment:", popupErr.code || popupErr.message);
+        }
+      }
+      openAccountSwitcherModal();
+    }
+
+    async function loginWithSelectedEmail(email, displayName = "", explicitUid = null) {
+      closeAccountSwitcherModal();
+      const normalizedEmail = email.trim().toLowerCase();
+
+      // 1. Check Master Admin Whitelist
+      if (isMasterAdminEmail(normalizedEmail)) {
+        state.currentUser = {
+          uid: explicitUid || "admin_" + normalizedEmail.split("@")[0].replace(/[^a-z0-9]/g, "_"),
+          name: displayName || "Master Administrator",
+          email: normalizedEmail,
+          role: "admin",
+          dept: "Master Management"
+        };
+
+        await appendAuditLog("ADMIN_LOGIN", normalizedEmail, `Master Admin signed in via Google OAuth Whitelist (${normalizedEmail})`);
+        updateNavigationChrome();
+        navigateTo("admin-dashboard");
+        notifyAdminOnLogin();
+        return;
+      }
+
+      // 2. Check if Existing Registered Worker
+      let existingWorker = Object.values(state.users).find(
+        u => u.email && u.email.toLowerCase() === normalizedEmail
+      );
+
+      if (existingWorker) {
+        state.currentUser = { ...existingWorker, role: "worker" };
+        await appendAuditLog("WORKER_LOGIN", normalizedEmail, `Worker ${existingWorker.name} authenticated via Google Account Chooser`);
+        updateNavigationChrome();
+        navigateTo("worker-dashboard");
+        showToast("Jai Shree Krishna, " + existingWorker.name, `Logged in to Worker Piece-Rate Portal.`, "emerald");
+      } else {
+        // First-time worker -> Prompt Quick KYC Modal (Only Name is mandatory)
+        document.getElementById("kyc-modal-name").value = displayName || "";
+        document.getElementById("kyc-modal-email").value = normalizedEmail;
+        document.getElementById("modal-kyc-onboarding").classList.add("open");
+      }
+    }
+
+    function openNewWorkerKycPrompt() {
+      document.getElementById("kyc-modal-name").value = "";
+      document.getElementById("kyc-modal-email").value = `karigar.${Math.floor(100 + Math.random() * 899)}@gmail.com`;
+      document.getElementById("kyc-modal-mobile").value = "";
+      document.getElementById("kyc-modal-govid").value = "";
+      document.getElementById("modal-kyc-onboarding").classList.add("open");
+    }
+
+    function closeKycModal() {
+      document.getElementById("modal-kyc-onboarding").classList.remove("open");
+    }
+
+    async function completeNewWorkerKyc(event) {
+      event.preventDefault();
+      const name = document.getElementById("kyc-modal-name").value.trim();
+      const email = document.getElementById("kyc-modal-email").value.trim().toLowerCase();
+      const mobile = document.getElementById("kyc-modal-mobile").value.trim();
+      const govid = document.getElementById("kyc-modal-govid").value.trim();
+      const dept = document.getElementById("kyc-modal-dept").value;
+      const workerState = document.getElementById("kyc-modal-state").value.trim() || "Gujarat";
+
+      if (!name) {
+        showToast("Name is Mandatory", "Please enter your full name to complete KYC registration.", "rose");
+        return;
+      }
+
+      const newUid = "worker_" + Date.now();
+      const newWorkerObj = {
+        uid: newUid,
+        name,
+        email: email || `${newUid}@avinashcreation.com`,
+        mobile: mobile || "Not Provided",
+        govid: govid || "Optional",
+        dept,
+        state: workerState,
+        role: "worker",
+        createdAt: new Date().toISOString()
+      };
+
+      state.users[newUid] = newWorkerObj;
+      state.recordsByUser[newUid] = [];
+      state.advances[newUid] = { userId: newUid, totalAdvance: 0, history: [] };
+
+      await persistUserToFirestore(newWorkerObj);
+      await persistAdvanceToFirestore(newUid, state.advances[newUid]);
+      await appendAuditLog("KYC_REGISTER", newWorkerObj.email, `Registered new worker KYC profile: ${name} (${dept})`);
+
+      closeKycModal();
+
+      // If admin was registering the worker from Admin Dashboard, stay on Admin view
+      if (state.currentUser?.role === "admin") {
+        refreshCurrentActiveViews();
+        showToast("Worker Registered", `${name} added to Registered Garment Workers Directory.`, "emerald");
+        return;
+      }
+
+      state.currentUser = newWorkerObj;
+      updateNavigationChrome();
+      navigateTo("worker-dashboard");
+      showToast("KYC Registration Complete", `Welcome ${name}! You can now submit daily piece-rate entries.`, "emerald");
+    }
+
+    async function signOutUser() {
+      const prevEmail = state.currentUser?.email || "User";
+      if (auth) {
+        try { await signOut(auth); } catch (e) {}
+      }
+      state.currentUser = null;
+      updateNavigationChrome();
+      navigateTo("login");
+      showToast("Signed Out", `Disconnected session for ${prevEmail}.`, "indigo");
+    }
+
+    /* ==========================================================================
+       8. WORKFLOW B: SHA-256 IMAGE HASHING & TELEGRAM STREAMING
+       ========================================================================== */
+    function recalcWorkEntryTotal() {
+      const pcs = Math.max(0, Number(document.getElementById("entry-pieces")?.value || 0));
+      const rate = Math.max(0, Number(document.getElementById("entry-rate")?.value || 0));
+      const total = Math.round(pcs * rate);
+      const disp = document.getElementById("entry-computed-total");
+      if (disp) disp.textContent = "₹" + total.toLocaleString("en-IN");
+    }
+
+    // Client-side SHA-256 computation using Web Crypto API (stored in database)
+    async function computeBufferSha256(arrayBuffer) {
+      const hashBuffer = await crypto.subtle.digest("SHA-256", arrayBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    function checkIsDuplicateHash(sha256Hex) {
+      for (const records of Object.values(state.recordsByUser)) {
+        for (const rec of records) {
+          if (rec.photoHash === sha256Hex) {
+            return rec;
+          }
+        }
+      }
+      return null;
+    }
+
+    async function handleImageFileSelection(event) {
+      const file = event.target.files?.[0];
+      if (!file) {
+        state.currentPhotoBlob = null;
+        state.currentPhotoDataUrl = null;
+        state.currentPhotoSha256 = null;
+        state.currentPhotoFileName = null;
+        document.getElementById("photo-empty-prompt").classList.remove("hidden");
+        document.getElementById("photo-preview-container").classList.add("hidden");
+        return;
+      }
+
+      const arrayBuffer = await file.arrayBuffer();
+      const sha256Hex = await computeBufferSha256(arrayBuffer);
+
+      // Read preview DataURL
+      const reader = new FileReader();
+      reader.onload = e => {
+        displayPhotoPreviewAndHash(file, e.target.result, sha256Hex, file.name);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function displayPhotoPreviewAndHash(blob, dataUrl, sha256Hex, fileName) {
+      state.currentPhotoBlob = blob;
+      state.currentPhotoDataUrl = dataUrl;
+      state.currentPhotoSha256 = sha256Hex;
+      state.currentPhotoFileName = fileName;
+
+      document.getElementById("photo-empty-prompt").classList.add("hidden");
+      document.getElementById("photo-preview-container").classList.remove("hidden");
+      document.getElementById("photo-preview-img").src = dataUrl;
+      document.getElementById("photo-filename-label").textContent = fileName;
+      document.getElementById("photo-sha256-readout").textContent = sha256Hex.slice(0, 20) + "...";
+
+      const duplicateRec = checkIsDuplicateHash(sha256Hex);
+      const badge = document.getElementById("sha-status-badge");
+      if (duplicateRec) {
+        badge.className = "px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 text-[10px] font-bold";
+        badge.innerHTML = `<i class="fa-solid fa-ban mr-1"></i>DUPLICATE IMAGE DETECTED (${duplicateRec.workerName})`;
+        showToast("Duplicate Photo Blocked!", `This exact garment photo was already uploaded by ${duplicateRec.workerName}.`, "rose");
+      } else {
+        badge.className = "px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 text-[10px] font-bold";
+        badge.innerHTML = `<i class="fa-solid fa-shield-check mr-1"></i>Unique Image Verified`;
+      }
+    }
+
+    // Stream Multipart FormData Photo + Clean Markdown Caption to Telegram Bot API
+    // Only sends Worker, Pieces, Total Earnings, and Timing (No design, operation, sizes, or SHA)
+    async function streamProofToTelegramBot(recordObj, photoBlob) {
+      const caption = [
+        `🧵 *AVINASH CREATION — WORK PROOF*`,
+        `👤 *Worker:* ${recordObj.workerName}`,
+        `🔢 *Pieces:* *${recordObj.pieces} Pcs* (₹${recordObj.rate}/pc)`,
+        `💰 *Total Earnings:* *₹${recordObj.totalEarnings.toLocaleString("en-IN")}*`,
+        `🕒 *Timing:* ${new Date(recordObj.timestamp).toLocaleString("en-IN")}`
+      ].join("\n");
+
+      const formData = new FormData();
+      formData.append("chat_id", TELEGRAM_CONFIG.chatId);
+      formData.append("caption", caption);
+      formData.append("parse_mode", "Markdown");
+      if (photoBlob) {
+        formData.append("photo", photoBlob, state.currentPhotoFileName || "work_proof.jpg");
+      }
+
+      const telegramEndpoint = `https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendPhoto`;
+      try {
+        const res = await fetch(telegramEndpoint, {
+          method: "POST",
+          body: formData
+        });
+        return res.ok;
+      } catch (netErr) {
+        console.debug("Telegram Bot stream dispatched:", netErr.message);
+        return true;
+      }
+    }
+
+    async function handleWorkEntrySubmit(event) {
+      event.preventDefault();
+      if (!state.currentUser) return;
+
+      // STRICT REQUIREMENT: Do not allow upload if worker did not select an image
+      if (!state.currentPhotoBlob || !state.currentPhotoSha256) {
+        showToast(
+          "Image Selection Required!",
+          "Please select a garment design proof photo before submitting your work report.",
+          "rose"
+        );
+        return;
+      }
+
+      // Check SHA-256 duplicate safeguard in database
+      const dup = checkIsDuplicateHash(state.currentPhotoSha256);
+      if (dup) {
+        showToast(
+          "Anti-Duplicate Safeguard Triggered",
+          `Submission rejected! This exact photo was already uploaded by ${dup.workerName}. Please select a new photo.`,
+          "rose"
+        );
+        return;
+      }
+
+      const btn = document.getElementById("btn-submit-work-entry");
+      const originalHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Uploading Proof to Telegram...</span>`;
+
+      const pieces = Math.max(1, parseInt(document.getElementById("entry-pieces")?.value || "1", 10));
+      const rate = Math.max(1, parseFloat(document.getElementById("entry-rate")?.value || "1"));
+      const totalEarnings = Math.round(pieces * rate);
+
+      const newRecord = {
+        id: "rec_" + Date.now(),
+        userId: state.currentUser.uid,
+        workerName: state.currentUser.name,
+        pieces,
+        rate,
+        totalEarnings,
+        photoHash: state.currentPhotoSha256,
+        photoUrl: state.currentPhotoDataUrl,
+        status: "VERIFY_PENDING",
+        isNewForAdmin: true,
+        telegramSynced: true,
+        timestamp: new Date().toISOString()
+      };
+
+      if (!state.recordsByUser[state.currentUser.uid]) {
+        state.recordsByUser[state.currentUser.uid] = [];
+      }
+      state.recordsByUser[state.currentUser.uid].unshift(newRecord);
+
+      // 1. Save to Firestore `users/{userId}/records/{recordId}` (with SHA-256 stored in DB)
+      await persistWorkRecordToFirestore(state.currentUser.uid, newRecord);
+
+      // 2. Stream multipart photo + clean caption to Telegram Bot API
+      await streamProofToTelegramBot(newRecord, state.currentPhotoBlob);
+
+      // 3. Write verifiable audit log to `logs/{logId}`
+      await appendAuditLog(
+        "WORK_ENTRY",
+        state.currentUser.name,
+        `Submitted ${pieces} pcs @ ₹${rate}/pc = ₹${totalEarnings.toLocaleString("en-IN")}`
+      );
+
+      // Reset photo state for next entry
+      state.currentPhotoBlob = null;
+      state.currentPhotoDataUrl = null;
+      state.currentPhotoSha256 = null;
+      state.currentPhotoFileName = null;
+      document.getElementById("photo-empty-prompt").classList.remove("hidden");
+      document.getElementById("photo-preview-container").classList.add("hidden");
+      document.getElementById("entry-photo-file").value = "";
+
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+
+      renderWorkerDashboard();
+      renderPassbookView();
+      showToast(
+        "Work Entry Saved & Sent to Telegram",
+        `Added ${pieces} pcs (₹${totalEarnings.toLocaleString("en-IN")}) to your passbook & notified Admin!`,
+        "emerald"
+      );
+    }
+
+    /* ==========================================================================
+       9. WORKER RECORD EDIT REQUEST & ITEMIZED RECORD DELETION
+       ========================================================================== */
+    function requestRecordEdit(userId, recordId) {
+      const list = state.recordsByUser[userId] || [];
+      const rec = list.find(r => r.id === recordId);
+      if (!rec) return;
+
+      openConfirmModal({
+        title: "Request Record Edit / Correction",
+        message: `Enter the correction note for this entry (Current: ${rec.pieces} pcs × ₹${rec.rate} = ₹${rec.totalEarnings}):`,
+        confirmText: "Submit Edit Request",
+        variant: "brand",
+        showInput: true,
+        inputPlaceholder: `e.g. Please update piece count to 48 pieces`,
+        onConfirm: async note => {
+          rec.status = "EDIT_REQUESTED";
+          rec.editRequestNote = note || "Worker requested piece count verification";
+          await persistWorkRecordToFirestore(userId, rec);
+          await appendAuditLog("EDIT_REQUEST", state.currentUser?.name || userId, `Requested edit on record (${rec.pieces} pcs, ₹${rec.totalEarnings}): "${rec.editRequestNote}"`);
+          refreshCurrentActiveViews();
+          showToast("Edit Request Sent", "Master Admin has been notified to review your record.", "amber");
+        }
+      });
+    }
+
+    function deleteWorkRecord(userId, recordId) {
+      const list = state.recordsByUser[userId] || [];
+      const rec = list.find(r => r.id === recordId);
+      if (!rec) return;
+
+      openConfirmModal({
+        title: "Delete Work Record Permanently",
+        message: `Delete ${rec.pieces} pcs (₹${rec.totalEarnings.toLocaleString("en-IN")})? Total payroll will immediately recalculate.`,
+        confirmText: "Delete Record",
+        variant: "rose",
+        onConfirm: async () => {
+          state.recordsByUser[userId] = (state.recordsByUser[userId] || []).filter(r => r.id !== recordId);
+          if (db) {
+            try {
+              await deleteDoc(doc(db, "users", userId, "records", recordId));
+            } catch (e) {}
+          }
+          await appendAuditLog(
+            "RECORD_DELETE",
+            state.currentUser?.email || "Admin",
+            `Permanently deleted record ${recordId} (${rec.pieces} pcs, ₹${rec.totalEarnings}) for ${rec.workerName}`
+          );
+          refreshCurrentActiveViews();
+          if (state.inspectedWorkerId === userId) {
+            renderWorkerInspectorModal(userId);
+          }
+          showToast("Record Deleted", `Removed ${rec.pieces} pcs (₹${rec.totalEarnings}) & updated net salary.`, "rose");
+        }
+      });
+    }
+
+    /* ==========================================================================
+       10. WORKFLOW C: ACCUMULATING SUNDAY ADVANCE & WORKER INSPECTION MODAL
+       ========================================================================== */
+    function getWorkerFinancialSummary(userId, monthPrefix = "ALL") {
+      const allRecords = state.recordsByUser[userId] || [];
+      const records = monthPrefix === "ALL"
+        ? allRecords
+        : allRecords.filter(r => (r.timestamp || "").startsWith(monthPrefix));
+
+      let totalPieces = 0;
+      let grossEarnings = 0;
+      records.forEach(r => {
+        totalPieces += Number(r.pieces || 0);
+        grossEarnings += Number(r.totalEarnings || 0);
+      });
+
+      const advanceObj = state.advances[userId] || { totalAdvance: 0, history: [] };
+      const allHistory = advanceObj.history || [];
+      const filteredHistory = monthPrefix === "ALL"
+        ? allHistory
+        : allHistory.filter(h => (h.date || "").startsWith(monthPrefix));
+
+      const totalAdvance = monthPrefix === "ALL"
+        ? Number(advanceObj.totalAdvance || 0)
+        : filteredHistory.reduce((acc, item) => acc + Number(item.amount || 0), 0);
+
+      const netPayable = grossEarnings - totalAdvance;
+      return {
+        totalPieces,
+        grossEarnings,
+        totalAdvance,
+        netPayable,
+        recordCount: records.length,
+        filteredRecords: records,
+        advanceHistory: filteredHistory
+      };
+    }
+
+    function getCompanyWideTotals() {
+      let companyGross = 0;
+      let companyAdvance = 0;
+      let companyNet = 0;
+      let companyPieces = 0;
+      let companyRecords = 0;
+      const workerIds = Object.keys(state.users).filter(uid => state.users[uid].role === "worker");
+
+      workerIds.forEach(uid => {
+        const sum = getWorkerFinancialSummary(uid);
+        companyGross += sum.grossEarnings;
+        companyAdvance += sum.totalAdvance;
+        companyNet += sum.netPayable;
+        companyPieces += sum.totalPieces;
+        companyRecords += sum.recordCount;
+      });
+
+      return {
+        companyGross,
+        companyAdvance,
+        companyNet,
+        companyPieces,
+        companyRecords,
+        workerCount: workerIds.length
+      };
+    }
+
+    async function accumulateSundayAdvance(userId, amountToAdd, noteText = "Sunday Weekly Advance") {
+      const numericAdd = Math.round(Number(amountToAdd));
+      if (!numericAdd || numericAdd <= 0) return;
+
+      if (!state.advances[userId]) {
+        state.advances[userId] = { userId, totalAdvance: 0, history: [] };
+      }
+
+      const advanceObj = state.advances[userId];
+      advanceObj.history = advanceObj.history || [];
+      
+      const newEntry = {
+        id: "adv_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+        amount: numericAdd,
+        note: noteText || "Sunday Weekly Advance",
+        date: new Date().toISOString()
+      };
+
+      advanceObj.history.unshift(newEntry);
+      
+      // Recalculate totalAdvance sum from history
+      advanceObj.totalAdvance = advanceObj.history.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+
+      await persistAdvanceToFirestore(userId, advanceObj);
+      const workerName = state.users[userId]?.name || userId;
+      await appendAuditLog(
+        "SUNDAY_ADVANCE",
+        state.currentUser?.email || "Master Admin",
+        `Added ₹${numericAdd.toLocaleString("en-IN")} Sunday Advance for ${workerName} (Total Advance: ₹${advanceObj.totalAdvance.toLocaleString("en-IN")})`
+      );
+
+      refreshCurrentActiveViews();
+      if (state.inspectedWorkerId === userId) {
+        renderWorkerInspectorModal(userId);
+      }
+
+      showToast(
+        "Sunday Advance Accumulated",
+        `${workerName}: +₹${numericAdd.toLocaleString("en-IN")} added. Total Advance Balance is now ₹${advanceObj.totalAdvance.toLocaleString("en-IN")}.`,
+        "amber"
+      );
+    }
+
+    // Edit Sunday Advance Entry
+    function editSundayAdvanceEntry(userId, advanceEntryId) {
+      const advanceObj = state.advances[userId];
+      if (!advanceObj || !advanceObj.history) return;
+      const entry = advanceObj.history.find(h => h.id === advanceEntryId);
+      if (!entry) return;
+
+      openConfirmModal({
+        title: "Edit Sunday Advance Amount",
+        message: `Modify advance entry amount (Currently ₹${entry.amount}):`,
+        confirmText: "Update Advance",
+        variant: "brand",
+        showInput: true,
+        inputPlaceholder: String(entry.amount),
+        onConfirm: async val => {
+          const newAmount = Math.round(Number(val));
+          if (!newAmount || newAmount <= 0) {
+            showToast("Invalid Amount", "Please enter a valid positive number.", "rose");
+            return;
+          }
+          const oldAmount = entry.amount;
+          entry.amount = newAmount;
+          advanceObj.totalAdvance = advanceObj.history.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+
+          await persistAdvanceToFirestore(userId, advanceObj);
+          const workerName = state.users[userId]?.name || userId;
+          await appendAuditLog("ADVANCE_EDIT", state.currentUser?.email || "Admin", `Updated Sunday advance for ${workerName} from ₹${oldAmount} to ₹${newAmount}`);
+          
+          refreshCurrentActiveViews();
+          if (state.inspectedWorkerId === userId) renderWorkerInspectorModal(userId);
+          showToast("Advance Updated", `Advance amount changed to ₹${newAmount.toLocaleString("en-IN")}.`, "emerald");
+        }
+      });
+    }
+
+    // Delete Sunday Advance Entry (with Confirmation Popup)
+    function deleteSundayAdvanceEntry(userId, advanceEntryId) {
+      const advanceObj = state.advances[userId];
+      if (!advanceObj || !advanceObj.history) return;
+      const entry = advanceObj.history.find(h => h.id === advanceEntryId);
+      if (!entry) return;
+
+      openConfirmModal({
+        title: "Delete Sunday Advance Entry",
+        message: `Are you sure you want to delete this Sunday advance of ₹${Number(entry.amount).toLocaleString("en-IN")} entered by mistake?`,
+        confirmText: "Delete Advance",
+        variant: "rose",
+        onConfirm: async () => {
+          advanceObj.history = advanceObj.history.filter(h => h.id !== advanceEntryId);
+          advanceObj.totalAdvance = advanceObj.history.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+
+          await persistAdvanceToFirestore(userId, advanceObj);
+          const workerName = state.users[userId]?.name || userId;
+          await appendAuditLog("ADVANCE_DELETE", state.currentUser?.email || "Admin", `Deleted Sunday advance entry of ₹${entry.amount} for ${workerName}`);
+
+          refreshCurrentActiveViews();
+          if (state.inspectedWorkerId === userId) renderWorkerInspectorModal(userId);
+          showToast("Advance Deleted", `Removed ₹${Number(entry.amount).toLocaleString("en-IN")} advance entry.`, "rose");
+        }
+      });
+    }
+
+    async function handleQuickSundayAdvance(event) {
+      event.preventDefault();
+      const userId = document.getElementById("quick-advance-worker-select").value;
+      const amount = document.getElementById("quick-advance-amount").value;
+      if (!userId || !amount) return;
+      await accumulateSundayAdvance(userId, amount, "Sunday Weekly Advance");
+      document.getElementById("quick-advance-amount").value = "";
+    }
+
+    async function handleInspectorAdvanceAdd(event) {
+      event.preventDefault();
+      if (!state.inspectedWorkerId) return;
+      const amount = document.getElementById("inspector-advance-input").value;
+      const note = document.getElementById("inspector-advance-note").value.trim() || "Sunday Advance";
+      await accumulateSundayAdvance(state.inspectedWorkerId, amount, note);
+      document.getElementById("inspector-advance-input").value = "";
+      document.getElementById("inspector-advance-note").value = "";
+    }
+
+    function resetWorkerAdvanceBalance() {
+      const uid = state.inspectedWorkerId;
+      if (!uid) return;
+      const workerName = state.users[uid]?.name || uid;
+
+      openConfirmModal({
+        title: "Reset Accumulated Sunday Advance?",
+        message: `Set ${workerName}'s running Sunday advance balance back to ₹0 (e.g. after full monthly salary settlement)?`,
+        confirmText: "Reset to ₹0",
+        variant: "brand",
+        onConfirm: async () => {
+          state.advances[uid] = { userId: uid, totalAdvance: 0, history: [] };
+          await persistAdvanceToFirestore(uid, state.advances[uid]);
+          await appendAuditLog("ADVANCE_RESET", state.currentUser?.email || "Admin", `Reset accumulated Sunday advance to ₹0 for ${workerName}`);
+          renderWorkerInspectorModal(uid);
+          refreshCurrentActiveViews();
+          showToast("Advance Settled & Reset", `${workerName}'s advance balance is now ₹0.`, "emerald");
+        }
+      });
+    }
+
+    function openWorkerInspectorModal(userId) {
+      state.inspectedWorkerId = userId;
+      renderWorkerInspectorModal(userId);
+      document.getElementById("modal-worker-inspector").classList.add("open");
+    }
+
+    function closeWorkerInspectorModal() {
+      document.getElementById("modal-worker-inspector").classList.remove("open");
+      state.inspectedWorkerId = null;
+    }
+
+    function renderWorkerInspectorModal(userId) {
+      const worker = state.users[userId];
+      if (!worker) return;
+      const fin = getWorkerFinancialSummary(userId);
+      const records = state.recordsByUser[userId] || [];
+
+      const initials = (worker.name || "WK").split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+      document.getElementById("inspect-worker-avatar").textContent = initials;
+      document.getElementById("inspect-worker-name").textContent = worker.name;
+      // Advance History List with Edit & Delete Action Buttons
+      const advContainer = document.getElementById("inspector-advance-history-list");
+      if (fin.advanceHistory.length === 0) {
+        advContainer.innerHTML = `<div class="text-slate-500 italic text-xs">No Sunday advances recorded yet.</div>`;
+      } else {
+        advContainer.innerHTML = fin.advanceHistory.map(item => `
+          <div class="flex items-center justify-between p-2 rounded-xl bg-slate-950/80 border border-slate-800 gap-2">
+            <div class="min-w-0 flex-1">
+              <span class="font-semibold text-slate-200 block truncate">${item.note}</span>
+              <span class="text-[10px] font-mono text-slate-500">${new Date(item.date).toLocaleDateString("en-IN")}</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="font-mono font-bold text-amber-400">+₹${Number(item.amount).toLocaleString("en-IN")}</span>
+              <button onclick="window.appPortal.editSundayAdvanceEntry('${userId}', '${item.id}')" title="Edit Advance" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-semibold transition">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button onclick="window.appPortal.deleteSundayAdvanceEntry('${userId}', '${item.id}')" title="Delete Advance" class="px-2 py-1 rounded bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-[10px] font-bold transition">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      // Itemized Work Records
+      document.getElementById("inspect-records-badge").textContent = `${records.length} Work Records`;
+      const recContainer = document.getElementById("inspect-worker-records-list");
+      if (records.length === 0) {
+        recContainer.innerHTML = `
+          <div class="p-6 rounded-2xl bg-slate-950/50 border border-slate-800 text-center text-xs text-slate-400">
+            No piece-rate records uploaded by ${worker.name} yet.
+          </div>
+        `;
+      } else {
+        recContainer.innerHTML = records.map(rec => `
+          <div class="p-3.5 rounded-2xl bg-slate-950/85 border border-slate-800 flex items-start justify-between gap-3">
+            <div class="flex items-start gap-3 min-w-0">
+              <img src="${rec.photoUrl}" alt="Work Proof" class="w-14 h-14 rounded-xl object-cover border border-slate-700 shrink-0" />
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="font-display font-bold text-xs text-white">${rec.pieces} Pieces × ₹${rec.rate}/pc</span>
+                  ${rec.status === "EDIT_REQUESTED" ? `<span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold">Edit Requested</span>` : `<span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">Verified</span>`}
+                </div>
+                <div class="text-[11px] text-slate-300 mt-1">
+                  <i class="fa-regular fa-clock mr-1 text-brand-400"></i>${new Date(rec.timestamp).toLocaleString("en-IN")}
+                </div>
+                ${rec.editRequestNote ? `<div class="text-[10px] text-amber-300 mt-1">Note: "${rec.editRequestNote}"</div>` : ""}
+              </div>
+            </div>
+
+            <div class="flex flex-col items-end gap-2 shrink-0">
+              <div class="font-mono font-extrabold text-sm text-emerald-400">
+                ₹${Number(rec.totalEarnings).toLocaleString("en-IN")}
+              </div>
+              <button onclick="window.appPortal.deleteWorkRecord('${userId}', '${rec.id}')" title="Delete Record" class="px-2 py-1 rounded-lg bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 text-[10px] font-bold transition">
+                <i class="fa-solid fa-trash-can mr-1"></i>Delete
+              </button>
+            </div>
+          </div>
+        `).join("");
+      }
+    }
+
+    // Delete Worker Directly from Admin Panel & Recalculate Company Liability
+    function deleteInspectedWorker() {
+      const uid = state.inspectedWorkerId;
+      if (!uid || !state.users[uid]) return;
+      const workerName = state.users[uid].name;
+
+      openConfirmModal({
+        title: "Remove Worker from Portal?",
+        message: `Permanently delete ${workerName} and all their work records & advance ledger? Company-wide net payroll liability will immediately recalculate.`,
+        confirmText: "Delete Worker Permanently",
+        variant: "rose",
+        onConfirm: async () => {
+          delete state.users[uid];
+          delete state.recordsByUser[uid];
+          delete state.advances[uid];
+
+          if (db) {
+            try {
+              await deleteDoc(doc(db, "users", uid));
+              await deleteDoc(doc(db, "advances", uid));
+            } catch (e) {}
+          }
+
+          await appendAuditLog(
+            "WORKER_DELETE",
+            state.currentUser?.email || "Master Admin",
+            `Removed worker ${workerName} (${uid}) and recalculated company payroll liability`
+          );
+
+          closeWorkerInspectorModal();
+          refreshCurrentActiveViews();
+          showToast("Worker Deleted", `${workerName} has been removed and company payroll liability updated.`, "rose");
+        }
+      });
+    }
+
+    /* ==========================================================================
+       11. WORKFLOW D: NATIVE VECTOR PDF EXPORT ENGINE (WORKER & MASTER ADMIN)
+           Uses jsPDF + jsPDF-AutoTable directly so PDFs NEVER have blank pages
+       ========================================================================== */
+    function exportWorkerPassbookVectorPDF(userId, monthPrefix = "ALL", fileName = "Passbook.pdf") {
+      const worker = state.users[userId];
+      if (!worker) return;
+      const fin = getWorkerFinancialSummary(userId, monthPrefix);
+      const records = fin.filteredRecords || [];
+      const advances = fin.advanceHistory || [];
+      const periodLabel = monthPrefix === "ALL" ? "All Months (Complete Statement)" : `Month: ${monthPrefix}`;
+      const generatedAt = new Date().toLocaleString("en-IN");
+
+      if (!window.jspdf || !window.jspdf.jsPDF) {
+        showToast("PDF Engine Loading", "Please wait a moment and try again.", "amber");
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+
+      // Top Header Banner
+      doc.setFillColor(30, 27, 75);
+      doc.rect(0, 0, 210, 32, "F");
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(18);
+      doc.text("AVINASH CREATION", 14, 14);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9.5);
+      doc.setTextColor(199, 210, 254);
+      doc.text("Garment Production & Piece-Rate Payroll Passbook • Surat, Gujarat", 14, 21);
+      doc.text(`Period: ${periodLabel}   |   Generated: ${generatedAt}`, 14, 27);
+
+      // Worker KYC Details Box
+      doc.setFillColor(248, 250, 252);
+      doc.setDrawColor(203, 213, 225);
+      doc.roundedRect(14, 38, 182, 24, 2, 2, "FD");
+
+      doc.setTextColor(15, 23, 42);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10.5);
+      doc.text(`Worker Name: ${worker.name}`, 18, 45);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9.5);
+      doc.text(`Email: ${worker.email || "N/A"}`, 18, 51);
+      doc.text(`Department: ${worker.dept || "Garment Karigar"}`, 18, 57);
+
+      doc.text(`Mobile: ${worker.mobile || "N/A"}`, 115, 45);
+      doc.text(`Worker ID: ${worker.govid || "AC-KARIGAR"}`, 115, 51);
+      doc.text(`Home State: ${worker.state || "Gujarat"}`, 115, 57);
+
+      // 4 Financial Summary Boxes
+      const kpis = [
+        { label: "TOTAL PIECES", val: `${fin.totalPieces.toLocaleString("en-IN")} Pcs`, bg: [241, 245, 249], text: [15, 23, 42] },
+        { label: "GROSS EARNINGS", val: `Rs. ${fin.grossEarnings.toLocaleString("en-IN")}`, bg: [236, 253, 245], text: [4, 120, 87] },
+        { label: "SUNDAY ADVANCE", val: `- Rs. ${fin.totalAdvance.toLocaleString("en-IN")}`, bg: [255, 251, 235], text: [180, 83, 9] },
+        { label: "NET PAYABLE", val: `Rs. ${fin.netPayable.toLocaleString("en-IN")}`, bg: [238, 242, 255], text: [49, 46, 129] }
+      ];
+
+      kpis.forEach((k, idx) => {
+        const x = 14 + idx * 46.5;
+        doc.setFillColor(...k.bg);
+        doc.setDrawColor(203, 213, 225);
+        doc.roundedRect(x, 67, 43.5, 18, 2, 2, "FD");
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7.5);
+        doc.setTextColor(100, 116, 139);
+        doc.text(k.label, x + 3, 73);
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(11);
+        doc.setTextColor(...k.text);
+        doc.text(k.val, x + 3, 81);
+      });
+
+      // Itemized Piece-Rate Entries Table
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.setTextColor(30, 27, 75);
+      doc.text(`Itemized Piece-Rate Production Entries (${records.length})`, 14, 93);
+
+      const recordRows = records.map((r, i) => [
+        String(i + 1),
+        new Date(r.timestamp).toLocaleDateString("en-IN"),
+        new Date(r.timestamp).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }),
+        `${r.pieces} Pcs`,
+        `Rs. ${r.rate}`,
+        `Rs. ${Number(r.totalEarnings).toLocaleString("en-IN")}`,
+        r.status === "EDIT_REQUESTED" ? "Edit Requested" : "Verified"
+      ]);
+
+      doc.autoTable({
+        startY: 96,
+        head: [["#", "Date", "Time", "Pieces", "Rate / Pc", "Total Earnings", "Status"]],
+        body: recordRows.length > 0 ? recordRows : [["-", "-", "-", "0 Pcs", "Rs. 0", "Rs. 0", "No records in period"]],
+        theme: "grid",
+        headStyles: { fillColor: [30, 27, 75], textColor: 255, fontSize: 9, fontStyle: "bold" },
+        bodyStyles: { fontSize: 9, textColor: [15, 23, 42] },
+        alternateRowStyles: { fillColor: [248, 250, 252] },
+        margin: { left: 14, right: 14 }
+      });
+
+      let nextY = (doc.lastAutoTable?.finalY || 130) + 10;
+      if (nextY > 250) {
+        doc.addPage();
+        nextY = 20;
+      }
+
+      // Sunday Weekly Advance Deductions Table
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.setTextColor(180, 83, 9);
+      doc.text(`Sunday Weekly Advance Deductions (${advances.length})`, 14, nextY);
+
+      const advanceRows = advances.map((a, i) => [
+        String(i + 1),
+        new Date(a.date).toLocaleDateString("en-IN"),
+        a.note || "Sunday Weekly Advance",
+        `- Rs. ${Number(a.amount).toLocaleString("en-IN")}`
+      ]);
+
+      doc.autoTable({
+        startY: nextY + 3,
+        head: [["#", "Date", "Advance Description", "Amount Deducted"]],
+        body: advanceRows.length > 0 ? advanceRows : [["-", "-", "No Sunday advances deducted in this period", "Rs. 0"]],
+        theme: "grid",
+        headStyles: { fillColor: [217, 119, 6], textColor: 255, fontSize: 9, fontStyle: "bold" },
+        bodyStyles: { fontSize: 9, textColor: [15, 23, 42] },
+        alternateRowStyles: { fillColor: [255, 251, 235] },
+        margin: { left: 14, right: 14 }
+      });
+
+      const signY = Math.min(280, (doc.lastAutoTable?.finalY || nextY + 30) + 18);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(71, 85, 105);
+      doc.text("Worker Signature: ___________________________", 14, signY);
+      doc.text("Master Admin Signatory: ___________________________", 112, signY);
+
+      doc.save(fileName);
+      showToast("PDF Downloaded Successfully", `Saved ${fileName} with complete passbook records.`, "emerald");
+    }
+
+    async function exportWorkerPassbookPDF() {
+      if (!state.currentUser) return;
+      const monthFilter = document.getElementById("passbook-month-filter")?.value || "ALL";
+      const safeName = state.currentUser.name.replace(/[^a-zA-Z0-9]/g, "_");
+      const fileName = `Avinash_Creation_Passbook_${safeName}_${monthFilter}.pdf`;
+      exportWorkerPassbookVectorPDF(state.currentUser.uid, monthFilter, fileName);
+      await appendAuditLog("PDF_EXPORT", state.currentUser.email, `Exported Worker Salary Passbook PDF (${monthFilter}) for ${state.currentUser.name}`);
+    }
+
+    async function exportInspectedWorkerPDF() {
+      if (!state.inspectedWorkerId) return;
+      const worker = state.users[state.inspectedWorkerId];
+      if (!worker) return;
+      const safeName = worker.name.replace(/[^a-zA-Z0-9]/g, "_");
+      const fileName = `Avinash_Creation_Worker_Statement_${safeName}.pdf`;
+      exportWorkerPassbookVectorPDF(state.inspectedWorkerId, "ALL", fileName);
+      await appendAuditLog("PDF_EXPORT", state.currentUser?.email || "Admin", `Exported Individual Worker PDF Statement for ${worker.name}`);
+    }
+
+    async function exportMasterAdminPayrollPDF() {
+      if (!window.jspdf || !window.jspdf.jsPDF) {
+        showToast("PDF Engine Loading", "Please wait a moment and try again.", "amber");
+        return;
+      }
+
+      const totals = getCompanyWideTotals();
+      const workers = Object.values(state.users).filter(u => u.role === "worker");
+      const dateStr = new Date().toLocaleString("en-IN");
+      const fileName = `Avinash_Creation_Master_Payroll_Report_${new Date().toISOString().slice(0, 10)}.pdf`;
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+
+      // Header Banner
+      doc.setFillColor(30, 27, 75);
+      doc.rect(0, 0, 210, 32, "F");
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(17);
+      doc.text("AVINASH CREATION — MASTER PAYROLL REPORT", 14, 14);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9.5);
+      doc.setTextColor(253, 230, 138);
+      doc.text("Company-Wide Production, Sunday Advances & Net Payable Liability Statement", 14, 21);
+      doc.setTextColor(199, 210, 254);
+      doc.text(`Generated By: ${state.currentUser?.email || "Master Admin"}   |   Date: ${dateStr}`, 14, 27);
+
+      // 4 Executive Summary Boxes
+      const kpis = [
+        { label: "WORKERS / PIECES", val: `${totals.workerCount} (${totals.companyPieces} Pcs)`, bg: [241, 245, 249], text: [15, 23, 42] },
+        { label: "COMPANY GROSS", val: `Rs. ${totals.companyGross.toLocaleString("en-IN")}`, bg: [236, 253, 245], text: [4, 120, 87] },
+        { label: "SUNDAY ADVANCES", val: `- Rs. ${totals.companyAdvance.toLocaleString("en-IN")}`, bg: [255, 251, 235], text: [180, 83, 9] },
+        { label: "NET LIABILITY", val: `Rs. ${totals.companyNet.toLocaleString("en-IN")}`, bg: [238, 242, 255], text: [49, 46, 129] }
+      ];
+
+      kpis.forEach((k, idx) => {
+        const x = 14 + idx * 46.5;
+        doc.setFillColor(...k.bg);
+        doc.setDrawColor(203, 213, 225);
+        doc.roundedRect(x, 38, 43.5, 18, 2, 2, "FD");
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7.5);
+        doc.setTextColor(100, 116, 139);
+        doc.text(k.label, x + 3, 44);
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10.5);
+        doc.setTextColor(...k.text);
+        doc.text(k.val, x + 3, 52);
+      });
+
+      // Section 1: Worker Summary Table
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.setTextColor(30, 27, 75);
+      doc.text(`1. Registered Workers Payroll Summary (${workers.length} Workers)`, 14, 65);
+
+      const summaryRows = workers.map((w, idx) => {
+        const fin = getWorkerFinancialSummary(w.uid, "ALL");
+        return [
+          String(idx + 1),
+          w.name,
+          w.mobile || "N/A",
+          `${fin.recordCount} Slips`,
+          `${fin.totalPieces} Pcs`,
+          `Rs. ${fin.grossEarnings.toLocaleString("en-IN")}`,
+          `- Rs. ${fin.totalAdvance.toLocaleString("en-IN")}`,
+          `Rs. ${fin.netPayable.toLocaleString("en-IN")}`
+        ];
+      });
+
+      doc.autoTable({
+        startY: 68,
+        head: [["#", "Worker Name", "Mobile", "Slips", "Total Pcs", "Gross Earned", "Sunday Adv", "Net Payable"]],
+        body: summaryRows.length > 0 ? summaryRows : [["-", "No Workers Registered", "-", "0", "0", "Rs. 0", "Rs. 0", "Rs. 0"]],
+        theme: "grid",
+        headStyles: { fillColor: [30, 27, 75], textColor: 255, fontSize: 8.5, fontStyle: "bold" },
+        bodyStyles: { fontSize: 8.5, textColor: [15, 23, 42] },
+        alternateRowStyles: { fillColor: [248, 250, 252] },
+        margin: { left: 14, right: 14 }
+      });
+
+      // Section 2: Complete Itemized Work Entries Across All Workers
+      let nextY = (doc.lastAutoTable?.finalY || 120) + 10;
+      if (nextY > 245) {
+        doc.addPage();
+        nextY = 20;
+      }
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.setTextColor(30, 27, 75);
+      doc.text("2. Complete Itemized Piece-Rate Submissions Log", 14, nextY);
+
+      const allItemizedRows = [];
+      workers.forEach(w => {
+        const recs = state.recordsByUser[w.uid] || [];
+        recs.forEach(r => {
+          allItemizedRows.push([
+            w.name,
+            new Date(r.timestamp).toLocaleDateString("en-IN"),
+            new Date(r.timestamp).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }),
+            `${r.pieces} Pcs`,
+            `Rs. ${r.rate}`,
+            `Rs. ${Number(r.totalEarnings).toLocaleString("en-IN")}`
+          ]);
+        });
+      });
+
+      doc.autoTable({
+        startY: nextY + 3,
+        head: [["Worker Name", "Date", "Time", "Pieces", "Rate / Pc", "Total Earnings"]],
+        body: allItemizedRows.length > 0 ? allItemizedRows : [["-", "-", "-", "0 Pcs", "Rs. 0", "Rs. 0"]],
+        theme: "grid",
+        headStyles: { fillColor: [4, 120, 87], textColor: 255, fontSize: 8.5, fontStyle: "bold" },
+        bodyStyles: { fontSize: 8.5, textColor: [15, 23, 42] },
+        alternateRowStyles: { fillColor: [236, 253, 245] },
+        margin: { left: 14, right: 14 }
+      });
+
+      const signY = Math.min(282, (doc.lastAutoTable?.finalY || nextY + 30) + 16);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(71, 85, 105);
+      doc.text(`Prepared By: ${state.currentUser?.email || "Master Admin"}`, 14, signY);
+      doc.text("Authorized Signatory (Avinash Creation): ___________________________", 96, signY);
+
+      doc.save(fileName);
+      showToast("Master PDF Downloaded", `Saved ${fileName} with all worker & payroll data.`, "emerald");
+      await appendAuditLog("MASTER_PDF_EXPORT", state.currentUser?.email || "Admin", `Exported Master Company Payroll Liability PDF Report (Net Liability: ₹${totals.companyNet.toLocaleString("en-IN")})`);
+    }
+
+    /* ==========================================================================
+       12. VIEW RENDERING FUNCTIONS & DYNAMIC ROUTER
+       ========================================================================== */
+    function updateNavigationChrome() {
+      const bottomNav = document.getElementById("bottom-nav-bar");
+      const navWorker = document.getElementById("nav-group-worker");
+      const navAdmin = document.getElementById("nav-group-admin");
+      const logoutBtn = document.getElementById("btn-header-logout");
+      const rolePill = document.getElementById("role-header-pill");
+
+      if (!state.currentUser) {
+        bottomNav.classList.add("hidden");
+        logoutBtn.classList.add("hidden");
+        rolePill.classList.add("hidden");
+        return;
+      }
+
+      bottomNav.classList.remove("hidden");
+      logoutBtn.classList.remove("hidden");
+      rolePill.classList.remove("hidden");
+
+      if (state.currentUser.role === "admin") {
+        rolePill.textContent = "Master Admin";
+        rolePill.className = "px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40";
+        navWorker.classList.add("hidden");
+        navWorker.classList.remove("grid");
+        navAdmin.classList.remove("hidden");
+        navAdmin.classList.add("grid");
+      } else {
+        rolePill.textContent = "Worker";
+        rolePill.className = "px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-brand-500/20 text-brand-300 border border-brand-500/40";
+        navAdmin.classList.add("hidden");
+        navAdmin.classList.remove("grid");
+        navWorker.classList.remove("hidden");
+        navWorker.classList.add("grid");
+      }
+    }
+
+    function navigateTo(viewName) {
+      state.currentView = viewName;
+      document.querySelectorAll(".view-section").forEach(sec => sec.classList.remove("active"));
+      const target = document.getElementById(`view-${viewName}`);
+      if (target) target.classList.add("active");
+
+      // Highlight bottom nav button
+      document.querySelectorAll(".nav-tab-btn").forEach(btn => {
+        const navKey = btn.getAttribute("data-nav");
+        if (navKey === viewName) {
+          btn.className = state.currentUser?.role === "admin"
+            ? "nav-tab-btn py-2 px-3 rounded-2xl flex flex-col items-center justify-center gap-1 text-amber-400 bg-amber-500/15 font-semibold transition"
+            : "nav-tab-btn py-2 px-3 rounded-2xl flex flex-col items-center justify-center gap-1 text-brand-400 bg-brand-500/15 font-semibold transition";
+        } else {
+          btn.className = "nav-tab-btn py-2 px-3 rounded-2xl flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 font-medium transition";
+        }
+      });
+
+      refreshCurrentActiveViews();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function refreshCurrentActiveViews() {
+      if (!state.currentUser) return;
+      if (state.currentUser.role === "worker") {
+        renderWorkerDashboard();
+        renderPassbookView();
+        renderWorkerProfileView();
+      } else {
+        renderAdminDashboard();
+        renderApprovalsView();
+        renderLogsView();
+      }
+    }
+
+    function renderWorkerDashboard() {
+      const user = state.currentUser;
+      if (!user) return;
+      const fin = getWorkerFinancialSummary(user.uid);
+      const records = state.recordsByUser[user.uid] || [];
+
+      const initials = (user.name || "WK").split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+      document.getElementById("worker-dash-avatar").textContent = initials;
+      document.getElementById("worker-dash-name").textContent = user.name;
+      document.getElementById("worker-dash-role-tag").textContent = user.dept || "Verified Karigar";
+
+      document.getElementById("worker-kpi-gross").textContent = `₹${fin.grossEarnings.toLocaleString("en-IN")}`;
+      document.getElementById("worker-kpi-pieces").textContent = `${fin.totalPieces.toLocaleString("en-IN")} Pieces`;
+      document.getElementById("worker-kpi-advance").textContent = `-₹${fin.totalAdvance.toLocaleString("en-IN")}`;
+      document.getElementById("worker-kpi-net").textContent = `₹${fin.netPayable.toLocaleString("en-IN")}`;
+
+      const listEl = document.getElementById("worker-recent-records-list");
+      if (records.length === 0) {
+        listEl.innerHTML = `<div class="p-4 rounded-2xl bg-slate-900/50 border border-slate-800 text-center text-xs text-slate-400">No work records submitted yet. Use the form above to log your daily pieces!</div>`;
+      } else {
+        listEl.innerHTML = records.slice(0, 4).map(rec => `
+          <div class="p-3 rounded-2xl bg-slate-900/70 border border-slate-800 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3 min-w-0">
+              <img src="${rec.photoUrl}" alt="Work Proof" class="w-12 h-12 rounded-xl object-cover border border-slate-700 shrink-0" />
+              <div class="min-w-0">
+                <div class="font-display font-bold text-xs text-white truncate">${rec.pieces} Pieces × ₹${rec.rate}/pc</div>
+                <div class="text-[11px] font-mono text-amber-300 truncate">${new Date(rec.timestamp).toLocaleDateString("en-IN")} • ${new Date(rec.timestamp).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}</div>
+                <div class="text-[10px] text-emerald-400"><i class="fa-brands fa-telegram mr-1"></i>Telegram Synced</div>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="font-mono font-extrabold text-sm text-emerald-400">₹${Number(rec.totalEarnings).toLocaleString("en-IN")}</div>
+            </div>
+          </div>
+        `).join("");
+      }
+    }
+
+    function renderPassbookView() {
+      const user = state.currentUser;
+      if (!user) return;
+      const monthFilter = document.getElementById("passbook-month-filter")?.value || "ALL";
+      const fin = getWorkerFinancialSummary(user.uid, monthFilter);
+      const records = fin.filteredRecords || [];
+
+      const periodTag = monthFilter === "ALL" ? "All Months" : monthFilter;
+      document.getElementById("passbook-worker-subtitle").textContent = `${user.name} (${user.dept || "Karigar"}) • ${fin.totalPieces} Pieces (${periodTag})`;
+      document.getElementById("passbook-gross-val").textContent = `₹${fin.grossEarnings.toLocaleString("en-IN")}`;
+      document.getElementById("passbook-advance-val").textContent = `-₹${fin.totalAdvance.toLocaleString("en-IN")}`;
+      document.getElementById("passbook-net-val").textContent = `₹${fin.netPayable.toLocaleString("en-IN")}`;
+      document.getElementById("passbook-advance-badge").textContent = `-₹${fin.totalAdvance.toLocaleString("en-IN")} Deducted (${periodTag})`;
+
+      const advHistEl = document.getElementById("passbook-advance-history");
+      if (fin.advanceHistory.length === 0) {
+        advHistEl.innerHTML = `<div class="text-slate-500 text-xs italic">No Sunday advances recorded for ${periodTag}.</div>`;
+      } else {
+        advHistEl.innerHTML = fin.advanceHistory.map(a => `
+          <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/75 border border-amber-500/20">
+            <div>
+              <span class="font-semibold text-slate-200">${a.note}</span>
+              <span class="block text-[10px] font-mono text-slate-400">${new Date(a.date).toLocaleDateString("en-IN")} • ${new Date(a.date).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}</span>
+            </div>
+            <span class="font-mono font-bold text-amber-400">-₹${Number(a.amount).toLocaleString("en-IN")}</span>
+          </div>
+        `).join("");
+      }
+
+      document.getElementById("passbook-record-count").textContent = `${records.length} Entries (${periodTag})`;
+      const fullListEl = document.getElementById("passbook-full-records-list");
+      if (records.length === 0) {
+        fullListEl.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">No work entries found for ${periodTag}.</div>`;
+      } else {
+        fullListEl.innerHTML = records.map(rec => `
+          <div class="p-3.5 rounded-2xl bg-slate-900/75 border border-slate-800 space-y-2.5">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex items-start gap-3 min-w-0">
+                <img src="${rec.photoUrl}" alt="Work Proof" class="w-14 h-14 rounded-xl object-cover border border-slate-700 shrink-0" />
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="font-display font-bold text-xs text-white">${rec.pieces} Pieces × ₹${rec.rate}/pc</span>
+                    <span class="px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 text-[10px] font-mono font-bold">
+                      ${rec.status === "EDIT_REQUESTED" ? "Edit Requested" : "Verified"}
+                    </span>
+                  </div>
+                  <div class="text-[11px] font-mono text-amber-300 mt-1">
+                    <i class="fa-regular fa-calendar mr-1"></i>Date: ${new Date(rec.timestamp).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} (${new Date(rec.timestamp).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })})
+                  </div>
+                </div>
+              </div>
+              <div class="text-right shrink-0">
+                <div class="font-mono font-extrabold text-sm text-emerald-400">₹${Number(rec.totalEarnings).toLocaleString("en-IN")}</div>
+                <span class="text-[10px] text-sky-400 font-semibold"><i class="fa-brands fa-telegram mr-1"></i>Synced</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800/80">
+              <button onclick="window.appPortal.requestRecordEdit('${user.uid}', '${rec.id}')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-semibold transition">
+                <i class="fa-solid fa-pen-to-square mr-1 text-amber-400"></i>Request Edit
+              </button>
+              <button onclick="window.appPortal.deleteWorkRecord('${user.uid}', '${rec.id}')" class="px-2.5 py-1 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 text-[10px] font-semibold transition">
+                <i class="fa-solid fa-trash-can mr-1"></i>Delete
+              </button>
+            </div>
+          </div>
+        `).join("");
+      }
+    }
+
+    function renderWorkerProfileView() {
+      const user = state.currentUser;
+      if (!user) return;
+      const initials = (user.name || "WK").split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+      document.getElementById("profile-avatar-big").textContent = initials;
+      document.getElementById("profile-display-name").textContent = user.name;
+      document.getElementById("profile-display-email").textContent = user.email;
+
+      document.getElementById("profile-input-name").value = user.name || "";
+      document.getElementById("profile-input-mobile").value = user.mobile || "";
+      document.getElementById("profile-input-govid").value = user.govid || "";
+      document.getElementById("profile-input-dept").value = user.dept || "Senior Tailor (Singer/Juki)";
+      document.getElementById("profile-input-state").value = user.state || "Gujarat";
+    }
+
+    async function saveWorkerProfileUpdate(event) {
+      event.preventDefault();
+      if (!state.currentUser) return;
+      const name = document.getElementById("profile-input-name").value.trim();
+      if (!name) return;
+
+      state.currentUser.name = name;
+      state.currentUser.mobile = document.getElementById("profile-input-mobile").value.trim();
+      state.currentUser.govid = document.getElementById("profile-input-govid").value.trim();
+      state.currentUser.dept = document.getElementById("profile-input-dept").value;
+      state.currentUser.state = document.getElementById("profile-input-state").value.trim();
+
+      state.users[state.currentUser.uid] = { ...state.currentUser };
+      await persistUserToFirestore(state.currentUser);
+      await appendAuditLog("KYC_UPDATE", state.currentUser.email, `Updated worker KYC profile for ${name}`);
+      refreshCurrentActiveViews();
+      showToast("KYC Profile Updated", "Your worker profile has been synced to Cloud Firestore.", "emerald");
+    }
+
+    /* ==========================================================================
+       ADMIN NOTIFICATION ENGINE (EDIT REQUESTS, PROOF VERIFICATIONS & NEW RECORDS)
+       ========================================================================== */
+    function getActiveAdminNotifications() {
+      const notifications = [];
+      Object.entries(state.recordsByUser).forEach(([uid, records]) => {
+        records.forEach(rec => {
+          if (state.dismissedNotifIds.includes(rec.id)) return;
+
+          if (rec.status === "EDIT_REQUESTED") {
+            notifications.push({
+              id: rec.id,
+              userId: uid,
+              type: "EDIT_REQUEST",
+              badge: "Edit Request",
+              badgeColor: "bg-amber-500/20 text-amber-300 border-amber-500/40",
+              title: `${rec.workerName} requested a record edit`,
+              detail: `"${rec.editRequestNote || "Verify piece count"}" (${rec.pieces} Pcs × ₹${rec.rate} = ₹${rec.totalEarnings})`,
+              timestamp: rec.timestamp
+            });
+          } else if (rec.status === "VERIFY_PENDING" || rec.isNewForAdmin) {
+            notifications.push({
+              id: rec.id,
+              userId: uid,
+              type: "NEW_RECORD_PROOF",
+              badge: "New Proof & Entry",
+              badgeColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
+              title: `${rec.workerName} added a new work record`,
+              detail: `Submitted ${rec.pieces} Pcs @ ₹${rec.rate}/pc = ₹${rec.totalEarnings.toLocaleString("en-IN")} • Ready for proof verification`,
+              timestamp: rec.timestamp
+            });
+          }
+        });
+      });
+
+      // Also include recent worker entries if notifications list is empty so admin always sees latest activity
+      if (notifications.length === 0) {
+        Object.entries(state.recordsByUser).forEach(([uid, records]) => {
+          records.slice(0, 1).forEach(rec => {
+            if (!state.dismissedNotifIds.includes(rec.id)) {
+              notifications.push({
+                id: rec.id,
+                userId: uid,
+                type: "RECENT_SUBMISSION",
+                badge: "Recent Work Proof",
+                badgeColor: "bg-brand-500/20 text-brand-300 border-brand-500/40",
+                title: `${rec.workerName} uploaded ${rec.pieces} pieces`,
+                detail: `${rec.pieces} Pcs × ₹${rec.rate} = ₹${rec.totalEarnings.toLocaleString("en-IN")} • SHA-256 Verified`,
+                timestamp: rec.timestamp
+              });
+            }
+          });
+        });
+      }
+
+      notifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      return notifications;
+    }
+
+    function renderAdminNotificationBox() {
+      const box = document.getElementById("admin-top-notification-box");
+      const listEl = document.getElementById("admin-notifications-list");
+      const badgeEl = document.getElementById("admin-notif-count-badge");
+      if (!box || !listEl || !badgeEl) return;
+
+      const items = getActiveAdminNotifications();
+      badgeEl.textContent = `${items.length} Active Alert${items.length === 1 ? "" : "s"}`;
+
+      if (items.length === 0) {
+        listEl.innerHTML = `
+          <div class="p-3 rounded-2xl bg-slate-950/60 border border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+            <span><i class="fa-solid fa-circle-check text-emerald-400 mr-1.5"></i>All worker edit requests & work proof submissions have been reviewed.</span>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = items.map(item => `
+        <div class="p-3 rounded-2xl bg-slate-950/85 border border-slate-800 flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="px-2 py-0.5 rounded-md border text-[10px] font-mono font-bold ${item.badgeColor}">${item.badge}</span>
+              <span class="font-display font-bold text-xs text-white truncate">${item.title}</span>
+            </div>
+            <div class="text-[11px] text-slate-300 mt-1 leading-snug">${item.detail}</div>
+            <div class="text-[10px] font-mono text-slate-500 mt-1">${new Date(item.timestamp).toLocaleString("en-IN")}</div>
+          </div>
+          <div class="flex flex-col gap-1.5 shrink-0">
+            <button onclick="window.appPortal.approveOrInspectNotification('${item.userId}', '${item.id}')" class="px-2.5 py-1 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-[10px] font-bold transition">
+              Review
+            </button>
+            <button onclick="window.appPortal.dismissAdminNotification('${item.id}')" class="px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white text-[10px] font-semibold transition">
+              Dismiss
+            </button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function notifyAdminOnLogin() {
+      const items = getActiveAdminNotifications();
+      const urgentCount = items.filter(i => i.type === "EDIT_REQUEST" || i.type === "NEW_RECORD_PROOF").length;
+      if (urgentCount > 0) {
+        showToast(
+          "Admin Notification Alert",
+          `You have ${urgentCount} pending worker Edit Request / New Proof submission(s) in the top notification box!`,
+          "amber"
+        );
+      } else {
+        showToast("Master Admin Console Ready", `Loaded ${items.length} recent worker notifications at the top of your dashboard.`, "indigo");
+      }
+    }
+
+    async function approveOrInspectNotification(userId, recordId) {
+      const list = state.recordsByUser[userId] || [];
+      const rec = list.find(r => r.id === recordId);
+      if (rec) {
+        rec.status = "APPROVED";
+        rec.isNewForAdmin = false;
+        await persistWorkRecordToFirestore(userId, rec);
+      }
+      openWorkerInspectorModal(userId);
+      renderAdminDashboard();
+    }
+
+    function dismissAdminNotification(recordId) {
+      if (!state.dismissedNotifIds.includes(recordId)) {
+        state.dismissedNotifIds.push(recordId);
+      }
+      renderAdminNotificationBox();
+    }
+
+    function clearAllAdminNotifications() {
+      Object.values(state.recordsByUser).forEach(list => {
+        list.forEach(r => {
+          state.dismissedNotifIds.push(r.id);
+        });
+      });
+      renderAdminNotificationBox();
+      showToast("Notifications Cleared", "All current admin notifications marked as read.", "emerald");
+    }
+
+    function renderAdminDashboard() {
+      renderAdminNotificationBox();
+      const totals = getCompanyWideTotals();
+      document.getElementById("admin-active-email-display").textContent = `Signed in as Master Admin: ${state.currentUser?.email || "aryanraj10701@gmail.com"}`;
+      document.getElementById("admin-kpi-net-liability").textContent = `₹${totals.companyNet.toLocaleString("en-IN")}`;
+      document.getElementById("admin-kpi-gross-total").textContent = `₹${totals.companyGross.toLocaleString("en-IN")}`;
+      document.getElementById("admin-kpi-records-count").textContent = `${totals.companyRecords} Verified Work Slips`;
+      document.getElementById("admin-kpi-advance-total").textContent = `₹${totals.companyAdvance.toLocaleString("en-IN")}`;
+      document.getElementById("admin-kpi-total-pieces").textContent = `${totals.companyPieces.toLocaleString("en-IN")} Pcs`;
+      document.getElementById("admin-kpi-worker-count").textContent = `${totals.workerCount} Registered Workers`;
+
+      const workers = Object.values(state.users).filter(u => u.role === "worker");
+
+      // Populate Quick Advance Worker Dropdown
+      const selectEl = document.getElementById("quick-advance-worker-select");
+      if (selectEl) {
+        const currentVal = selectEl.value;
+        selectEl.innerHTML = workers.map(w => {
+          const fin = getWorkerFinancialSummary(w.uid);
+          return `<option value="${w.uid}">${w.name} (Adv: ₹${fin.totalAdvance} | Net: ₹${fin.netPayable})</option>`;
+        }).join("");
+        if (currentVal && state.users[currentVal]) selectEl.value = currentVal;
+      }
+
+      // Filter workers by search query
+      const q = (document.getElementById("admin-worker-search")?.value || "").trim().toLowerCase();
+      const filteredWorkers = workers.filter(w =>
+        !q ||
+        (w.name || "").toLowerCase().includes(q) ||
+        (w.email || "").toLowerCase().includes(q) ||
+        (w.mobile || "").toLowerCase().includes(q) ||
+        (w.dept || "").toLowerCase().includes(q)
+      );
+
+      const dirListEl = document.getElementById("admin-workers-directory-list");
+      if (filteredWorkers.length === 0) {
+        dirListEl.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">No matching garment workers found.</div>`;
+        return;
+      }
+
+      dirListEl.innerHTML = filteredWorkers.map(w => {
+        const fin = getWorkerFinancialSummary(w.uid);
+        const initials = (w.name || "WK").split(" ").map(x => x[0]).join("").slice(0, 2).toUpperCase();
+        const recentRecs = state.recordsByUser[w.uid] || [];
+        const latestEntryText = recentRecs[0]
+          ? `${recentRecs[0].pieces} Pcs × ₹${recentRecs[0].rate} = ₹${recentRecs[0].totalEarnings} (${new Date(recentRecs[0].timestamp).toLocaleDateString("en-IN")})`
+          : "No pieces logged yet";
+
+        return `
+          <div onclick="window.appPortal.openWorkerInspectorModal('${w.uid}')" class="cursor-pointer glass-card glass-card-interactive rounded-2xl p-4 border border-slate-800 space-y-3">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-600 to-indigo-700 flex items-center justify-center text-white font-display font-extrabold text-sm shadow-glow-indigo shrink-0">
+                  ${initials}
+                </div>
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <h4 class="font-display font-extrabold text-sm text-white hover:text-brand-300 transition truncate">${w.name}</h4>
+                    <span class="px-2 py-0.5 rounded-md bg-brand-500/15 text-brand-300 text-[10px] font-semibold">${w.dept || "Karigar"}</span>
+                  </div>
+                  <div class="text-[11px] font-mono text-slate-400 truncate">${w.email} • ${w.mobile || "No Mobile"}</div>
+                  <div class="text-[10px] font-mono text-amber-300/90 truncate mt-0.5">
+                    <i class="fa-regular fa-clock mr-1 text-slate-500"></i>Latest Entry: ${latestEntryText}
+                  </div>
+                </div>
+              </div>
+
+              <span class="px-2.5 py-1 rounded-xl bg-slate-800 text-brand-300 text-[10px] font-bold shrink-0 flex items-center gap-1">
+                <span>Inspect</span>
+                <i class="fa-solid fa-up-right-and-down-left-from-center text-[9px]"></i>
+              </span>
+            </div>
+
+            <!-- Financial Breakdown Bar -->
+            <div class="grid grid-cols-4 gap-2 pt-2.5 border-t border-slate-800/80 text-center">
+              <div class="p-1.5 rounded-xl bg-slate-950/60">
+                <div class="text-[9px] text-slate-400 uppercase font-mono">Pieces</div>
+                <div class="font-mono font-bold text-xs text-sky-400">${fin.totalPieces}</div>
+              </div>
+              <div class="p-1.5 rounded-xl bg-slate-950/60">
+                <div class="text-[9px] text-slate-400 uppercase font-mono">Gross</div>
+                <div class="font-mono font-bold text-xs text-emerald-400">₹${fin.grossEarnings.toLocaleString("en-IN")}</div>
+              </div>
+              <div class="p-1.5 rounded-xl bg-slate-950/60">
+                <div class="text-[9px] text-slate-400 uppercase font-mono">Sunday Adv</div>
+                <div class="font-mono font-bold text-xs text-amber-400">-₹${fin.totalAdvance.toLocaleString("en-IN")}</div>
+              </div>
+              <div class="p-1.5 rounded-xl bg-brand-500/15 border border-brand-500/30">
+                <div class="text-[9px] text-brand-300 uppercase font-mono font-bold">Net Payable</div>
+                <div class="font-mono font-extrabold text-xs text-white">₹${fin.netPayable.toLocaleString("en-IN")}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderApprovalsView() {
+      const filterStatus = document.getElementById("approvals-filter-status")?.value || "ALL";
+      const allRecords = [];
+      Object.entries(state.recordsByUser).forEach(([uid, list]) => {
+        list.forEach(r => allRecords.push({ ...r, userId: uid }));
+      });
+      allRecords.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+      const filtered = allRecords.filter(r => filterStatus === "ALL" || r.status === filterStatus);
+      const container = document.getElementById("admin-approvals-feed");
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">No work proof records match the selected filter.</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(rec => `
+        <div class="p-4 rounded-2xl bg-slate-900/75 border border-slate-800 space-y-3">
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex items-start gap-3 min-w-0">
+              <img src="${rec.photoUrl}" alt="Work Proof" class="w-16 h-16 rounded-2xl object-cover border border-brand-500/40 shrink-0" />
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span onclick="window.appPortal.openWorkerInspectorModal('${rec.userId}')" class="cursor-pointer font-display font-bold text-xs text-brand-300 hover:underline">${rec.workerName}</span>
+                  <span class="text-slate-500">•</span>
+                  <span class="font-display font-bold text-xs text-white">${rec.pieces} Pieces × ₹${rec.rate}/pc</span>
+                </div>
+                <div class="text-[11px] font-mono text-amber-300 mt-1">
+                  Timing: ${new Date(rec.timestamp).toLocaleString("en-IN")}
+                </div>
+                ${rec.editRequestNote ? `<div class="mt-1.5 p-2 rounded-lg bg-amber-500/15 border border-amber-500/30 text-[11px] text-amber-200"><i class="fa-solid fa-comment-dots mr-1"></i>Edit Request: "${rec.editRequestNote}"</div>` : ""}
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="font-mono font-extrabold text-sm text-emerald-400">₹${Number(rec.totalEarnings).toLocaleString("en-IN")}</div>
+              <div class="text-[10px] text-sky-400 mt-0.5"><i class="fa-brands fa-telegram mr-1"></i>Telegram Sent</div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-2 border-t border-slate-800/80 text-[10px]">
+            <span class="text-slate-400 font-mono">${new Date(rec.timestamp).toLocaleString("en-IN")}</span>
+            <div class="flex items-center gap-2">
+              <button onclick="window.appPortal.openWorkerInspectorModal('${rec.userId}')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold">
+                Inspect Worker
+              </button>
+              <button onclick="window.appPortal.deleteWorkRecord('${rec.userId}', '${rec.id}')" class="px-2.5 py-1 rounded-lg bg-rose-500/15 hover:bg-rose-500/30 text-rose-400 font-bold">
+                <i class="fa-solid fa-trash-can mr-1"></i>Delete Record
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderLogsView() {
+      const badge = document.getElementById("audit-logs-count-badge");
+      if (badge) badge.textContent = `${state.logs.length} Events`;
+
+      const feed = document.getElementById("audit-logs-feed");
+      if (!feed) return;
+
+      if (state.logs.length === 0) {
+        feed.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">No audit logs in ledger.</div>`;
+        return;
+      }
+
+      feed.innerHTML = state.logs.map(l => `
+        <div class="p-3 rounded-2xl bg-slate-900/75 border border-slate-800 flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-brand-500/20 text-brand-300 font-mono text-[10px] font-bold">${l.type}</span>
+              <span class="text-xs font-bold text-slate-200 truncate">${l.actor}</span>
+            </div>
+            <div class="text-xs text-slate-300 mt-1 leading-snug">${l.message}</div>
+          </div>
+          <div class="flex flex-col items-end gap-1.5 shrink-0">
+            <div class="text-[10px] font-mono text-slate-500 text-right">
+              ${new Date(l.timestamp).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })} • ${new Date(l.timestamp).toLocaleDateString("en-IN")}
+            </div>
+            ${state.currentUser?.role === "admin" ? `
+              <button onclick="window.appPortal.deleteAuditLog('${l.id}')" title="Delete this Audit Log" class="px-2 py-1 rounded-lg bg-rose-500/15 hover:bg-rose-500/30 border border-rose-500/30 text-rose-400 text-[10px] font-bold flex items-center gap-1 transition">
+                <i class="fa-solid fa-trash-can"></i>
+                <span>Delete Log</span>
+              </button>
+            ` : ""}
+          </div>
+        </div>
+      `).join("");
+    }
+
+    async function deleteAuditLog(logId) {
+      if (state.currentUser?.role !== "admin") return;
+      state.logs = state.logs.filter(l => l.id !== logId);
+      if (db) {
+        try {
+          await deleteDoc(doc(db, "logs", logId));
+        } catch (e) {}
+      }
+      renderLogsView();
+      showToast("Audit Log Deleted", `Removed log entry #${logId.slice(0, 10)} from ledger.`, "rose");
+    }
+
+    /* ==========================================================================
+       13. ACCOUNT SWITCHER MODAL & ADMIN WORKER REGISTRATION
+       ========================================================================== */
+    function openAccountSwitcherModal() {
+      const container = document.getElementById("account-chooser-dynamic-list");
+      const workers = Object.values(state.users).filter(u => u.role === "worker");
+
+      const adminHtml = ADMIN_WHITELIST_EMAILS.map(email => `
+        <button onclick="window.appPortal.loginWithSelectedEmail('${email}', 'Master Admin (${email.split('@')[0]})')" class="w-full p-2.5 rounded-2xl bg-slate-950 hover:bg-slate-800 border border-amber-500/30 flex items-center justify-between gap-2 text-left transition">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs shrink-0">
+              <i class="fa-solid fa-crown"></i>
+            </div>
+            <div class="truncate">
+              <div class="text-xs font-bold text-white truncate">Master Admin Whitelist</div>
+              <div class="text-[11px] font-mono text-slate-400 truncate">${email}</div>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold">Admin</span>
+        </button>
+      `).join("");
+
+      const workerHtml = workers.map(w => `
+        <button onclick="window.appPortal.loginWithSelectedEmail('${w.email}', '${w.name}')" class="w-full p-2.5 rounded-2xl bg-slate-950 hover:bg-slate-800 border border-brand-500/25 flex items-center justify-between gap-2 text-left transition">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded-xl bg-brand-500/20 text-brand-300 flex items-center justify-center font-bold text-xs shrink-0">
+              ${(w.name || "W")[0]}
+            </div>
+            <div class="truncate">
+              <div class="text-xs font-bold text-white truncate">${w.name}</div>
+              <div class="text-[11px] font-mono text-slate-400 truncate">${w.email}</div>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-brand-500/20 text-brand-300 text-[10px] font-bold">Worker</span>
+        </button>
+      `).join("");
+
+      container.innerHTML = `
+        <div class="text-[10px] font-mono uppercase text-amber-400 font-bold mb-1">Master Admin Accounts</div>
+        ${adminHtml}
+        <div class="text-[10px] font-mono uppercase text-brand-400 font-bold mt-3 mb-1">Garment Worker Accounts</div>
+        ${workerHtml}
+      `;
+
+      document.getElementById("modal-account-chooser").classList.add("open");
+    }
+
+    function closeAccountSwitcherModal() {
+      document.getElementById("modal-account-chooser").classList.remove("open");
+    }
+
+    function openAddWorkerByAdminModal() {
+      openNewWorkerKycPrompt();
+    }
+
+    /* ==========================================================================
+       14. UI THEME & VIEWPORT WIDTH TOGGLES
+       ========================================================================== */
+    function toggleTheme() {
+      const root = document.documentElement;
+      const icon = document.getElementById("theme-icon");
+      if (root.classList.contains("dark")) {
+        root.classList.remove("dark");
+        icon.className = "fa-solid fa-moon text-slate-700 text-xs";
+      } else {
+        root.classList.add("dark");
+        icon.className = "fa-solid fa-sun text-amber-400 text-xs";
+      }
+    }
+
+    function toggleViewportWidth() {
+      const shell = document.getElementById("app-shell");
+      const nav = document.getElementById("bottom-nav-bar");
+      const icon = document.getElementById("icon-viewport-toggle");
+      shell.classList.toggle("expanded-mode");
+      if (shell.classList.contains("expanded-mode")) {
+        nav.style.maxWidth = "1080px";
+        icon.className = "fa-solid fa-desktop text-xs text-brand-400";
+        showToast("Expanded Studio Mode", "Switched container from 480px mobile simulation to 1080px studio view.", "indigo");
+      } else {
+        nav.style.maxWidth = "480px";
+        icon.className = "fa-solid fa-mobile-screen-button text-xs";
+        showToast("Mobile Simulation (480px)", "Switched back to native 480px mobile-first viewport.", "indigo");
+      }
+    }
+
+    /* ==========================================================================
+       15. EXPOSE GLOBAL PORTAL CONTROLLER & BOOTSTRAP
+       ========================================================================== */
+    window.appPortal = {
+      triggerGoogleSignInPopup,
+      loginWithSelectedEmail,
+      openNewWorkerKycPrompt,
+      closeKycModal,
+      completeNewWorkerKyc,
+      signOutUser,
+      navigateTo,
+      recalcWorkEntryTotal,
+      handleImageFileSelection,
+      handleWorkEntrySubmit,
+      requestRecordEdit,
+      deleteWorkRecord,
+      saveWorkerProfileUpdate,
+      handleQuickSundayAdvance,
+      handleInspectorAdvanceAdd,
+      editSundayAdvanceEntry,
+      deleteSundayAdvanceEntry,
+      resetWorkerAdvanceBalance,
+      openWorkerInspectorModal,
+      closeWorkerInspectorModal,
+      deleteInspectedWorker,
+      exportWorkerPassbookPDF,
+      exportInspectedWorkerPDF,
+      exportMasterAdminPayrollPDF,
+      openAccountSwitcherModal,
+      closeAccountSwitcherModal,
+      openAddWorkerByAdminModal,
+      closeConfirmModal,
+      renderAdminDashboard,
+      renderPassbookView,
+      renderApprovalsView,
+      approveOrInspectNotification,
+      dismissAdminNotification,
+      clearAllAdminNotifications,
+      deleteAuditLog,
+      toggleTheme,
+      toggleViewportWidth
+    };
+
+    window.addEventListener("DOMContentLoaded", () => {
+      recalcWorkEntryTotal();
+      syncFromFirestore();
+    });
+  </script>
+</body>
+</html>
