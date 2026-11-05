@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Avinash Creation — Garment Production & Payroll Portal (v3.0)</title>
+  <title>Avinash Creation — Garment Production & Payroll Portal (v3.6)</title>
 
   <!-- Google Fonts: Inter, Plus Jakarta Sans, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -268,7 +268,7 @@
               Avinash Creation
             </h1>
             <span class="px-1.5 py-0.5 text-[10px] font-mono font-semibold rounded bg-brand-500/20 text-brand-400 border border-brand-500/30">
-              v3.0
+              v3.6
             </span>
           </div>
           <div class="flex items-center gap-1.5 mt-1">
@@ -333,14 +333,14 @@
             </div>
 
             <span class="px-3 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider bg-brand-500/15 text-brand-400 border border-brand-500/30 mb-3">
-              Enterprise Garment ERP • Surat
+              Garment Manufacture • ESTD.2024 • Surat
             </span>
 
             <h2 class="font-display font-extrabold text-2xl sm:text-3xl tracking-tight">
               Avinash Creation
             </h2>
             <p class="text-xs sm:text-sm text-slate-400 mt-1.5 max-w-md leading-relaxed">
-              Cryptographic Piece-Rate Production Ledger, Real-Time Telegram Proof Dispatch &amp; Automated Sunday Advance Payroll.
+              Garment &amp; Wages Management Portal
             </p>
 
             <!-- Primary Google OAuth 2.0 Button -->
@@ -360,13 +360,13 @@
                 <span>Sign in with Google Account</span>
               </button>
 
-              <button
+        <!--      <button
                 onclick="window.appPortal.openAccountChooserModal()"
                 class="w-full py-2.5 px-4 rounded-xl glass-input text-xs font-medium text-slate-400 hover:text-brand-400 flex items-center justify-center gap-2 transition"
               >
                 <i class="fa-solid fa-shield-halved text-brand-400"></i>
                 <span>Zero-Trust OAuth &amp; Auto-KYC Protocol Info</span>
-              </button>
+              </button>   -->
             </div>
           </div>
         </div>
@@ -378,8 +378,8 @@
               <i class="fa-solid fa-fingerprint"></i>
             </div>
             <div>
-              <h3 class="text-xs font-bold">SHA-256 Anti-Dup</h3>
-              <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Blocks duplicate garment photo uploads automatically.</p>
+              <h3 class="text-xs font-bold">SHA-256 Protocol</h3>
+              <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Blocks Suspicious Cheating Activity automatically.</p>
             </div>
           </div>
 
@@ -388,8 +388,8 @@
               <i class="fa-brands fa-telegram"></i>
             </div>
             <div>
-              <h3 class="text-xs font-bold">Telegram Stream</h3>
-              <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Instant multipart photo &amp; payout dispatch to admin bot.</p>
+              <h3 class="text-xs font-bold">Real-Time Stream</h3>
+              <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Instant Database Update &amp; Notifiy to Admin</p>
             </div>
           </div>
 
@@ -398,8 +398,8 @@
               <i class="fa-solid fa-bolt"></i>
             </div>
             <div>
-              <h3 class="text-xs font-bold">1-Time Auto-KYC</h3>
-              <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Instant worker provisioning on first Google sign-in.</p>
+              <h3 class="text-xs font-bold">Instant Sign-up</h3>
+              <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Instant worker Sign up & KYC Using Google Sign-IN </p>
             </div>
           </div>
 
@@ -408,8 +408,8 @@
               <i class="fa-solid fa-file-pdf"></i>
             </div>
             <div>
-              <h3 class="text-xs font-bold">Vector A4 Passbook</h3>
-              <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Client-side jsPDF itemized &amp; signature-ready statements.</p>
+              <h3 class="text-xs font-bold">Passbook PDF</h3>
+              <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">Generate Instant PDF of Every Record</p>
             </div>
           </div>
         </div>
@@ -452,19 +452,19 @@
         <!-- Worker 3-Column KPI Snapshot (Gross, Sunday Advance, Net Balance) -->
         <div class="grid grid-cols-3 gap-2.5">
           <div class="glass-card rounded-2xl p-3.5 border-l-2 border-l-emerald-500">
-            <p class="text-[11px] text-slate-400 font-medium">Gross Earned</p>
+            <p class="text-[11px] text-slate-400 font-medium">Gross Earning</p>
             <p id="worker-kpi-gross" class="font-mono font-bold text-base sm:text-lg text-emerald-400 mt-1">₹0</p>
             <span id="worker-kpi-pieces" class="text-[10px] font-mono text-slate-400">0 pcs</span>
           </div>
 
           <div class="glass-card rounded-2xl p-3.5 border-l-2 border-l-amber-500">
-            <p class="text-[11px] text-slate-400 font-medium">Sunday Adv.</p>
+            <p class="text-[11px] text-slate-400 font-medium">Sunday Advance</p>
             <p id="worker-kpi-advance" class="font-mono font-bold text-base sm:text-lg text-amber-400 mt-1">₹0</p>
             <span class="text-[10px] font-mono text-slate-400">Deductible</span>
           </div>
 
           <div class="glass-card rounded-2xl p-3.5 border-l-2 border-l-brand-500">
-            <p class="text-[11px] text-slate-400 font-medium">Net Payable</p>
+            <p class="text-[11px] text-slate-400 font-medium">Net Earning</p>
             <p id="worker-kpi-net" class="font-mono font-bold text-base sm:text-lg text-brand-400 mt-1">₹0</p>
             <span class="text-[10px] font-mono text-slate-400">Final Payout</span>
           </div>
@@ -475,18 +475,16 @@
           <div class="flex items-center justify-between border-b border-white/10 pb-3">
             <div class="flex items-center gap-2">
               <i class="fa-solid fa-layer-group text-brand-400"></i>
-              <h3 class="font-display font-bold text-sm sm:text-base">Submit Daily Garment Production</h3>
+              <h3 class="font-display font-bold text-sm sm:text-base">Daily Garment Production</h3>
             </div>
-            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-500/15 text-sky-400 border border-sky-500/30">
-              <i class="fa-brands fa-telegram mr-1"></i>Auto-Sync
-            </span>
+            
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <!-- Pieces Completed -->
             <div>
               <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-                Pieces Completed <span class="text-rose-400">*</span>
+                Pieces Completed <span cSunday lass="text-rose-400">*</span>
               </label>
               <div class="relative">
                 <input
@@ -494,7 +492,7 @@
                   type="number"
                   min="1"
                   step="1"
-                  placeholder="e.g. 120"
+                  placeholder="e.g. 36"
                   oninput="window.appPortal.recalcWorkEntryTotal()"
                   class="w-full rounded-xl glass-input pl-3.5 pr-10 py-2.5 font-mono text-sm font-semibold"
                 />
@@ -513,7 +511,7 @@
                   type="number"
                   min="0.5"
                   step="0.5"
-                  placeholder="e.g. 12.5"
+                  placeholder="e.g. 90"
                   oninput="window.appPortal.recalcWorkEntryTotal()"
                   class="w-full rounded-xl glass-input pl-8 pr-3.5 py-2.5 font-mono text-sm font-semibold"
                 />
@@ -538,7 +536,7 @@
           <!-- Live Calculated Total Payout Box -->
           <div class="rounded-xl bg-gradient-to-r from-brand-950/80 via-slate-900/90 to-emerald-950/60 border border-brand-500/30 p-3.5 flex items-center justify-between">
             <div>
-              <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400 block">Live Entry Payout</span>
+              <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400 block">Total Payout</span>
               <span id="work-entry-formula" class="text-xs font-mono text-slate-300">0 pcs × ₹0.00</span>
             </div>
             <div id="work-entry-live-total" class="font-mono font-extrabold text-xl text-emerald-400">
@@ -549,7 +547,7 @@
           <!-- Garment Proof Dropzone with Live SHA-256 Hash Preview -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">
-              Garment Bundle Proof Photo (SHA-256 Verified) <span class="text-rose-400">*</span>
+              Garment Lot Proof Photo (SHA-256 Verified) <span class="text-rose-400">*</span>
             </label>
             <label
               for="input-work-photo"
@@ -569,7 +567,7 @@
                   <i class="fa-solid fa-camera-retro text-lg"></i>
                 </div>
                 <p class="text-xs font-semibold text-slate-200">Tap to Capture or Upload Garment Proof</p>
-                <p class="text-[11px] text-slate-400">Generates instant SHA-256 fingerprint &amp; dispatches to Telegram</p>
+                <p class="text-[11px] text-slate-400">Verify SHA-256 &amp; Upload</p>
               </div>
 
               <!-- Populated Preview State -->
@@ -605,7 +603,7 @@
             class="btn-shimmer w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-display font-bold text-sm shadow-glow-indigo flex items-center justify-center gap-2 transition"
           >
             <i class="fa-solid fa-cloud-arrow-up"></i>
-            <span>Verify SHA-256 &amp; Submit Production</span>
+            <span>Verify &amp; Submit</span>
           </button>
         </div>
 
@@ -782,10 +780,10 @@
                 <label class="block text-xs font-semibold text-slate-300 mb-1">Production Dept *</label>
                 <select id="kyc-profile-dept" class="w-full rounded-xl glass-input px-3 py-2.5 text-xs font-semibold">
                   <option value="Stitching">Stitching</option>
-                  <option value="Cutting">Cutting</option>
-                  <option value="Embroidery">Embroidery</option>
-                  <option value="Finishing">Finishing</option>
-                  <option value="Quality Check">Quality Check</option>
+            <!--  <option value="Cutting">Cutting</option> -->
+            <!--  <option value="Embroidery">Embroidery</option> -->
+            <!--  <option value="Finishing">Finishing</option> -->
+            <!-- <option value="Quality Check">Quality Check</option> -->
                   <option value="Packaging">Packaging</option>
                 </select>
               </div>
@@ -825,11 +823,11 @@
           <div>
             <div class="flex items-center gap-2">
               <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                MASTER ADMIN
+                MASTER
               </span>
               <span id="admin-email-badge" class="text-xs font-mono text-slate-400">admin@avinash</span>
             </div>
-            <h2 class="font-display font-extrabold text-lg mt-1">Executive Command &amp; Payroll Center</h2>
+            <h2 class="font-display font-extrabold text-lg mt-1">ADMIN DASHBOARD</h2>
           </div>
 
           <div class="flex items-center gap-2">
@@ -838,14 +836,14 @@
               class="px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-bold flex items-center gap-1.5 transition"
             >
               <i class="fa-solid fa-user-plus"></i>
-              <span>+ Worker KYC</span>
+              <span>+ Worker </span>
             </button>
             <button
               onclick="window.appPortal.exportMasterAdminPayrollPDF()"
               class="btn-shimmer px-3.5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-glow-indigo transition"
             >
               <i class="fa-solid fa-file-invoice-dollar"></i>
-              <span>Master Payroll PDF</span>
+              <span>Salary Report</span>
             </button>
           </div>
         </div>
@@ -863,7 +861,7 @@
 
           <div class="glass-card rounded-2xl p-3.5 border-t-2 border-t-emerald-500">
             <div class="flex items-center justify-between text-slate-400 text-xs">
-              <span>Gross Liability</span>
+              <span>Total Payable</span>
               <i class="fa-solid fa-sack-dollar text-emerald-400"></i>
             </div>
             <p id="admin-kpi-gross" class="font-mono font-extrabold text-xl text-emerald-400 mt-1.5">₹0</p>
@@ -876,16 +874,16 @@
               <i class="fa-solid fa-hand-holding-dollar text-amber-400"></i>
             </div>
             <p id="admin-kpi-advance" class="font-mono font-extrabold text-xl text-amber-400 mt-1.5">₹0</p>
-            <span class="text-[10px] font-mono text-slate-400">Accumulated Cash</span>
+            <span class="text-[10px] font-mono text-slate-400">Total Advance</span>
           </div>
 
           <div class="glass-card rounded-2xl p-3.5 border-t-2 border-t-rose-500">
             <div class="flex items-center justify-between text-slate-400 text-xs">
-              <span>Net Liability</span>
+              <span>Balance to Pay</span>
               <i class="fa-solid fa-scale-balanced text-rose-400"></i>
             </div>
             <p id="admin-kpi-net" class="font-mono font-extrabold text-xl text-rose-400 mt-1.5">₹0</p>
-            <span class="text-[10px] font-mono text-slate-400">Final Disbursal</span>
+            <span class="text-[10px] font-mono text-slate-400">Final Payment</span>
           </div>
         </div>
 
@@ -894,7 +892,7 @@
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
-              <h3 class="font-display font-bold text-sm">Live Notification Center (Edits &amp; New Proofs)</h3>
+              <h3 class="font-display font-bold text-sm">Updates & Requests</h3>
             </div>
             <span id="admin-notif-count" class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-400">
               0 Pending
@@ -905,19 +903,19 @@
           </div>
         </div>
 
-        <!-- Quick Sunday Advance Allocator -->
+        <!-- Quick Advance Entry -->
         <div class="glass-card rounded-2xl p-4 space-y-3">
           <div class="flex items-center justify-between">
             <h3 class="font-display font-bold text-sm flex items-center gap-2">
               <i class="fa-solid fa-coins text-amber-400"></i>
-              <span>Quick Sunday Advance Allocator</span>
+              <span>Quick Advance Entry</span>
             </h3>
-            <span class="text-[10px] font-mono text-slate-400">Accumulates in Worker Ledger</span>
+            <span class="text-[10px] font-mono text-slate-400">Added to worker passbook</span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             <select id="admin-quick-adv-worker" class="rounded-xl glass-input px-3 py-2.5 text-xs font-semibold">
-              <option value="">Select Worker...</option>
+              <option value="">Select Worker</option>
             </select>
 
             <div class="relative">
@@ -934,7 +932,7 @@
             <input
               id="admin-quick-adv-note"
               type="text"
-              placeholder="Note (e.g. Sunday Cash Kharchi)"
+              placeholder="Note (Sunday Cash Kharchi)"
               class="rounded-xl glass-input px-3 py-2.5 text-xs"
             />
           </div>
@@ -944,11 +942,12 @@
             class="btn-shimmer w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-display font-extrabold text-xs flex items-center justify-center gap-2 transition"
           >
             <i class="fa-solid fa-plus-circle"></i>
-            <span>Issue &amp; Accumulate Sunday Advance</span>
+            <span>Confirm Advance</span>
           </button>
         </div>
 
-        <!-- Workers Directory Shortcut Card -->
+        <!-- Workers Directory Shortcut Card 
+
         <div class="glass-card rounded-2xl p-4 flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-brand-500/15 text-brand-400 flex items-center justify-center">
@@ -965,8 +964,10 @@
           >
             Open Directory →
           </button>
-        </div>
-      </section>
+        </div>             -->
+
+
+      </section> 
 
       <!-- ======================================================================
             VIEW 6: view-workers-directory (Searchable Directory -> Inspector Modal)
@@ -975,8 +976,8 @@
         <div class="glass-card rounded-2xl p-4 space-y-3">
           <div class="flex items-center justify-between">
             <div>
-              <span class="text-[10px] font-mono uppercase tracking-wider text-brand-400">Karigar Roster</span>
-              <h2 class="font-display font-extrabold text-lg">Workers Directory</h2>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-brand-400">Karigar list</span>
+              <h2 class="font-display font-extrabold text-lg">Workers Details</h2>
             </div>
             <button
               onclick="window.appPortal.openNewWorkerKycPrompt()"
@@ -1139,9 +1140,8 @@
           <div class="flex items-center justify-between">
             <h4 class="font-display font-bold text-xs sm:text-sm flex items-center gap-2 text-amber-400">
               <i class="fa-solid fa-hand-holding-dollar"></i>
-              <span>Manage Accumulating Sunday Advances</span>
+              <span>Manage Sunday Advances</span>
             </h4>
-            <span class="text-[10px] font-mono text-slate-400">Inline Edit / Delete Supported</span>
           </div>
 
           <div class="flex flex-col sm:flex-row gap-2">
@@ -1176,7 +1176,7 @@
         <div class="space-y-2.5">
           <h4 class="font-display font-bold text-xs sm:text-sm flex items-center gap-2">
             <i class="fa-solid fa-boxes-stacked text-brand-400"></i>
-            <span>Itemized Production Records</span>
+            <span>Garments Production Records</span>
           </h4>
           <div id="inspector-records-list" class="space-y-2.5">
             <!-- Dynamically populated -->
@@ -1718,7 +1718,7 @@
         email,
         name: autoName,
         role: "worker",
-        mobile: "9800000000",
+        mobile: "987654321",
         machineNo: `MCH-${Math.floor(10 + Math.random() * 89)}`,
         dept: "Stitching",
         state: "Gujarat",
@@ -1796,7 +1796,7 @@
           },
           (err) => {
             console.warn("Users snapshot notice:", err.message);
-            if (txt) txt.textContent = "Local + Cloud Hybrid";
+            if (txt) txt.textContent = "Firestore Live";
             refreshAllViews();
           }
         );
@@ -2490,7 +2490,7 @@
       docPdf.setTextColor(255, 255, 255);
       docPdf.setFont("helvetica", "bold");
       docPdf.setFontSize(15);
-      docPdf.text("AVINASH CREATION — MASTER COMPANY PAYROLL & LIABILITY LEDGER (v3.0)", 18, 21);
+      docPdf.text("AVINASH CREATION — MASTER COMPANY PAYROLL & LIABILITY LEDGER (v3.6)", 18, 21);
 
       docPdf.setFont("helvetica", "normal");
       docPdf.setFontSize(9.5);
