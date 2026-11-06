@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Avinash Creation — Garment Production & Payroll Portal (v3.6)</title>
+  <title>Raj Creation — Garment Production & Payroll Portal (v3.6)</title>
 
   <!-- PWA & Mobile Theme Settings -->
   <link rel="manifest" href="manifest.json" />
@@ -271,7 +271,7 @@
         <div>
           <div class="flex items-center gap-2">
             <h1 class="font-display font-extrabold text-sm sm:text-base tracking-tight leading-none">
-              Avinash Creation
+              Raj Creation
             </h1>
             <span class="px-1.5 py-0.5 text-[10px] font-mono font-semibold rounded bg-brand-500/20 text-brand-400 border border-brand-500/30">
               v3.6
@@ -343,7 +343,7 @@
             </span>
 
             <h2 class="font-display font-extrabold text-2xl sm:text-3xl tracking-tight">
-              Avinash Creation
+              Raj Creation
             </h2>
             <p class="text-xs sm:text-sm text-slate-400 mt-1.5 max-w-md leading-relaxed">
               Garment &amp; Wages Management Portal
@@ -831,7 +831,7 @@
               <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
                 MASTER
               </span>
-              <span id="admin-email-badge" class="text-xs font-mono text-slate-400">admin@avinash</span>
+              <span id="admin-email-badge" class="text-xs font-mono text-slate-400">admin@Raj</span>
             </div>
             <h2 class="font-display font-extrabold text-lg mt-1">ADMIN DASHBOARD</h2>
           </div>
@@ -1509,11 +1509,11 @@
     // ==========================================================================
     // PART 1: EXACT CREDENTIALS & API CONFIGURATIONS (HARDCODED)
     // ==========================================================================
-    const AVINASH_FIREBASE_CONFIG = {
+    const Raj_FIREBASE_CONFIG = {
       apiKey: "AIzaSyDhgWn7M4tJ_skQZ8Y2leJ-FRG8Z4-NpZE",
-      authDomain: "avinash-creation.firebaseapp.com",
-      projectId: "avinash-creation",
-      storageBucket: "avinash-creation.firebasestorage.app",
+      authDomain: "Raj-creation.firebaseapp.com",
+      projectId: "Raj-creation",
+      storageBucket: "Raj-creation.firebasestorage.app",
       messagingSenderId: "363660371623",
       appId: "1:363660371623:web:71a9f793b7877aab7e9d82"
     };
@@ -1525,16 +1525,16 @@
 
     const ADMIN_WHITELIST_EMAILS = [
       "aryanraj10701@gmail.com",
-      "rajavinash1473@gmail.com",
-      "admin.avinash@gmail.com"
+      "rajRaj1473@gmail.com",
+      "admin.Raj@gmail.com"
     ];
 
-    const SESSION_STORAGE_KEY = "avinash_creation_session_key_v1";
+    const SESSION_STORAGE_KEY = "Raj_creation_session_key_v1";
 
     // Initialize Firebase v11
     let app, auth, db, googleProvider;
     try {
-      app = initializeApp(AVINASH_FIREBASE_CONFIG);
+      app = initializeApp(Raj_FIREBASE_CONFIG);
       auth = getAuth(app);
       db = getFirestore(app);
       googleProvider = new GoogleAuthProvider();
@@ -2036,7 +2036,7 @@
       }
 
       const tgCaption =
-        `🧵 *AVINASH CREATION — WORK PROOF*\n` +
+        `🧵 *Raj CREATION — WORK PROOF*\n` +
         `👤 *Worker:* ${state.currentUser.name}\n` +
         `🏷️ *Dept/Machine:* ${state.currentUser.dept || "Stitching"} (${state.currentUser.machineNo || "MCH-01"})\n` +
         `📦 *Pieces:* ${pieces} pcs × ₹${rate}\n` +
@@ -2372,7 +2372,7 @@
       docPdf.setTextColor(255, 255, 255);
       docPdf.setFont("helvetica", "bold");
       docPdf.setFontSize(16);
-      docPdf.text("AVINASH CREATION — GARMENT PRODUCTION PASSBOOK", 18, 24);
+      docPdf.text("Raj CREATION — GARMENT PRODUCTION PASSBOOK", 18, 24);
 
       docPdf.setFont("helvetica", "normal");
       docPdf.setFontSize(9.5);
@@ -2447,10 +2447,10 @@
       docPdf.setFontSize(8.5);
       docPdf.setTextColor(71, 85, 105);
       docPdf.text("Karigar / Worker Signature", 28, signY + 5);
-      docPdf.text("Avinash Creation Authorized Signatory", 136, signY + 5);
+      docPdf.text("Raj Creation Authorized Signatory", 136, signY + 5);
 
       const safeName = (worker.name || "worker").toLowerCase().replace(/[^a-z0-9]/g, "_");
-      docPdf.save(`Avinash_Passbook_${safeName}.pdf`);
+      docPdf.save(`Raj_Passbook_${safeName}.pdf`);
       showToast(`Vector A4 Passbook PDF generated for ${worker.name}!`, "emerald");
     }
 
@@ -2496,7 +2496,7 @@
       docPdf.setTextColor(255, 255, 255);
       docPdf.setFont("helvetica", "bold");
       docPdf.setFontSize(15);
-      docPdf.text("AVINASH CREATION — MASTER COMPANY PAYROLL & LIABILITY LEDGER (v3.6)", 18, 21);
+      docPdf.text("Raj CREATION — MASTER COMPANY PAYROLL & LIABILITY LEDGER (v3.6)", 18, 21);
 
       docPdf.setFont("helvetica", "normal");
       docPdf.setFontSize(9.5);
@@ -2524,9 +2524,9 @@
       docPdf.setFontSize(9);
       docPdf.setTextColor(71, 85, 105);
       docPdf.text("Payroll Accountant Signature", 32, signY + 5);
-      docPdf.text("Managing Director — Avinash Creation", 212, signY + 5);
+      docPdf.text("Managing Director — Raj Creation", 212, signY + 5);
 
-      docPdf.save(`Avinash_Creation_Master_Payroll_${new Date().toISOString().slice(0, 10)}.pdf`);
+      docPdf.save(`Raj_Creation_Master_Payroll_${new Date().toISOString().slice(0, 10)}.pdf`);
       showToast("Master Company Payroll A4 PDF exported!", "emerald");
     }
 
